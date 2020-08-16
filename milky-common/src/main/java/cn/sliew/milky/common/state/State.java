@@ -5,7 +5,7 @@ package cn.sliew.milky.common.state;
  * <p>
  * https://github.com/RestComm/jdiameter/blob/master/core/jdiameter/api/src/main/java/org/jdiameter/api/app/State.java
  */
-public interface State {
+public interface State<T extends StateMachine> {
 
     /**
      * Action that should be taken each time this state is entered
@@ -24,5 +24,5 @@ public interface State {
      * @param event the event to process.
      * @return true if event is processed
      */
-    boolean processEvent(StateMachine fsm, StateEvent event);
+    boolean processEvent(T fsm, StateEvent event);
 }
