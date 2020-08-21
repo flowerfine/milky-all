@@ -1,13 +1,7 @@
-package cn.sliew.milky.common;
+package cn.sliew.milky.common.stopwatch;
 
-public interface Ticker {
-
-    /**
-     * Returns the number of nanoseconds elapsed since this ticker's fixed point of reference.
-     *
-     * @return the number of nanoseconds elapsed since this ticker's fixed point of reference
-     */
-    long read();
+public enum Tickers {
+    ;
 
     /**
      * Returns a ticker that reads the current time using {@link System#nanoTime}.
