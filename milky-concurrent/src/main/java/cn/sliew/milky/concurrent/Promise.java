@@ -1,9 +1,9 @@
 package cn.sliew.milky.concurrent;
 
 /**
- * Special {@link BaseFuture} which is writable.
+ * Special {@link Future} which is writable.
  */
-public interface Promise<V> extends BaseFuture<V> {
+public interface Promise<V> extends Future<V> {
 
     /**
      * Marks this future as a success and notifies all
@@ -49,9 +49,9 @@ public interface Promise<V> extends BaseFuture<V> {
      */
     boolean setUncancellable();
 
-    Promise<V> addListener(FutureListener<? extends BaseFuture<? super V>> listener);
+    Promise<V> addListener(FutureListener<? extends Future<? super V>> listener);
 
-    Promise<V> removeListener(FutureListener<? extends BaseFuture<? super V>> listener);
+    Promise<V> removeListener(FutureListener<? extends Future<? super V>> listener);
 
     Promise<V> await() throws InterruptedException;
 

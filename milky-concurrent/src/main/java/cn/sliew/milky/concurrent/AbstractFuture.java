@@ -6,11 +6,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Abstract {@link BaseFuture} implementation which does not allow for cancellation.
+ * Abstract {@link Future} implementation which does not allow for cancellation.
  *
  * @param <V>
  */
-public abstract class AbstractFuture<V> implements BaseFuture<V> {
+public abstract class AbstractFuture<V> implements Future<V> {
 
     public V get() throws InterruptedException, ExecutionException {
         await();
