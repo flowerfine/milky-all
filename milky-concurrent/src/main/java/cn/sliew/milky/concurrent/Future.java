@@ -63,16 +63,6 @@ public interface Future<V> extends java.util.concurrent.Future {
     boolean await(long timeout, TimeUnit unit) throws InterruptedException;
 
     /**
-     * Waits for this future to be completed within the
-     * specified time limit.
-     *
-     * @return {@code true} if and only if the future was completed within
-     * the specified time limit
-     * @throws InterruptedException if the current thread was interrupted
-     */
-    boolean await(long timeoutMillis) throws InterruptedException;
-
-    /**
      * Return the result without blocking. If the future is not done yet this will return {@code null}.
      * <p>
      * As it is possible that a {@code null} value is used to mark the future as successful you also need to check
