@@ -12,6 +12,7 @@
     <modules>
         <module>milky-common</module>
         <module>milky-concurrent</module>
+        <module>milky-transport</module>
     </modules>
 
     <properties>
