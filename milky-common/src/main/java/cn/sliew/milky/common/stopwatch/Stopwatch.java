@@ -2,6 +2,8 @@ package cn.sliew.milky.common.stopwatch;
 
 import java.time.Duration;
 
+import static cn.sliew.milky.common.Ensures.*;
+
 public final class Stopwatch {
 
 
