@@ -1,6 +1,8 @@
 package cn.sliew.milky.transport;
 
-public interface Client {
+import java.net.InetSocketAddress;
+
+public interface Client extends Channel {
 
     /**
      * is connected.
@@ -11,6 +13,8 @@ public interface Client {
 
     /**
      * connect.
+     *
+     * @param remoteAddress remote server address.
      */
-    void connect();
+    void connect(InetSocketAddress remoteAddress);
 }

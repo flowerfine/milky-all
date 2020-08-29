@@ -1,8 +1,9 @@
 package cn.sliew.milky.transport;
 
+import java.io.Closeable;
 import java.net.InetSocketAddress;
 
-public interface Channel {
+public interface Channel extends Closeable {
 
     /**
      * get local address.
@@ -28,6 +29,13 @@ public interface Channel {
     void send(Object message, ActionListener<Void> listener);
 
     /**
+     * Indicates whether a channel is currently open
+     *
+     * @return boolean indicating if channel is open
+     */
+    boolean isOpen();
+
+    /**
      * is closed.
      *
      * @return closed
@@ -37,6 +45,7 @@ public interface Channel {
     /**
      * close the channel.
      */
+    @Override
     void close();
 
     /**

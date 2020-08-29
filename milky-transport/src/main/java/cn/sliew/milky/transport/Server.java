@@ -3,7 +3,7 @@ package cn.sliew.milky.transport;
 import java.net.InetSocketAddress;
 import java.util.Collection;
 
-public interface Server {
+public interface Server extends Channel {
 
     /**
      * is bound.
