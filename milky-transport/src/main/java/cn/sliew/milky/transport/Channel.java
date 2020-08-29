@@ -3,6 +3,9 @@ package cn.sliew.milky.transport;
 import java.io.Closeable;
 import java.net.InetSocketAddress;
 
+/**
+ * channel，负责底层的发送消息功能
+ */
 public interface Channel extends Closeable {
 
     /**

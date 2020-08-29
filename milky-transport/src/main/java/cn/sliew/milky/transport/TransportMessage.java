@@ -1,4 +1,4 @@
 package cn.sliew.milky.transport;
 
-public class TransportMessage {
+public abstract class TransportMessage {
 }

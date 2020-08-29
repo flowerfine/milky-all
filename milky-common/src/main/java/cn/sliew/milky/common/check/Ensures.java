@@ -1,4 +1,4 @@
-package cn.sliew.milky.common;
+package cn.sliew.milky.common.check;
 
 import com.google.common.base.Strings;
 import com.google.common.base.Verify;

@@ -1,4 +1,4 @@
-package cn.sliew.milky.common;
+package cn.sliew.milky.common.check;
 
 public enum Requires {
     ;
