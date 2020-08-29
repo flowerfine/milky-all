@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 
 /**
  * channel，负责底层的发送消息功能
+ * 扩展类
  */
 public interface Channel extends Closeable {
 
