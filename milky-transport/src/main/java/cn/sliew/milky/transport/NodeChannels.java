@@ -1,31 +1,35 @@
 package cn.sliew.milky.transport;
 
+import cn.sliew.milky.transport.exchange.TransportRequest;
+
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class NodeChannels extends AbstractConnection {
 
-    private final List<Channel> channels;
+    private final List<TcpChannel> tcpChannels;
 
-    private final int length;
-
-    private final AtomicInteger counter = new AtomicInteger();
+    private final TcpChannelSelectStrategy channelSelectStrategy;
 
     private final AtomicBoolean closing = new AtomicBoolean(false);
 
-    public NodeChannels(List<Channel> channels) {
-        this.channels = channels;
-        this.length = channels.size();
+    public NodeChannels(List<TcpChannel> tcpChannels, TcpChannelSelectStrategy channelSelectStrategy) {
+        this.tcpChannels = tcpChannels;
+        this.channelSelectStrategy = channelSelectStrategy;
     }
 
     @Override
-    public Channel getChannel() {
-        return channels.get(Math.floorMod(counter.incrementAndGet(), length));
+    public TcpChannelSelectStrategy selectStrategy() {
+        return channelSelectStrategy;
+    }
+
+    @Override
+    public TcpChannel channel() {
+        return channelSelectStrategy.select(this.tcpChannels);
     }
 
     @Override
     public void sendRequest(long requestId, TransportRequest request) {
-        getChannel().send(request, null);
+        channel().sendMessage(request, null);
     }
 }

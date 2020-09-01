@@ -1,8 +1,10 @@
-package cn.sliew.milky.transport;
+package cn.sliew.milky.transport.exchange;
+
+import cn.sliew.milky.transport.TcpChannel;
 
 import java.net.InetSocketAddress;
 
-public interface Client extends Channel {
+public interface Client extends TcpChannel {
 
     /**
      * is connected.

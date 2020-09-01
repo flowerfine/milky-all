@@ -1,4 +1,4 @@
-package cn.sliew.milky.transport;
+package cn.sliew.milky.transport.exchange;
 
 public abstract class TransportRequest extends TransportMessage {
 }

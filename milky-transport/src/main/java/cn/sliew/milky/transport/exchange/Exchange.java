@@ -1,4 +1,6 @@
-package cn.sliew.milky.transport;
+package cn.sliew.milky.transport.exchange;
+
+import cn.sliew.milky.transport.Connection;
 
 public interface Exchange {
 

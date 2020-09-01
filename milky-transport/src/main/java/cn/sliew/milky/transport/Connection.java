@@ -1,5 +1,7 @@
 package cn.sliew.milky.transport;
 
+import cn.sliew.milky.transport.exchange.TransportRequest;
+
 import java.io.Closeable;
 
 /**
@@ -7,7 +9,9 @@ import java.io.Closeable;
  */
 public interface Connection extends Closeable {
 
-    Channel getChannel();
+    TcpChannelSelectStrategy selectStrategy();
+
+    TcpChannel channel();
 
     /**
      * Sends the request to the node this connection is associated with

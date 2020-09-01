@@ -1,9 +1,11 @@
-package cn.sliew.milky.transport;
+package cn.sliew.milky.transport.exchange;
+
+import cn.sliew.milky.transport.TcpChannel;
 
 import java.net.InetSocketAddress;
 import java.util.Collection;
 
-public interface Server extends Channel {
+public interface Server extends TcpChannel {
 
     /**
      * is bound.
@@ -24,7 +26,7 @@ public interface Server extends Channel {
      *
      * @return channels
      */
-    Collection<Channel> getChannels();
+    Collection<TcpChannel> getChannels();
 
     /**
      * get channel.
@@ -32,5 +34,5 @@ public interface Server extends Channel {
      * @param remoteAddress accepted remote address
      * @return channel
      */
-    Channel getChannel(InetSocketAddress remoteAddress);
+    TcpChannel getChannel(InetSocketAddress remoteAddress);
 }

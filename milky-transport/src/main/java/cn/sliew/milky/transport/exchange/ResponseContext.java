@@ -1,4 +1,8 @@
-package cn.sliew.milky.transport;
+package cn.sliew.milky.transport.exchange;
+
+import cn.sliew.milky.transport.Connection;
+import cn.sliew.milky.transport.exchange.TransportResponse;
+import cn.sliew.milky.transport.exchange.TransportResponseHandler;
 
 public class ResponseContext<Response extends TransportResponse> {
 

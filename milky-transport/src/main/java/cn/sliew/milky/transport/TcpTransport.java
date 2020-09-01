@@ -1,9 +1,11 @@
 package cn.sliew.milky.transport;
 
+import cn.sliew.milky.transport.exchange.TransportMessageListener;
+
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
-public interface TcpTransport extends LifeCycle {
+public interface TcpTransport {
 
     /**
      * The address the transport is bound on.

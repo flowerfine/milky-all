@@ -7,7 +7,7 @@ import java.net.InetSocketAddress;
  * channel，负责底层的发送消息功能
  * 扩展类
  */
-public interface Channel extends Closeable {
+public interface TcpChannel extends Closeable {
 
     /**
      * get local address.
@@ -30,7 +30,7 @@ public interface Channel extends Closeable {
      * @param message  to send to channel
      * @param listener to execute upon send completion
      */
-    void send(Object message, ActionListener<Void> listener);
+    void sendMessage(Object message, ActionListener<Void> listener);
 
     /**
      * Indicates whether a channel is currently open
@@ -40,22 +40,8 @@ public interface Channel extends Closeable {
     boolean isOpen();
 
     /**
-     * is closed.
-     *
-     * @return closed
-     */
-    boolean isClosed();
-
-    /**
      * close the channel.
      */
     @Override
     void close();
-
-    /**
-     * Graceful close the channel.
-     */
-    void close(int timeout);
-
-
 }
