@@ -3,17 +3,17 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>cn.sliew</groupId>
     <artifactId>milky</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <version>1.0.0-SNAPSHOT</version>
 
     <modules>
         <module>milky-common</module>
         <module>milky-concurrent</module>
         <module>milky-transport</module>
         <module>milky-transport-netty</module>
+        <module>milky-test</module>
     </modules>
 
     <properties>
@@ -23,24 +23,42 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.0-alpha1</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.3.0-alpha5</version>
+        </dependency>
+    </dependencies>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>cn.sliew</groupId>
                 <artifactId>milky-common</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0.0-SNAPSHOT</version>
             </dependency>
-
             <dependency>
                 <groupId>cn.sliew</groupId>
                 <artifactId>milky-concurrent</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.sliew</groupId>
+                <artifactId>milky-transport</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>cn.sliew</groupId>
-                <artifactId>milky-transport</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <artifactId>milky-test</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

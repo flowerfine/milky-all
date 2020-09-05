@@ -9,20 +9,29 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>milky-transport</artifactId>
+    <artifactId>milky-test</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
-            <groupId>cn.sliew</groupId>
-            <artifactId>milky-common</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.7.0-RC1</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>cn.sliew</groupId>
-            <artifactId>milky-concurrent</artifactId>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>3.5.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
-
 
 </project>
