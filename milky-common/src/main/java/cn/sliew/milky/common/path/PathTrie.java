@@ -58,7 +58,7 @@ public class PathTrie<T> {
     public class TrieNode {
         private transient String key;
         private transient T value;
-        private boolean isWildcard;
+//        private boolean isWildcard;
         private final String wildcard;
 
         private transient String namedWildcard;
@@ -68,7 +68,7 @@ public class PathTrie<T> {
         public TrieNode(String key, T value, String wildcard) {
             this.key = key;
             this.wildcard = wildcard;
-            this.isWildcard = (key.equals(wildcard));
+//            this.isWildcard = key.equals(wildcard);
             this.value = value;
             this.children = emptyMap();
             if (isNamedWildcard(key)) {

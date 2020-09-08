@@ -72,6 +72,8 @@ public class Strings {
                         case 'f':
                             ch = '\f';
                             break;
+                        default:
+                            throw new IllegalStateException(String.valueOf(ch));
                     }
                 }
             }

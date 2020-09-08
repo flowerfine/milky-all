@@ -1,6 +1,6 @@
 package cn.sliew.milky.common.settings;
 
-import com.sun.istack.internal.Nullable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 import java.util.function.Function;
