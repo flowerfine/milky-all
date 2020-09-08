@@ -37,7 +37,8 @@ final class FilteredMap extends AbstractMap<String, Object> {
                             return true; // protect against calling hasNext twice
                         } else {
                             if (numIterated == size) { // early terminate
-                                assert size != -1 : "size was never set: " + numIterated + " vs. " + size;
+                                assert size != -1 :
+                                        "size was never set: " + numIterated + " vs. " + size;
                                 return false;
                             }
                             while (iter.hasNext()) {
@@ -54,7 +55,8 @@ final class FilteredMap extends AbstractMap<String, Object> {
 
                     @Override
                     public Entry<String, Object> next() {
-                        if (currentElement == null && hasNext() == false) { // protect against no #hasNext call or not respecting it
+                        // protect against no #hasNext call or not respecting it
+                        if (currentElement == null && hasNext() == false) {
 
                             throw new NoSuchElementException("make sure to call hasNext first");
                         }

@@ -17,6 +17,16 @@ public class Setting<T> {
     private final Validator<T> validator;
     private final EnumSet<Property> properties;
 
+    /**
+     * LineLength.
+     *
+     * @param key             key
+     * @param defaultValue    default value
+     * @param fallbackSetting fallback setting
+     * @param parser          value parser
+     * @param validator       value validator
+     * @param properties      properties
+     */
     public Setting(Key key,
                    Function<Settings, String> defaultValue,
                    @Nullable Setting<T> fallbackSetting,
@@ -61,8 +71,8 @@ public class Setting<T> {
     }
 
     /**
-     * Returns the settings value. If the setting is not present in the given settings object the default value is returned
-     * instead.
+     * Returns the settings value. If the setting is not present in
+     * the given settings object the default value is returned instead.
      */
     public T get(Settings settings) {
         return get(settings, true);
@@ -79,7 +89,8 @@ public class Setting<T> {
                     map = new HashMap<>();
                     while (it.hasNext()) {
                         final Setting<T> setting = it.next();
-                        map.put(setting, setting.get(settings, false)); // we have to disable validation or we will stack overflow
+                        // we have to disable validation or we will stack overflow
+                        map.put(setting, setting.get(settings, false));
                     }
                 } else {
                     map = Collections.emptyMap();
@@ -89,7 +100,8 @@ public class Setting<T> {
             }
             return parsed;
         } catch (Exception t) {
-            throw new IllegalArgumentException("Failed to parse value [" + value + "] for setting [" + getKey() + "]", t);
+            throw new IllegalArgumentException(
+                    "Failed to parse value [" + value + "] for setting [" + getKey() + "]", t);
         }
     }
 
@@ -98,7 +110,8 @@ public class Setting<T> {
     }
 
     /**
-     * The underlying implementation for {@link #getRaw(Settings)}. Setting specializations can override this as needed to convert the
+     * The underlying implementation for {@link #getRaw(Settings)}.
+     * Setting specializations can override this as needed to convert the
      * actual settings value to raw strings.
      *
      * @param settings the settings instance
@@ -109,7 +122,7 @@ public class Setting<T> {
     }
 
     /**
-     * Returns the setting properties
+     * Returns the setting properties.
      *
      * @see Property
      */
@@ -118,14 +131,14 @@ public class Setting<T> {
     }
 
     /**
-     * Returns <code>true</code> if this setting is dynamically updateable, otherwise <code>false</code>
+     * Returns <code>true</code> if this setting is dynamically updateable, otherwise <code>false</code>.
      */
     public final boolean isDynamic() {
         return properties.contains(Property.Dynamic);
     }
 
     /**
-     * Returns <code>true</code> if this setting is final, otherwise <code>false</code>
+     * Returns <code>true</code> if this setting is final, otherwise <code>false</code>.
      */
     public final boolean isFinal() {
         return properties.contains(Property.Final);
@@ -141,7 +154,8 @@ public class Setting<T> {
     }
 
     /**
-     * Returns true if and only if this setting is present in the given settings instance. Note that fallback settings are excluded.
+     * Returns true if and only if this setting is present in the given settings instance.
+     * Note that fallback settings are excluded.
      *
      * @param settings the settings
      * @return true if the setting is present in the given settings instance, otherwise false
@@ -151,13 +165,16 @@ public class Setting<T> {
     }
 
     /**
-     * Returns true if and only if this setting including fallback settings is present in the given settings instance.
+     * Returns true if and only if this setting including fallback settings
+     * is present in the given settings instance.
      *
      * @param settings the settings
-     * @return true if the setting including fallback settings is present in the given settings instance, otherwise false
+     * @return true if the setting including fallback settings is present in
+     *      the given settings instance, otherwise false
      */
     public boolean existsOrFallbackExists(final Settings settings) {
-        return settings.keySet().contains(getKey()) || (fallbackSetting != null && fallbackSetting.existsOrFallbackExists(settings));
+        return settings.keySet().contains(getKey())
+                || (fallbackSetting != null && fallbackSetting.existsOrFallbackExists(settings));
     }
 
 

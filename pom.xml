@@ -80,16 +80,7 @@
                     <showWarnings>true</showWarnings>
                     <compilerArgs>
                         <arg>-Xlint:-options</arg>
-                        <arg>-XDcompilePolicy=simple</arg>
-                        <arg>-Xplugin:ErrorProne</arg>
                     </compilerArgs>
-                    <!--                    <annotationProcessorPaths>-->
-                    <!--                        <path>-->
-                    <!--                            <groupId>com.google.errorprone</groupId>-->
-                    <!--                            <artifactId>error_prone_core</artifactId>-->
-                    <!--                            <version>2.4.0</version>-->
-                    <!--                        </path>-->
-                    <!--                    </annotationProcessorPaths>-->
                     <excludes>
                         <exclude>**/package-info.java</exclude>
                     </excludes>

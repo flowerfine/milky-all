@@ -7,8 +7,8 @@ public abstract class Key extends AbstractConstant {
     /**
      * Creates a new instance.
      *
-     * @param id
-     * @param name
+     * @param id   id
+     * @param name name
      */
     protected Key(int id, String name) {
         super(id, name);

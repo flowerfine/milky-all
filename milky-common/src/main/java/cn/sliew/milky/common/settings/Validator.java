@@ -15,8 +15,9 @@ public interface Validator<T> {
     void validate(T value);
 
     /**
-     * Validate this setting against its dependencies, specified by {@link #settings()}. The default implementation does nothing,
-     * accepting any value as valid as long as it passes the validation in {@link #validate(Object)}.
+     * Validate this setting against its dependencies, specified by {@link #settings()}.
+     * The default implementation does nothing, accepting any value as valid as long as
+     * it passes the validation in {@link #validate(Object)}.
      *
      * @param value    the value of this setting
      * @param settings a map from the settings specified by {@link #settings()}} to their values
@@ -26,9 +27,10 @@ public interface Validator<T> {
 
 
     /**
-     * The settings on which the validity of this setting depends. The values of the specified settings are passed to
-     * {@link #validate(Object, Map)}. By default this returns an empty iterator, indicating that this setting does not depend on any
-     * other settings.
+     * The settings on which the validity of this setting depends.
+     * The values of the specified settings are passed to {@link #validate(Object, Map)}.
+     * By default this returns an empty iterator, indicating that this setting does not
+     * depend on any other settings.
      *
      * @return the settings on which the validity of this setting depends.
      */

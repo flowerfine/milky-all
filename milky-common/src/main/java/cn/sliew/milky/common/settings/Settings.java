@@ -27,7 +27,7 @@ public final class Settings {
     }
 
     /**
-     * Returns {@code true} if this settings object contains no settings
+     * Returns {@code true} if this settings object contains no settings.
      *
      * @return {@code true} if this settings object contains no settings
      */
@@ -50,7 +50,7 @@ public final class Settings {
     }
 
     /**
-     * Returns <code>true</code> iff the given key has a value in this settings object
+     * Returns <code>true</code> iff the given key has a value in this settings object.
      */
     public boolean hasValue(String key) {
         return settings.get(key) != null;
@@ -90,25 +90,27 @@ public final class Settings {
     }
 
     /**
-     * Returns a new settings object that contains all setting of the current one filtered by the given settings key predicate.
+     * Returns a new settings object that contains all setting of the current one
+     * filtered by the given settings key predicate.
      */
     public Settings filter(Predicate<String> predicate) {
         return new Settings(new FilteredMap(this.settings, predicate, null));
     }
 
     /**
-     * Returns the setting value (as float) associated with the setting key. If it does not exists,
-     * returns the default value provided.
+     * Returns the setting value (as float) associated with the setting key.
+     * If it does not exists, returns the default value provided.
      */
     public Float getAsFloat(String setting, Float defaultValue) {
-        String sValue = get(setting);
-        if (sValue == null) {
+        String value = get(setting);
+        if (value == null) {
             return defaultValue;
         }
         try {
-            return Float.parseFloat(sValue);
+            return Float.parseFloat(value);
         } catch (NumberFormatException e) {
-            throw new SettingsException("Failed to parse float setting [" + setting + "] with value [" + sValue + "]", e);
+            throw new SettingsException(
+                    "Failed to parse float setting [" + setting + "] with value [" + value + "]", e);
         }
     }
 
@@ -117,14 +119,15 @@ public final class Settings {
      * returns the default value provided.
      */
     public Double getAsDouble(String setting, Double defaultValue) {
-        String sValue = get(setting);
-        if (sValue == null) {
+        String value = get(setting);
+        if (value == null) {
             return defaultValue;
         }
         try {
-            return Double.parseDouble(sValue);
+            return Double.parseDouble(value);
         } catch (NumberFormatException e) {
-            throw new SettingsException("Failed to parse double setting [" + setting + "] with value [" + sValue + "]", e);
+            throw new SettingsException(
+                    "Failed to parse double setting [" + setting + "] with value [" + value + "]", e);
         }
     }
 
@@ -133,14 +136,15 @@ public final class Settings {
      * returns the default value provided.
      */
     public Integer getAsInt(String setting, Integer defaultValue) {
-        String sValue = get(setting);
-        if (sValue == null) {
+        String value = get(setting);
+        if (value == null) {
             return defaultValue;
         }
         try {
-            return Integer.parseInt(sValue);
+            return Integer.parseInt(value);
         } catch (NumberFormatException e) {
-            throw new SettingsException("Failed to parse int setting [" + setting + "] with value [" + sValue + "]", e);
+            throw new SettingsException(
+                    "Failed to parse int setting [" + setting + "] with value [" + value + "]", e);
         }
     }
 
@@ -149,14 +153,15 @@ public final class Settings {
      * returns the default value provided.
      */
     public Long getAsLong(String setting, Long defaultValue) {
-        String sValue = get(setting);
-        if (sValue == null) {
+        String value = get(setting);
+        if (value == null) {
             return defaultValue;
         }
         try {
-            return Long.parseLong(sValue);
+            return Long.parseLong(value);
         } catch (NumberFormatException e) {
-            throw new SettingsException("Failed to parse long setting [" + setting + "] with value [" + sValue + "]", e);
+            throw new SettingsException(
+                    "Failed to parse long setting [" + setting + "] with value [" + value + "]", e);
         }
     }
 
@@ -170,7 +175,7 @@ public final class Settings {
 
     /**
      * The values associated with a setting key as an immutable list.
-     * <p>
+     * <p/>
      * It will also automatically load a comma separated list under the settingPrefix and merge with
      * the numbered format.
      *
@@ -183,9 +188,9 @@ public final class Settings {
 
     /**
      * The values associated with a setting key as an immutable list.
-     * <p>
-     * If commaDelimited is true, it will automatically load a comma separated list under the settingPrefix and merge with
-     * the numbered format.
+     * <p/>
+     * If commaDelimited is true, it will automatically load a comma separated list
+     * under the settingPrefix and merge with the numbered format.
      *
      * @param key The setting key to load the list by
      * @return The setting list values
@@ -196,16 +201,17 @@ public final class Settings {
 
     /**
      * The values associated with a setting key as an immutable list.
-     * <p>
-     * It will also automatically load a comma separated list under the settingPrefix and merge with
-     * the numbered format.
+     * <p/>
+     * It will also automatically load a comma separated list under
+     * the settingPrefix and merge with the numbered format.
      *
      * @param key            The setting key to load the list by
      * @param defaultValue   The default value to use if no value is specified
      * @param commaDelimited Whether to try to parse a string as a comma-delimited value
      * @return The setting list values
      */
-    public List<String> getAsList(String key, List<String> defaultValue, Boolean commaDelimited) throws SettingsException {
+    public List<String> getAsList(String key, List<String> defaultValue,
+                                  Boolean commaDelimited) throws SettingsException {
         List<String> result = new ArrayList<>();
         final Object valueFromPrefix = settings.get(key);
         if (valueFromPrefix != null) {
@@ -243,8 +249,7 @@ public final class Settings {
 
     /**
      * A builder allowing to put different settings and then {@link #build()} an immutable
-     * settings implementation. Use {@link Settings#builder()} in order to
-     * construct it.
+     * settings implementation. Use {@link Settings#builder()} in order to construct it.
      */
     public static class Builder {
 
@@ -276,6 +281,13 @@ public final class Settings {
         }
 
         /**
+         * Sets a null value for the given setting key.
+         */
+        public Builder putNull(String key) {
+            return put(key, (String) null);
+        }
+
+        /**
          * Sets a setting with the provided setting key and value.
          *
          * @param key   The setting key
@@ -285,13 +297,6 @@ public final class Settings {
         public Builder put(String key, String value) {
             map.put(key, value);
             return this;
-        }
-
-        /**
-         * Sets a null value for the given setting key
-         */
-        public Builder putNull(String key) {
-            return put(key, (String) null);
         }
 
         /**
@@ -378,6 +383,18 @@ public final class Settings {
         }
 
         /**
+         * Sets all the provided settings.
+         *
+         * @param settings the settings to set
+         */
+        public Builder put(Settings settings) {
+            Map<String, Object> settingsMap = new HashMap<>(settings.settings);
+            processLegacyLists(settingsMap);
+            map.putAll(settingsMap);
+            return this;
+        }
+
+        /**
          * Sets the setting with the provided setting key and an array of values.
          *
          * @param setting The setting key
@@ -401,27 +418,16 @@ public final class Settings {
             return this;
         }
 
-        /**
-         * Sets all the provided settings.
-         *
-         * @param settings the settings to set
-         */
-        public Builder put(Settings settings) {
-            Map<String, Object> settingsMap = new HashMap<>(settings.settings);
-            processLegacyLists(settingsMap);
-            map.putAll(settingsMap);
-            return this;
-        }
-
         private void processLegacyLists(Map<String, Object> map) {
             String[] array = map.keySet().toArray(new String[map.size()]);
             for (String key : array) {
-                if (key.endsWith(".0")) { // let's only look at the head of the list and convert in order starting there.
+                // let's only look at the head of the list and convert in order starting there.
+                if (key.endsWith(".0")) {
                     int counter = 0;
                     String prefix = key.substring(0, key.lastIndexOf('.'));
                     if (map.containsKey(prefix)) {
-                        throw new IllegalStateException("settings builder can't contain values for [" + prefix + "=" + map.get(prefix)
-                                + "] and [" + key + "=" + map.get(key) + "]");
+                        throw new IllegalStateException("settings builder can't contain values for ["
+                                + prefix + "=" + map.get(prefix) + "] and [" + key + "=" + map.get(key) + "]");
                     }
                     List<String> values = new ArrayList<>();
                     while (true) {
@@ -439,6 +445,13 @@ public final class Settings {
             }
         }
 
+        /**
+         * putProperties.
+         *
+         * @param esSettings  es settings
+         * @param keyFunction key function
+         * @return
+         */
         public Builder putProperties(final Map<String, String> esSettings, final Function<String, String> keyFunction) {
             for (final Map.Entry<String, String> esSetting : esSettings.entrySet()) {
                 final String key = esSetting.getKey();
@@ -459,17 +472,18 @@ public final class Settings {
         // visible for testing
         private Builder replacePropertyPlaceholders(Function<String, String> getenv) {
             PropertyPlaceholder propertyPlaceholder = new PropertyPlaceholder("${", "}", false);
-            PropertyPlaceholder.PlaceholderResolver placeholderResolver = new PropertyPlaceholder.PlaceholderResolver() {
-                @Override
-                public String resolvePlaceholder(String placeholderName) {
-                    final String value = getenv.apply(placeholderName);
-                    if (value != null) {
-                        return value;
-                    }
-                    return Settings.toString(map.get(placeholderName));
-                }
+            PropertyPlaceholder.PlaceholderResolver placeholderResolver =
+                    new PropertyPlaceholder.PlaceholderResolver() {
+                        @Override
+                        public String resolvePlaceholder(String placeholderName) {
+                            final String value = getenv.apply(placeholderName);
+                            if (value != null) {
+                                return value;
+                            }
+                            return Settings.toString(map.get(placeholderName));
+                        }
 
-                @Override
+                        @Override
                 public boolean shouldIgnoreMissing(String placeholderName) {
                     return placeholderName.startsWith("prompt.");
                 }
@@ -491,13 +505,15 @@ public final class Settings {
                     final ListIterator<String> li = ((List<String>) entry.getValue()).listIterator();
                     while (li.hasNext()) {
                         final String settingValueRaw = li.next();
-                        final String settingValueResolved = propertyPlaceholder.replacePlaceholders(settingValueRaw, placeholderResolver);
+                        final String settingValueResolved =
+                                propertyPlaceholder.replacePlaceholders(settingValueRaw, placeholderResolver);
                         li.set(settingValueResolved);
                     }
                     continue;
                 }
 
-                String value = propertyPlaceholder.replacePlaceholders(Settings.toString(entry.getValue()), placeholderResolver);
+                String value = propertyPlaceholder.replacePlaceholders(
+                        Settings.toString(entry.getValue()), placeholderResolver);
                 // if the values exists and has length, we should maintain it  in the map
                 // otherwise, the replace process resolved into removing it
                 if (Strings.hasLength(value)) {
@@ -511,7 +527,7 @@ public final class Settings {
 
         /**
          * Checks that all settings in the builder start with the specified prefix.
-         * <p>
+         * <p/>
          * If a setting doesn't start with the prefix, the builder appends the prefix to such setting.
          */
         public Builder normalizePrefix(String prefix) {
@@ -533,6 +549,13 @@ public final class Settings {
             return copy(key, key, source);
         }
 
+        /**
+         * copy.
+         *
+         * @param key       key
+         * @param sourceKey source key
+         * @param source    source settings
+         */
         public Builder copy(String key, String sourceKey, Settings source) {
             if (source.settings.containsKey(sourceKey) == false) {
                 throw new IllegalArgumentException("source key not found in the source settings");

@@ -11,7 +11,7 @@ import java.util.Set;
  * Utility class for working with Strings that have placeholder values in them. A placeholder takes the form
  * {@code ${name}}. Using {@code PropertyPlaceholder} these placeholders can be substituted for
  * user-supplied values.
- * <p>
+ * <p/>
  * Values for substitution can be supplied using a {@link Properties} instance or using a
  * {@link PlaceholderResolver}.
  */
@@ -145,7 +145,7 @@ class PropertyPlaceholder {
         boolean shouldIgnoreMissing(String placeholderName);
 
         /**
-         * Allows for special handling for ignored missing placeholders that may be resolved elsewhere
+         * Allows for special handling for ignored missing placeholders that may be resolved elsewhere.
          *
          * @param placeholderName the name of the placeholder to resolve.
          * @return true if the placeholder should be replaced with a empty string
