@@ -21,7 +21,7 @@ final class FilteredMap extends AbstractMap<String, Object> {
     @Override
     public Set<Entry<String, Object>> entrySet() {
         Set<Entry<String, Object>> delegateSet = delegate.entrySet();
-        AbstractSet<Entry<String, Object>> filterSet = new AbstractSet<Entry<String, Object>>() {
+        return new AbstractSet<Entry<String, Object>>() {
 
             @Override
             public Iterator<Entry<String, Object>> iterator() {
@@ -90,7 +90,6 @@ final class FilteredMap extends AbstractMap<String, Object> {
                 return FilteredMap.this.size();
             }
         };
-        return filterSet;
     }
 
     @Override

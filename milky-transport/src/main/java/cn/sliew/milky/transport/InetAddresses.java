@@ -145,4 +145,8 @@ public class InetAddresses {
         }
         return buf.toString();
     }
+
+    private InetAddresses() {
+        throw new AssertionError();
+    }
 }
