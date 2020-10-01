@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 public class SettingsTestCase extends MilkyTestCase {
 
     @Test
-    public void testGet() throws Exception {
+    public void testGet() {
         Settings settings = Settings.builder()
                 .put("foo1", "abc")
                 .put("foo2", true)
@@ -37,7 +37,7 @@ public class SettingsTestCase extends MilkyTestCase {
     }
 
     @Test
-    public void testGetAsSettings() throws Exception {
+    public void testGetAsSettings() {
         Settings settings = Settings.builder()
                 .put("bar", "hello world")
                 .put("foo", "abc")
