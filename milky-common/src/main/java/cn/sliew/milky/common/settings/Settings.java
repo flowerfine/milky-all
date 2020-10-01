@@ -4,7 +4,6 @@ import cn.sliew.milky.common.primitives.Booleans;
 import cn.sliew.milky.common.primitives.Strings;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -102,15 +101,15 @@ public final class Settings {
      * If it does not exists, returns the default value provided.
      */
     public Float getAsFloat(String setting, Float defaultValue) {
-        String value = get(setting);
-        if (value == null) {
+        String sValue = get(setting);
+        if (sValue == null) {
             return defaultValue;
         }
         try {
-            return Float.parseFloat(value);
+            return Float.parseFloat(sValue);
         } catch (NumberFormatException e) {
             throw new SettingsException(
-                    "Failed to parse float setting [" + setting + "] with value [" + value + "]", e);
+                    "Failed to parse float setting [" + setting + "] with value [" + sValue + "]", e);
         }
     }
 
@@ -119,15 +118,15 @@ public final class Settings {
      * returns the default value provided.
      */
     public Double getAsDouble(String setting, Double defaultValue) {
-        String value = get(setting);
-        if (value == null) {
+        String sValue = get(setting);
+        if (sValue == null) {
             return defaultValue;
         }
         try {
-            return Double.parseDouble(value);
+            return Double.parseDouble(sValue);
         } catch (NumberFormatException e) {
             throw new SettingsException(
-                    "Failed to parse double setting [" + setting + "] with value [" + value + "]", e);
+                    "Failed to parse double setting [" + setting + "] with value [" + sValue + "]", e);
         }
     }
 
@@ -136,15 +135,14 @@ public final class Settings {
      * returns the default value provided.
      */
     public Integer getAsInt(String setting, Integer defaultValue) {
-        String value = get(setting);
-        if (value == null) {
+        String sValue = get(setting);
+        if (sValue == null) {
             return defaultValue;
         }
         try {
-            return Integer.parseInt(value);
+            return Integer.parseInt(sValue);
         } catch (NumberFormatException e) {
-            throw new SettingsException(
-                    "Failed to parse int setting [" + setting + "] with value [" + value + "]", e);
+            throw new SettingsException("Failed to parse int setting [" + setting + "] with value [" + sValue + "]", e);
         }
     }
 
@@ -153,15 +151,15 @@ public final class Settings {
      * returns the default value provided.
      */
     public Long getAsLong(String setting, Long defaultValue) {
-        String value = get(setting);
-        if (value == null) {
+        String sValue = get(setting);
+        if (sValue == null) {
             return defaultValue;
         }
         try {
-            return Long.parseLong(value);
+            return Long.parseLong(sValue);
         } catch (NumberFormatException e) {
             throw new SettingsException(
-                    "Failed to parse long setting [" + setting + "] with value [" + value + "]", e);
+                    "Failed to parse long setting [" + setting + "] with value [" + sValue + "]", e);
         }
     }
 
@@ -359,29 +357,6 @@ public final class Settings {
             return this;
         }
 
-
-        /**
-         * Sets a path setting with the provided setting key and path.
-         *
-         * @param key  The setting key
-         * @param path The setting path
-         * @return The builder
-         */
-        public Builder put(String key, Path path) {
-            return put(key, path.toString());
-        }
-
-        /**
-         * Sets an enum setting with the provided setting key and enum instance.
-         *
-         * @param key       The setting key
-         * @param enumValue The setting value
-         * @return The builder
-         */
-        public Builder put(String key, Enum<?> enumValue) {
-            return put(key, enumValue.toString());
-        }
-
         /**
          * Sets all the provided settings.
          *
@@ -448,100 +423,15 @@ public final class Settings {
         /**
          * putProperties.
          *
-         * @param esSettings  es settings
+         * @param settings    settings
          * @param keyFunction key function
          * @return
          */
-        public Builder putProperties(final Map<String, String> esSettings, final Function<String, String> keyFunction) {
-            for (final Map.Entry<String, String> esSetting : esSettings.entrySet()) {
-                final String key = esSetting.getKey();
-                put(keyFunction.apply(key), esSetting.getValue());
+        public Builder putProperties(final Map<String, String> settings, final Function<String, String> keyFunction) {
+            for (final Map.Entry<String, String> setting : settings.entrySet()) {
+                final String key = setting.getKey();
+                put(keyFunction.apply(key), setting.getValue());
             }
-            return this;
-        }
-
-        /**
-         * Runs across all the settings set on this builder and
-         * replaces {@code ${...}} elements in each setting with
-         * another setting already set on this builder.
-         */
-        public Builder replacePropertyPlaceholders() {
-            return replacePropertyPlaceholders(System::getenv);
-        }
-
-        // visible for testing
-        private Builder replacePropertyPlaceholders(Function<String, String> getenv) {
-            PropertyPlaceholder propertyPlaceholder = new PropertyPlaceholder("${", "}", false);
-            PropertyPlaceholder.PlaceholderResolver placeholderResolver =
-                    new PropertyPlaceholder.PlaceholderResolver() {
-                        @Override
-                        public String resolvePlaceholder(String placeholderName) {
-                            final String value = getenv.apply(placeholderName);
-                            if (value != null) {
-                                return value;
-                            }
-                            return Settings.toString(map.get(placeholderName));
-                        }
-
-                        @Override
-                public boolean shouldIgnoreMissing(String placeholderName) {
-                    return placeholderName.startsWith("prompt.");
-                }
-
-                @Override
-                public boolean shouldRemoveMissingPlaceholder(String placeholderName) {
-                    return !placeholderName.startsWith("prompt.");
-                }
-            };
-
-            Iterator<Map.Entry<String, Object>> entryItr = map.entrySet().iterator();
-            while (entryItr.hasNext()) {
-                Map.Entry<String, Object> entry = entryItr.next();
-                if (entry.getValue() == null) {
-                    // a null value obviously can't be replaced
-                    continue;
-                }
-                if (entry.getValue() instanceof List) {
-                    final ListIterator<String> li = ((List<String>) entry.getValue()).listIterator();
-                    while (li.hasNext()) {
-                        final String settingValueRaw = li.next();
-                        final String settingValueResolved =
-                                propertyPlaceholder.replacePlaceholders(settingValueRaw, placeholderResolver);
-                        li.set(settingValueResolved);
-                    }
-                    continue;
-                }
-
-                String value = propertyPlaceholder.replacePlaceholders(
-                        Settings.toString(entry.getValue()), placeholderResolver);
-                // if the values exists and has length, we should maintain it  in the map
-                // otherwise, the replace process resolved into removing it
-                if (Strings.hasLength(value)) {
-                    entry.setValue(value);
-                } else {
-                    entryItr.remove();
-                }
-            }
-            return this;
-        }
-
-        /**
-         * Checks that all settings in the builder start with the specified prefix.
-         * <p/>
-         * If a setting doesn't start with the prefix, the builder appends the prefix to such setting.
-         */
-        public Builder normalizePrefix(String prefix) {
-            Map<String, Object> replacements = new HashMap<>();
-            Iterator<Map.Entry<String, Object>> iterator = map.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<String, Object> entry = iterator.next();
-                String key = entry.getKey();
-                if (key.startsWith(prefix) == false && key.endsWith("*") == false) {
-                    replacements.put(prefix + key, entry.getValue());
-                    iterator.remove();
-                }
-            }
-            map.putAll(replacements);
             return this;
         }
 
