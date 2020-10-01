@@ -364,7 +364,6 @@ public final class Settings {
          */
         public Builder put(Settings settings) {
             Map<String, Object> settingsMap = new HashMap<>(settings.settings);
-            processLegacyLists(settingsMap);
             map.putAll(settingsMap);
             return this;
         }
@@ -393,32 +392,68 @@ public final class Settings {
             return this;
         }
 
-        private void processLegacyLists(Map<String, Object> map) {
-            String[] array = map.keySet().toArray(new String[map.size()]);
-            for (String key : array) {
-                // let's only look at the head of the list and convert in order starting there.
-                if (key.endsWith(".0")) {
-                    int counter = 0;
-                    String prefix = key.substring(0, key.lastIndexOf('.'));
-                    if (map.containsKey(prefix)) {
-                        throw new IllegalStateException("settings builder can't contain values for ["
-                                + prefix + "=" + map.get(prefix) + "] and [" + key + "=" + map.get(key) + "]");
+        /**
+         * Runs across all the settings set on this builder and
+         * replaces {@code ${...}} elements in each setting with
+         * another setting already set on this builder.
+         */
+        public Builder replacePropertyPlaceholders() {
+            return replacePropertyPlaceholders(System::getenv);
+        }
+
+        // visible for testing
+        Builder replacePropertyPlaceholders(Function<String, String> getenv) {
+            PropertyPlaceholder propertyPlaceholder = new PropertyPlaceholder("${", "}", false);
+            PropertyPlaceholder.PlaceholderResolver placeholderResolver = new PropertyPlaceholder.PlaceholderResolver() {
+                @Override
+                public String resolvePlaceholder(String placeholderName) {
+                    final String value = getenv.apply(placeholderName);
+                    if (value != null) {
+                        return value;
                     }
-                    List<String> values = new ArrayList<>();
-                    while (true) {
-                        String listKey = prefix + '.' + (counter++);
-                        String value = get(listKey);
-                        if (value == null) {
-                            map.put(prefix, values);
-                            break;
-                        } else {
-                            values.add(value);
-                            map.remove(listKey);
-                        }
+                    return Settings.toString(map.get(placeholderName));
+                }
+
+                @Override
+                public boolean shouldIgnoreMissing(String placeholderName) {
+                    return false;
+                }
+
+                @Override
+                public boolean shouldRemoveMissingPlaceholder(String placeholderName) {
+                    return true;
+                }
+            };
+
+            Iterator<Map.Entry<String, Object>> entryItr = map.entrySet().iterator();
+            while (entryItr.hasNext()) {
+                Map.Entry<String, Object> entry = entryItr.next();
+                if (entry.getValue() == null) {
+                    // a null value obviously can't be replaced
+                    continue;
+                }
+                if (entry.getValue() instanceof List) {
+                    final ListIterator<String> li = ((List<String>) entry.getValue()).listIterator();
+                    while (li.hasNext()) {
+                        final String settingValueRaw = li.next();
+                        final String settingValueResolved = propertyPlaceholder.replacePlaceholders(settingValueRaw, placeholderResolver);
+                        li.set(settingValueResolved);
                     }
+                    continue;
+                }
+
+                String value = propertyPlaceholder.replacePlaceholders(Settings.toString(entry.getValue()), placeholderResolver);
+                // if the values exists and has length, we should maintain it  in the map
+                // otherwise, the replace process resolved into removing it
+                if (Strings.hasLength(value)) {
+                    entry.setValue(value);
+                } else {
+                    entryItr.remove();
                 }
             }
+            return this;
         }
+
 
         /**
          * putProperties.
@@ -465,7 +500,6 @@ public final class Settings {
          * set on this builder.
          */
         public Settings build() {
-            processLegacyLists(map);
             return new Settings(map);
         }
     }
