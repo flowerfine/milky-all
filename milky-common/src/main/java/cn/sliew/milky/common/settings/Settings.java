@@ -7,8 +7,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public final class Settings {
 
@@ -50,29 +48,29 @@ public final class Settings {
         return this.keys;
     }
 
-    /**
-     * @return The direct keys of this settings
-     */
-    public Set<String> names() {
-        synchronized (firstLevelNames) {
-            if (firstLevelNames.get() == null) {
-                Stream<String> stream = settings.keySet().stream();
-                if (secureSettings != null) {
-                    stream = Stream.concat(stream, secureSettings.getSettingNames().stream());
-                }
-                Set<String> names = stream.map(k -> {
-                    int i = k.indexOf('.');
-                    if (i < 0) {
-                        return k;
-                    } else {
-                        return k.substring(0, i);
-                    }
-                }).collect(Collectors.toSet());
-                firstLevelNames.set(Collections.unmodifiableSet(names));
-            }
-        }
-        return firstLevelNames.get();
-    }
+//    /**
+//     * @return The direct keys of this settings
+//     */
+//    public Set<String> names() {
+//        synchronized (firstLevelNames) {
+//            if (firstLevelNames.get() == null) {
+//                Stream<String> stream = settings.keySet().stream();
+//                if (secureSettings != null) {
+//                    stream = Stream.concat(stream, secureSettings.getSettingNames().stream());
+//                }
+//                Set<String> names = stream.map(k -> {
+//                    int i = k.indexOf('.');
+//                    if (i < 0) {
+//                        return k;
+//                    } else {
+//                        return k.substring(0, i);
+//                    }
+//                }).collect(Collectors.toSet());
+//                firstLevelNames.set(Collections.unmodifiableSet(names));
+//            }
+//        }
+//        return firstLevelNames.get();
+//    }
 
     /**
      * Returns <code>true</code> iff the given key has a value in this settings object.
