@@ -20,7 +20,6 @@ public interface ConnectionManager extends Closeable {
 
     int size();
 
-
     void addListener(ConnectionListener listener);
 
     void removeListener(ConnectionListener listener);

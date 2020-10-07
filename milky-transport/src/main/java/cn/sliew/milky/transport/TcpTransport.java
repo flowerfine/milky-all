@@ -16,7 +16,7 @@ public interface TcpTransport {
     /**
      * Opens a new connection to the given node.
      */
-    Connection openConnection(Node node, ActionListener<Connection> listener);
+    Connection connect(Node node, ActionListener<Connection> listener);
 
     void bind(InetAddress hostAddress, String port);
 
