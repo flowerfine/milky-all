@@ -7,6 +7,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class Settings {
 
@@ -46,6 +48,30 @@ public final class Settings {
      */
     public Set<String> keySet() {
         return this.keys;
+    }
+
+    /**
+     * @return The direct keys of this settings
+     */
+    public Set<String> names() {
+        synchronized (firstLevelNames) {
+            if (firstLevelNames.get() == null) {
+                Stream<String> stream = settings.keySet().stream();
+                if (secureSettings != null) {
+                    stream = Stream.concat(stream, secureSettings.getSettingNames().stream());
+                }
+                Set<String> names = stream.map(k -> {
+                    int i = k.indexOf('.');
+                    if (i < 0) {
+                        return k;
+                    } else {
+                        return k.substring(0, i);
+                    }
+                }).collect(Collectors.toSet());
+                firstLevelNames.set(Collections.unmodifiableSet(names));
+            }
+        }
+        return firstLevelNames.get();
     }
 
     /**
@@ -231,6 +257,51 @@ public final class Settings {
             return defaultValue;
         }
         return Collections.unmodifiableList(result);
+    }
+
+    /**
+     * Returns group settings for the given setting prefix.
+     */
+    public Map<String, Settings> getGroups(String settingPrefix) throws SettingsException {
+        return getGroups(settingPrefix, false);
+    }
+
+    /**
+     * Returns group settings for the given setting prefix.
+     */
+    public Map<String, Settings> getGroups(String settingPrefix, boolean ignoreNonGrouped) throws SettingsException {
+        if (!Strings.hasLength(settingPrefix)) {
+            throw new IllegalArgumentException("illegal setting prefix " + settingPrefix);
+        }
+        if (settingPrefix.charAt(settingPrefix.length() - 1) != '.') {
+            settingPrefix = settingPrefix + ".";
+        }
+        return getGroupsInternal(settingPrefix, ignoreNonGrouped);
+    }
+
+    private Map<String, Settings> getGroupsInternal(String settingPrefix, boolean ignoreNonGrouped) throws SettingsException {
+        Settings prefixSettings = getByPrefix(settingPrefix);
+        Map<String, Settings> groups = new HashMap<>();
+        for (String groupName : prefixSettings.names()) {
+            Settings groupSettings = prefixSettings.getByPrefix(groupName + ".");
+            if (groupSettings.isEmpty()) {
+                if (ignoreNonGrouped) {
+                    continue;
+                }
+                throw new SettingsException("Failed to get setting group for [" + settingPrefix + "] setting prefix and setting ["
+                        + settingPrefix + groupName + "] because of a missing '.'");
+            }
+            groups.put(groupName, groupSettings);
+        }
+
+        return Collections.unmodifiableMap(groups);
+    }
+
+    /**
+     * Returns group settings for the given setting prefix.
+     */
+    public Map<String, Settings> getAsGroups() throws SettingsException {
+        return getGroupsInternal("", false);
     }
 
     @Nullable
@@ -450,22 +521,6 @@ public final class Settings {
                 } else {
                     entryItr.remove();
                 }
-            }
-            return this;
-        }
-
-
-        /**
-         * putProperties.
-         *
-         * @param settings    settings
-         * @param keyFunction key function
-         * @return
-         */
-        public Builder putProperties(final Map<String, String> settings, final Function<String, String> keyFunction) {
-            for (final Map.Entry<String, String> setting : settings.entrySet()) {
-                final String key = setting.getKey();
-                put(keyFunction.apply(key), setting.getValue());
             }
             return this;
         }

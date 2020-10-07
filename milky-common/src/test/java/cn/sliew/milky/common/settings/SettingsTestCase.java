@@ -37,6 +37,26 @@ public class SettingsTestCase extends MilkyTestCase {
     }
 
     @Test
+    public void testGetByPrefix() {
+        Settings settings = Settings.builder()
+                .put("bar", "hello world")
+                .put("foo", "abc")
+                .put("foo.bar", "def")
+                .put("foo.baz", "ghi")
+                .build();
+        Settings fooSettings1 = settings.getByPrefix("foo.");
+        Settings fooSettings2 = settings.getByPrefix("foo");
+
+        assertEquals(2, fooSettings1.size());
+        assertEquals(3, fooSettings2.size());
+        assertThat(fooSettings1.get("bar"), equalTo("def"));
+        assertThat(fooSettings1.get("baz"), equalTo("ghi"));
+        assertThat(fooSettings2.get(".bar"), equalTo("def"));
+        assertThat(fooSettings2.get(".baz"), equalTo("ghi"));
+        assertThat(fooSettings2.get(""), equalTo("abc"));
+    }
+
+    @Test
     public void testGetAsSettings() {
         Settings settings = Settings.builder()
                 .put("bar", "hello world")
@@ -94,4 +114,6 @@ public class SettingsTestCase extends MilkyTestCase {
 //                .build();
 //        assertThat(implicitEnvSettings.get("setting1"), equalTo(hostname));
 //    }
+
+
 }
