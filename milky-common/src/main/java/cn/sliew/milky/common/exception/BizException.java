@@ -2,7 +2,9 @@ package cn.sliew.milky.common.exception;
 
 public class BizException extends RuntimeException {
 
-    protected Long code;
+    protected long code = BizExceptionEnum.FAILURE.getCode();
+
+    protected boolean retryable = BizExceptionEnum.FAILURE.isRetryable();
 
     public BizException() {
         super();
@@ -20,17 +22,23 @@ public class BizException extends RuntimeException {
         super(message, cause);
     }
 
-    public BizException(Long code, String message) {
+    public BizException(long code, boolean retryable, String message) {
         super(message);
         this.code = code;
+        this.retryable = retryable;
     }
 
     public BizException(BizExceptionEnum codeEnum) {
         super(codeEnum.getMessage());
         this.code = codeEnum.getCode();
+        this.retryable = codeEnum.isRetryable();
     }
 
     public Long getCode() {
         return this.code;
+    }
+
+    public boolean isRetryable() {
+        return retryable;
     }
 }
