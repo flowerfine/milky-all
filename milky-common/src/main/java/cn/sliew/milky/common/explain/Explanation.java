@@ -1,36 +1,33 @@
 package cn.sliew.milky.common.explain;
 
-import cn.sliew.milky.common.stopwatch.StopWatchs;
-import cn.sliew.milky.common.stopwatch.Stopwatch;
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Expert: Describes the .
  */
 public class Explanation {
 
+    public static final String DEFAULT_NAME = "";
+    public static final String DEFAULT_DESCRIPTION = "";
+
     private String name;                                                 // node name
     private String description;                                          // what it represents
-    private Stopwatch stopwatch = StopWatchs.createStarted();            // how long it executes
     private List<Explanation> details = new LinkedList<>();              // sub-explanations
 
     public Explanation() {
+        this(DEFAULT_NAME, DEFAULT_DESCRIPTION);
     }
 
     public Explanation(String name) {
-        this.name = name;
+        this(name, DEFAULT_DESCRIPTION);
     }
 
-    /**
-     * Create a new explanation
-     */
-    public Explanation(String description, Collection<Explanation> details) {
-        this.description = Objects.requireNonNull(description);
-        this.details = Collections.unmodifiableList(new ArrayList<>(details));
-        for (Explanation detail : details) {
-            Objects.requireNonNull(detail);
-        }
+    public Explanation(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
     /**
@@ -63,13 +60,13 @@ public class Explanation {
         return details.toArray(new Explanation[0]);
     }
 
-    public Explanation withDetail(Explanation detail) {
-        this.details.add(detail);
+    public Explanation withDetail(Explanation... details) {
+        this.details.addAll(Arrays.asList(details));
         return this;
     }
 
     private String summary() {
-        return String.format("%s: %s, cost %dms", name(), description(), stopwatch.elapsed().toMillis());
+        return String.format("%s: %s", name(), description());
     }
 
     /**

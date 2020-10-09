@@ -13,6 +13,10 @@ public class ExecuteContext {
 
     private final Map<String, String> attachments = new HashMap<String, String>();
 
+    private boolean profile = false;
+
+    private boolean explain = false;
+
     protected ExecuteContext() {
 
     }
@@ -87,5 +91,22 @@ public class ExecuteContext {
 
     public void clearAttachments() {
         this.attachments.clear();
+    }
+
+
+    public boolean profile() {
+        return profile;
+    }
+
+    public void setProfile(boolean profile) {
+        this.profile = profile;
+    }
+
+    public boolean explain() {
+        return explain;
+    }
+
+    public void setExplain(boolean explain) {
+        this.explain = explain;
     }
 }

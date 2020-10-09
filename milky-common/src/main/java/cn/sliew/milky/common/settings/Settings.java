@@ -280,17 +280,17 @@ public final class Settings {
     private Map<String, Settings> getGroupsInternal(String settingPrefix, boolean ignoreNonGrouped) throws SettingsException {
         Settings prefixSettings = getByPrefix(settingPrefix);
         Map<String, Settings> groups = new HashMap<>();
-        for (String groupName : prefixSettings.names()) {
-            Settings groupSettings = prefixSettings.getByPrefix(groupName + ".");
-            if (groupSettings.isEmpty()) {
-                if (ignoreNonGrouped) {
-                    continue;
-                }
-                throw new SettingsException("Failed to get setting group for [" + settingPrefix + "] setting prefix and setting ["
-                        + settingPrefix + groupName + "] because of a missing '.'");
-            }
-            groups.put(groupName, groupSettings);
-        }
+//        for (String groupName : prefixSettings.names()) {
+//            Settings groupSettings = prefixSettings.getByPrefix(groupName + ".");
+//            if (groupSettings.isEmpty()) {
+//                if (ignoreNonGrouped) {
+//                    continue;
+//                }
+//                throw new SettingsException("Failed to get setting group for [" + settingPrefix + "] setting prefix and setting ["
+//                        + settingPrefix + groupName + "] because of a missing '.'");
+//            }
+//            groups.put(groupName, groupSettings);
+//        }
 
         return Collections.unmodifiableMap(groups);
     }
