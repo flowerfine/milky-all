@@ -14,6 +14,7 @@
         <module>milky-transport</module>
         <module>milky-transport-netty</module>
         <module>milky-test</module>
+        <module>milky-cache</module>
     </modules>
 
     <properties>
