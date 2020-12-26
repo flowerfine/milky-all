@@ -11,5 +11,11 @@
 
     <artifactId>milky-cache</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>cn.sliew</groupId>
+            <artifactId>milky-concurrent</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
