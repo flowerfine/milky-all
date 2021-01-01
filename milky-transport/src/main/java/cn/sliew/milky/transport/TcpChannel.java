@@ -1,6 +1,9 @@
 package cn.sliew.milky.transport;
 
+import cn.sliew.milky.transport.exchange.TransportResponse;
+
 import java.io.Closeable;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 
 /**
@@ -8,6 +11,13 @@ import java.net.InetSocketAddress;
  * 扩展类
  */
 public interface TcpChannel extends Closeable {
+
+    /**
+     * eg. netty4
+     *
+     * @return channel type
+     */
+    String getChannelType();
 
     /**
      * get local address.
@@ -31,6 +41,10 @@ public interface TcpChannel extends Closeable {
      * @param listener to execute upon send completion
      */
     void sendMessage(Object message, ActionListener<Void> listener);
+
+    void sendResponse(TransportResponse response) throws IOException;
+
+    void sendResponse(Exception exception) throws IOException;
 
     /**
      * Indicates whether a channel is currently open
