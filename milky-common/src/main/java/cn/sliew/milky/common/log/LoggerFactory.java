@@ -60,14 +60,14 @@ public abstract class LoggerFactory {
     /**
      * Creates a new logger instance with the name of the specified class.
      */
-    public static Logger getInstance(Class<?> clazz) {
-        return getInstance(clazz.getName());
+    public static Logger getLogger(Class<?> clazz) {
+        return getLogger(clazz.getName());
     }
 
     /**
      * Creates a new logger instance with the specified name.
      */
-    public static Logger getInstance(String name) {
+    public static Logger getLogger(String name) {
         return getDefaultFactory().newInstance(name);
     }
 

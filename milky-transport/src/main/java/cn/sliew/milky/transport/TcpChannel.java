@@ -1,7 +1,5 @@
 package cn.sliew.milky.transport;
 
-import cn.sliew.milky.transport.exchange.TransportResponse;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetSocketAddress;

@@ -215,7 +215,7 @@ public abstract class AbstractLogger implements Logger, Serializable {
     }
 
     protected Object readResolve() throws ObjectStreamException {
-        return LoggerFactory.getInstance(name());
+        return LoggerFactory.getLogger(name());
     }
 
     @Override

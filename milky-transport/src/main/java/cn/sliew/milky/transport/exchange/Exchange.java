@@ -1,6 +1,7 @@
 package cn.sliew.milky.transport.exchange;
 
 import cn.sliew.milky.transport.Connection;
+import cn.sliew.milky.transport.TransportResponse;
 
 public interface Exchange {
 

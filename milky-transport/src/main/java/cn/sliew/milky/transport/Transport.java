@@ -1,7 +1,7 @@
 package cn.sliew.milky.transport;
 
+import cn.sliew.milky.transport.exchange.ConnectionProfile;
 import cn.sliew.milky.transport.exchange.RequestContext;
-import cn.sliew.milky.transport.exchange.TransportMessageListener;
 import cn.sliew.milky.transport.exchange.TransportRequest;
 
 import java.net.InetAddress;
@@ -18,7 +18,7 @@ public interface Transport {
     /**
      * Opens a new connection to the given node.
      */
-    Connection connect(Node node, ActionListener<Connection> listener);
+    Connection connect(Node node, ConnectionProfile profile, ActionListener<Connection> listener);
 
     void bind(InetAddress hostAddress, String port);
 
