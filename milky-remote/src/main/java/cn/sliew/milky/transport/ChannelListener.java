@@ -1,36 +1,36 @@
 package cn.sliew.milky.transport;
 
-public interface ChannelHandler<T extends TcpChannel> {
+public interface ChannelListener<T extends TcpChannel> {
 
     /**
-     * on channel connected. outbound event
+     * on channel connected.
      *
      * @param channel channel.
      */
-    void connected(T channel);
+    void connected(TcpChannel channel);
 
     /**
-     * on channel disconnected. outbound event
+     * on channel disconnected.
      *
      * @param channel channel.
      */
-    void disconnected(T channel);
+    void disconnected(TcpChannel channel);
 
     /**
-     * on message sent. inbound event
-     *
-     * @param channel channel.
-     * @param message message.
-     */
-    void send(T channel, Object message);
-
-    /**
-     * on message received. inbound event
+     * on message sent.
      *
      * @param channel channel.
      * @param message message.
      */
-    void receive(T channel, Object message);
+    void sent(TcpChannel channel, Object message);
+
+    /**
+     * on message received.
+     *
+     * @param channel channel.
+     * @param message message.
+     */
+    void received(TcpChannel channel, Object message);
 
     /**
      * on exception caught.
@@ -38,5 +38,5 @@ public interface ChannelHandler<T extends TcpChannel> {
      * @param channel   channel.
      * @param exception exception.
      */
-    void caught(T channel, Throwable exception);
+    void caught(TcpChannel channel, Throwable exception);
 }

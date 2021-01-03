@@ -1,8 +1,5 @@
 package cn.sliew.milky.transport;
 
-/**
- * A listener for action responses or failures.
- */
 public interface ActionListener<Response> {
 
     /**
@@ -15,4 +12,5 @@ public interface ActionListener<Response> {
      * A failure caused by an exception at some phase of the task.
      */
     void onFailure(Exception e);
+
 }
