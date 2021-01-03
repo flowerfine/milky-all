@@ -1,4 +1,4 @@
 package cn.sliew.milky.remote.exchange;
 
-public interface Exchange {
+public class ConnectionProfile {
 }
