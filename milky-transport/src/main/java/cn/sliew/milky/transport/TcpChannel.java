@@ -10,6 +10,8 @@ import java.net.InetSocketAddress;
  */
 public interface TcpChannel extends Closeable {
 
+    boolean isServer();
+
     /**
      * eg. netty4
      *
