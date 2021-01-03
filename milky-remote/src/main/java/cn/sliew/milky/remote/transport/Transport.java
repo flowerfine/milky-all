@@ -1,4 +1,4 @@
-package cn.sliew.milky.transport;
+package cn.sliew.milky.remote.transport;
 
 import java.net.InetSocketAddress;
 

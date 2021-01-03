@@ -1,4 +1,4 @@
-package cn.sliew.milky.transport;
+package cn.sliew.milky.remote.transport;
 
 import java.net.InetSocketAddress;
 
@@ -7,7 +7,7 @@ import java.net.InetSocketAddress;
  * 因为服务端的channel在接受连接后与客户端进行通信的也是通过TcpChannel,
  * 所以增加方法判断是否为服务端的channel
  * <p>
- * 同时需要由TcpChannel子类实现listener的监听器方法.
+ * 同时需要由TcpChannel子类实现listener的监听器方法. 监听连接和断连事件
  * <p>
  * 交给netty进行实现了
  */

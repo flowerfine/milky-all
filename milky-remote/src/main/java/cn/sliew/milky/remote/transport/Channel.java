@@ -1,8 +1,11 @@
-package cn.sliew.milky.transport;
+package cn.sliew.milky.remote.transport;
 
 import java.io.Closeable;
 import java.io.IOException;
 
+/**
+ * 需要处理关闭事件
+ */
 public interface Channel extends Closeable {
 
     /**
@@ -12,6 +15,13 @@ public interface Channel extends Closeable {
      */
     @Override
     void close();
+
+    /**
+     * is closed.
+     *
+     * @return closed
+     */
+    boolean isClosed();
 
     void addCloseListener(ActionListener<Void> listener);
 

@@ -1,4 +1,4 @@
-package cn.sliew.milky.transport;
+package cn.sliew.milky.remote.transport;
 
 public interface ChannelListener<T extends TcpChannel> {
 
@@ -15,22 +15,6 @@ public interface ChannelListener<T extends TcpChannel> {
      * @param channel channel.
      */
     void disconnected(TcpChannel channel);
-
-    /**
-     * on message sent.
-     *
-     * @param channel channel.
-     * @param message message.
-     */
-    void sent(TcpChannel channel, Object message);
-
-    /**
-     * on message received.
-     *
-     * @param channel channel.
-     * @param message message.
-     */
-    void received(TcpChannel channel, Object message);
 
     /**
      * on exception caught.

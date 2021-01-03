@@ -1,4 +1,4 @@
-package cn.sliew.milky.transport;
+package cn.sliew.milky.remote.transport;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -16,7 +16,7 @@ public abstract class TcpTransport implements Transport {
         try {
             TcpChannel channel = connect(node);
             channel.registerListener(listener);
-            // todo timeout
+            //todo timeout
             // 处理连接超时问题
             return channel;
         } catch (IOException e) {
