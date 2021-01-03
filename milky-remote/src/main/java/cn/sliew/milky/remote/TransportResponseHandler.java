@@ -1,8 +1,8 @@
 package cn.sliew.milky.remote;
 
-public interface TransportResponseHandler<T extends TransportResponse> {
+public interface TransportResponseHandler<Response extends TransportResponse> {
 
-    void handleResponse(T response);
+    void handleResponse(Response response);
 
     void handleException(Exception exp);
 

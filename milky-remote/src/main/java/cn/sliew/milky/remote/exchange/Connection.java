@@ -1,6 +1,7 @@
 package cn.sliew.milky.remote.exchange;
 
 import cn.sliew.milky.remote.TransportRequest;
+import cn.sliew.milky.remote.transport.Node;
 import cn.sliew.milky.remote.transport.TcpChannel;
 
 import java.io.Closeable;
@@ -9,6 +10,11 @@ import java.io.Closeable;
  * 是channel的封装，包含多个channel
  */
 public interface Connection extends Closeable {
+
+    /**
+     * The node this connection is associated with
+     */
+    Node getNode();
 
     TcpChannelSelectStrategy selectStrategy();
 

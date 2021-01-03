@@ -1,14 +1,23 @@
 package cn.sliew.milky.remote.exchange;
 
-import cn.sliew.milky.remote.transport.ActionListener;
 import cn.sliew.milky.remote.transport.Node;
+import cn.sliew.milky.remote.transport.TcpChannel;
+import cn.sliew.milky.remote.transport.Transport;
 
 import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
 
 public class DefaultExchanger implements Exchanger {
 
     private final OutboundHandler outboundHandler;
     private final InboundHandler inboundHandler;
+
+    private final ResponseHandlerRegistry responseHandlers = new ResponseHandlerRegistry();
+    private final RequestHandlerRegistry requestHandlers = new RequestHandlerRegistry();
+
+    private Transport transport;
+
 
     public DefaultExchanger() {
         this.outboundHandler = null;
@@ -16,8 +25,14 @@ public class DefaultExchanger implements Exchanger {
     }
 
     @Override
-    public void openConnection(Node node, ConnectionProfile profile, ActionListener<Connection> listener) {
+    public List<TcpChannel> openConnection(Node node, ConnectionProfile profile) {
+        //todo 创建连接，transport
+        return Collections.emptyList();
+    }
 
+    @Override
+    public void bindServer() {
+        //todo 绑定端口，transport
     }
 
     @Override
@@ -28,5 +43,15 @@ public class DefaultExchanger implements Exchanger {
 
     public void setSlowLogThreshold(Duration slowLogThreshold) {
         inboundHandler.setSlowLogThresholdMs(slowLogThreshold.toMillis());
+    }
+
+    @Override
+    public RequestHandlerRegistry getRequestHandlers() {
+        return requestHandlers;
+    }
+
+    @Override
+    public ResponseHandlerRegistry getResponseHandlers() {
+        return responseHandlers;
     }
 }

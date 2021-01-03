@@ -27,6 +27,11 @@ public class DefaultConnection implements Connection {
     }
 
     @Override
+    public Node getNode() {
+        return node;
+    }
+
+    @Override
     public TcpChannelSelectStrategy selectStrategy() {
         return this.selectStrategy;
     }

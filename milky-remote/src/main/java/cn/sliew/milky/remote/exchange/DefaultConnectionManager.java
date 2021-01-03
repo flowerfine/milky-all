@@ -2,9 +2,11 @@ package cn.sliew.milky.remote.exchange;
 
 import cn.sliew.milky.remote.transport.ActionListener;
 import cn.sliew.milky.remote.transport.Node;
+import cn.sliew.milky.remote.transport.TcpChannel;
 import com.google.common.collect.Maps;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
@@ -21,7 +23,8 @@ public class DefaultConnectionManager implements ConnectionManager {
 
     @Override
     public void openConnection(Node node, ConnectionProfile connectionProfile, ActionListener<Connection> listener) {
-        exchanger.openConnection(node, connectionProfile, listener);
+        List<TcpChannel> tcpChannels = exchanger.openConnection(node, connectionProfile);
+        //todo 创建connection
     }
 
     @Override
