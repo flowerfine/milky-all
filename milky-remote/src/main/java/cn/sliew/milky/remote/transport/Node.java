@@ -15,6 +15,7 @@ public class Node {
     private final String ephemeralId;
     private final String hostAddress;
     private final String hostName;
+    private final int port;
     // todo 考虑使用netty的AttributeMap取代attributes
     private final Map<String, String> attributes;
 
@@ -36,6 +37,10 @@ public class Node {
 
     public String getHostAddress() {
         return hostAddress;
+    }
+
+    public int getPort() {
+        return port;
     }
 
     public String getHostName() {

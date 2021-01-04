@@ -1,5 +1,7 @@
 package cn.sliew.milky.remote.netty4;
 
+import cn.sliew.milky.common.log.Logger;
+import cn.sliew.milky.common.log.LoggerFactory;
 import cn.sliew.milky.concurrent.CompletableContext;
 import cn.sliew.milky.remote.transport.AbstractChannel;
 import cn.sliew.milky.remote.transport.ActionListener;
@@ -14,6 +16,8 @@ import io.netty.channel.ChannelPromise;
 import java.net.InetSocketAddress;
 
 public class Netty4TcpChannel extends AbstractChannel implements TcpChannel {
+
+    private static final Logger logger = LoggerFactory.getLogger(Netty4Transport.class);
 
     private final Channel channel;
     private final boolean isServer;
