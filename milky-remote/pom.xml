@@ -9,7 +9,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>milky-transport</artifactId>
+    <artifactId>milky-remote</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
 

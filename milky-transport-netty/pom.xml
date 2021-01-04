@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>cn.sliew</groupId>
-            <artifactId>milky-transport</artifactId>
+            <artifactId>milky-remote</artifactId>
         </dependency>
 
         <dependency>
