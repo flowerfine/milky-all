@@ -12,10 +12,10 @@ public abstract class TcpTransport implements Transport {
     private final ReadWriteLock closeLock = new ReentrantReadWriteLock();
 
     @Override
-    public TcpChannel connnect(Node node, ChannelListener listener) {
+    public TcpChannel connnect(Node node) {
         try {
             TcpChannel channel = connect(node);
-            channel.registerListener(listener);
+            channel.registerListener(getChannelListener());
             //todo timeout
             // 处理连接超时问题
             return channel;
@@ -49,4 +49,9 @@ public abstract class TcpTransport implements Transport {
     protected abstract TcpChannel connect(Node node) throws IOException;
 
     protected abstract TcpServerChannel doBind(InetSocketAddress address) throws IOException;
+
+    @Override
+    public ChannelListener getChannelListener() {
+        return null;
+    }
 }

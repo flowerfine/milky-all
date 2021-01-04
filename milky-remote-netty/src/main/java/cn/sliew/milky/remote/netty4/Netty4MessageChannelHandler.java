@@ -19,6 +19,7 @@
 
 package cn.sliew.milky.remote.netty4;
 
+import cn.sliew.milky.remote.transport.ChannelListener;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 
@@ -33,56 +34,53 @@ import java.util.Queue;
 final class Netty4MessageChannelHandler extends ChannelDuplexHandler {
 
     private final Netty4Transport transport;
-
     private final Queue<WriteOperation> queuedWrites = new ArrayDeque<>();
-
     private WriteOperation currentWrite;
-    private final InboundPipeline pipeline;
 
     Netty4MessageChannelHandler(Netty4Transport transport) {
         this.transport = transport;
-        final ThreadPool threadPool = transport.getThreadPool();
-        final Transport.RequestHandlers requestHandlers = transport.getRequestHandlers();
-        this.pipeline = new InboundPipeline(transport.getVersion(), transport.getStatsTracker(), recycler, threadPool::relativeTimeInMillis,
-                transport.getInflightBreaker(), requestHandlers::getHandler, transport::inboundMessage);
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        final ByteBuf buffer = (ByteBuf) msg;
-        Netty4TcpChannel channel = ctx.channel().attr(Netty4Transport.CHANNEL_KEY).get();
-        final BytesReference wrapped = Netty4Utils.toBytesReference(buffer);
-        try (ReleasableBytesReference reference = new ReleasableBytesReference(wrapped, buffer::release)) {
-            pipeline.handleBytes(channel, reference);
-        }
+        Netty4TcpChannel channel = ctx.channel().attr(Netty4Transport.TCP_CHANNEL_KEY).get();
+        transport.getChannelListener().received(channel, msg);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        assert Transports.assertDefaultThreadContext(transport.getThreadPool().getThreadContext());
-        ExceptionsHelper.maybeDieOnAnotherThread(cause);
-        final Throwable unwrapped = ExceptionsHelper.unwrap(cause, ElasticsearchException.class);
-        final Throwable newCause = unwrapped != null ? unwrapped : cause;
-        Netty4TcpChannel tcpChannel = ctx.channel().attr(Netty4Transport.CHANNEL_KEY).get();
-        if (newCause instanceof Error) {
-            transport.onException(tcpChannel, new Exception(newCause));
+        Netty4TcpChannel tcpChannel = ctx.channel().attr(Netty4Transport.TCP_CHANNEL_KEY).get();
+        ChannelListener channelListener = transport.getChannelListener();
+        if (cause instanceof Error) {
+            channelListener.caught(tcpChannel, new Exception(cause));
         } else {
-            transport.onException(tcpChannel, (Exception) newCause);
+            channelListener.caught(tcpChannel, cause);
         }
     }
 
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
-        assert msg instanceof ByteBuf;
-        assert Transports.assertDefaultThreadContext(transport.getThreadPool().getThreadContext());
-        final boolean queued = queuedWrites.offer(new WriteOperation((ByteBuf) msg, promise));
-        assert queued;
-        assert Transports.assertDefaultThreadContext(transport.getThreadPool().getThreadContext());
+        //fixme 检测是否入队成功
+        boolean queued = queuedWrites.offer(new WriteOperation((ByteBuf) msg, promise));
+        Netty4TcpChannel tcpChannel = ctx.channel().attr(Netty4Transport.TCP_CHANNEL_KEY).get();
+        promise.addListener(future -> {
+            ChannelListener channelListener = transport.getChannelListener();
+            if (future.isSuccess()) {
+                channelListener.sent(tcpChannel, msg);
+            } else {
+                Throwable cause = future.cause();
+                if (cause instanceof Error) {
+                    channelListener.caught(tcpChannel, new Exception(cause));
+                } else {
+                    channelListener.caught(tcpChannel, cause);
+                }
+            }
+        });
+
     }
 
     @Override
     public void channelWritabilityChanged(ChannelHandlerContext ctx) {
-        assert Transports.assertDefaultThreadContext(transport.getThreadPool().getThreadContext());
         if (ctx.channel().isWritable()) {
             doFlush(ctx);
         }
@@ -91,7 +89,6 @@ final class Netty4MessageChannelHandler extends ChannelDuplexHandler {
 
     @Override
     public void flush(ChannelHandlerContext ctx) {
-        assert Transports.assertDefaultThreadContext(transport.getThreadPool().getThreadContext());
         Channel channel = ctx.channel();
         if (channel.isWritable() || channel.isActive() == false) {
             doFlush(ctx);
@@ -100,9 +97,9 @@ final class Netty4MessageChannelHandler extends ChannelDuplexHandler {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        assert Transports.assertDefaultThreadContext(transport.getThreadPool().getThreadContext());
         doFlush(ctx);
-        Releasables.closeWhileHandlingException(pipeline);
+        Netty4TcpChannel tcpChannel = ctx.channel().attr(Netty4Transport.TCP_CHANNEL_KEY).get();
+        transport.getChannelListener().disconnected(tcpChannel);
         super.channelInactive(ctx);
     }
 
@@ -175,9 +172,7 @@ final class Netty4MessageChannelHandler extends ChannelDuplexHandler {
     }
 
     private static final class WriteOperation {
-
         private final ByteBuf buf;
-
         private final ChannelPromise promise;
 
         WriteOperation(ByteBuf buf, ChannelPromise promise) {

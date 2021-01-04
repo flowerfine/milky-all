@@ -17,6 +17,22 @@ public interface ChannelListener<T extends TcpChannel> {
     void disconnected(TcpChannel channel);
 
     /**
+     * on message sent.
+     *
+     * @param channel channel.
+     * @param message message.
+     */
+    void sent(TcpChannel channel, Object message);
+
+    /**
+     * on message received.
+     *
+     * @param channel channel.
+     * @param message message.
+     */
+    void received(TcpChannel channel, Object message);
+
+    /**
      * on exception caught.
      *
      * @param channel   channel.

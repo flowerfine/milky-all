@@ -19,11 +19,12 @@ public class Node {
     // todo 考虑使用netty的AttributeMap取代attributes
     private final Map<String, String> attributes;
 
-    public Node(String nodeName, String ephemeralId, String hostAddress, String hostName, Map<String, String> attributes) {
+    public Node(String nodeName, String ephemeralId, String hostAddress, String hostName, int port, Map<String, String> attributes) {
         this.nodeName = nodeName;
         this.ephemeralId = ephemeralId;
         this.hostAddress = hostAddress;
         this.hostName = hostName;
+        this.port = port;
         this.attributes = attributes;
     }
 
