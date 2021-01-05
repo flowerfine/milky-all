@@ -18,16 +18,16 @@
  */
 package cn.sliew.milky.remote.netty4;
 
+import cn.sliew.milky.common.collect.SetOnce;
 import cn.sliew.milky.common.log.Logger;
 import cn.sliew.milky.common.log.LoggerFactory;
-import cn.sliew.milky.remote.transport.Node;
-import cn.sliew.milky.remote.transport.TcpChannel;
-import cn.sliew.milky.remote.transport.TcpServerChannel;
-import cn.sliew.milky.remote.transport.TcpTransport;
+import cn.sliew.milky.remote.netty4.example.Netty4ChannelHandler;
+import cn.sliew.milky.remote.transport.*;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import io.netty.channel.Channel;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -51,18 +51,25 @@ public class Netty4Transport extends TcpTransport {
     private static final Logger logger = LoggerFactory.getLogger(Netty4Transport.class);
 
     static final AttributeKey<Netty4TcpChannel> TCP_CHANNEL_KEY = AttributeKey.newInstance("milky-remote-tcp-channel");
-    static final AttributeKey<Netty4TcpServerChannel> TCP_SERVER_CHANNEL_KEY = AttributeKey.newInstance("milky-remote-tcp-server-channel");
+    static final AttributeKey<SetOnce<Netty4TcpServerChannel>> TCP_SERVER_CHANNEL_KEY = AttributeKey.newInstance("milky-remote-tcp-server-channel");
 
+    private final SetOnce<Netty4TcpServerChannel> tcpServerChannelHolder = new SetOnce<>();
 
     private final RecvByteBufAllocator recvByteBufAllocator;
     private volatile ServerBootstrap serverBootstrap;
     private volatile Bootstrap clientBootstrap;
 
+    private ChannelListener channelListener = new Netty4ChannelHandler();
+
     public Netty4Transport() {
         this.recvByteBufAllocator = new FixedRecvByteBufAllocator(1024);
         createServerBootstrap();
-        bind(InetSocketAddress.createUnresolved("127.0.0.1", 10086));
         createClientBootstrap();
+    }
+
+    @Override
+    public ChannelListener getChannelListener() {
+        return channelListener;
     }
 
     private void createClientBootstrap() {
@@ -78,7 +85,6 @@ public class Netty4Transport extends TcpTransport {
         bootstrap.option(ChannelOption.RCVBUF_ALLOCATOR, recvByteBufAllocator);
 
         bootstrap.option(ChannelOption.SO_REUSEADDR, true);
-        bootstrap.validate();
         this.clientBootstrap = bootstrap;
     }
 
@@ -93,8 +99,10 @@ public class Netty4Transport extends TcpTransport {
         serverBootstrap.option(ChannelOption.ALLOCATOR, ByteBufAllocator.DEFAULT);
         serverBootstrap.childOption(ChannelOption.ALLOCATOR, ByteBufAllocator.DEFAULT);
 
-        serverBootstrap.childHandler(new ServerChannelInitializer());
         serverBootstrap.handler(new ServerChannelExceptionHandler());
+        serverBootstrap.childHandler(new ServerChannelInitializer());
+
+        serverBootstrap.childAttr(TCP_SERVER_CHANNEL_KEY, tcpServerChannelHolder);
 
         serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);
         serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
@@ -128,9 +136,10 @@ public class Netty4Transport extends TcpTransport {
 
     @Override
     protected Netty4TcpServerChannel doBind(InetSocketAddress address) throws IOException {
+        serverBootstrap.childAttr(AttributeKey.newInstance("milky-123-tcp-server-channel"), "hhh");
         Channel channel = serverBootstrap.bind(address).syncUninterruptibly().channel();
         Netty4TcpServerChannel tcpServerChannel = new Netty4TcpServerChannel(channel);
-        channel.attr(TCP_SERVER_CHANNEL_KEY).set(tcpServerChannel);
+        tcpServerChannelHolder.set(tcpServerChannel);
         return tcpServerChannel;
     }
 
@@ -153,8 +162,8 @@ public class Netty4Transport extends TcpTransport {
             ch.attr(TCP_CHANNEL_KEY).set(nettyTcpChannel);
             ch.pipeline().addLast("byte_buf_sizer", sizer);
             ch.pipeline().addLast("dispatcher", new Netty4MessageChannelHandler(Netty4Transport.this));
-            Netty4TcpServerChannel serverChannel = ch.attr(TCP_SERVER_CHANNEL_KEY).get();
-            serverChannel.serverAcceptedChannel(nettyTcpChannel);
+            SetOnce<Netty4TcpServerChannel> serverChannel = ch.attr(TCP_SERVER_CHANNEL_KEY).get();
+            serverChannel.get().serverAcceptedChannel(nettyTcpChannel);
         }
     }
 
@@ -163,11 +172,11 @@ public class Netty4Transport extends TcpTransport {
     private class ServerChannelExceptionHandler extends ChannelInboundHandlerAdapter {
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-            Netty4TcpServerChannel serverChannel = ctx.channel().attr(TCP_SERVER_CHANNEL_KEY).get();
+            SetOnce<Netty4TcpServerChannel> serverChannel = ctx.channel().attr(TCP_SERVER_CHANNEL_KEY).get();
             if (cause instanceof Error) {
-                onServerException(serverChannel, new Exception(cause));
+                onServerException(serverChannel.get(), new Exception(cause));
             } else {
-                onServerException(serverChannel, (Exception) cause);
+                onServerException(serverChannel.get(), (Exception) cause);
             }
         }
     }
@@ -191,7 +200,7 @@ public class Netty4Transport extends TcpTransport {
     private void addClosedExceptionLogger(Channel channel) {
         channel.closeFuture().addListener(f -> {
             if (f.isSuccess() == false) {
-                logger.debug("exception while closing channel: {}", channel, f.cause());
+                logger.error("exception while closing channel: {}", channel, f.cause());
             }
         });
     }
