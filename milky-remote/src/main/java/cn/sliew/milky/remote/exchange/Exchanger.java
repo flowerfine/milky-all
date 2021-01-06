@@ -8,9 +8,11 @@ import java.util.List;
 
 public interface Exchanger {
 
-    List<TcpChannel> openConnection(Node node, ConnectionProfile profile);
+    // todo dispatcher
+    List<TcpChannel> openConnection(Node node, ConnectionProfile profile, Dispatcher dispatcher);
 
-    void bindServer();
+    // todo dispatcher
+    void bindServer(Dispatcher dispatcher);
 
     void setMessageListener(MessageListener listener);
 

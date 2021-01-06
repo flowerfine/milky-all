@@ -23,7 +23,8 @@ public class DefaultConnectionManager implements ConnectionManager {
 
     @Override
     public void openConnection(Node node, ConnectionProfile connectionProfile, ActionListener<Connection> listener) {
-        List<TcpChannel> tcpChannels = exchanger.openConnection(node, connectionProfile);
+        //fixme dispatcher
+        List<TcpChannel> tcpChannels = exchanger.openConnection(node, connectionProfile, null);
         //todo 创建connection
     }
 
