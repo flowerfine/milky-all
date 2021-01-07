@@ -20,11 +20,11 @@ public interface Pipeline<K, V, C extends Map<K, V>> {
      * Appends a {@link PipelineProcess} at the last position of this pipeline.
      *
      * @param name    the name of the handler to append
-     * @param handler the handler to append
+     * @param command the handler to append
      * @throws IllegalArgumentException if there's an entry with the same name already in the pipeline
      * @throws NullPointerException     if the specified handler is {@code null}
      */
-    Pipeline<K, V, C> addLast(String name, Command<K, V, C> handler);
+    Pipeline<K, V, C> addLast(String name, Command<K, V, C> command);
 
     /**
      * Inserts a {@link Command} before an existing handler of this
@@ -32,12 +32,12 @@ public interface Pipeline<K, V, C extends Map<K, V>> {
      *
      * @param baseName the name of the existing handler
      * @param name     the name of the handler to insert before
-     * @param handler  the handler to insert before
+     * @param command  the handler to insert before
      * @throws NoSuchElementException   if there's no such entry with the specified {@code baseName}
      * @throws IllegalArgumentException if there's an entry with the same name already in the pipeline
      * @throws NullPointerException     if the specified baseName or handler is {@code null}
      */
-    Pipeline<K, V, C> addBefore(String baseName, String name, Command<K, V, C> handler);
+    Pipeline<K, V, C> addBefore(String baseName, String name, Command<K, V, C> command);
 
     /**
      * Inserts a {@link Command} after an existing handler of this
@@ -45,12 +45,21 @@ public interface Pipeline<K, V, C extends Map<K, V>> {
      *
      * @param baseName the name of the existing handler
      * @param name     the name of the handler to insert after
-     * @param handler  the handler to insert after
+     * @param command  the handler to insert after
      * @throws NoSuchElementException   if there's no such entry with the specified {@code baseName}
      * @throws IllegalArgumentException if there's an entry with the same name already in the pipeline
      * @throws NullPointerException     if the specified baseName or handler is {@code null}
      */
-    Pipeline<K, V, C> addAfter(String baseName, String name, Command<K, V, C> handler);
+    Pipeline<K, V, C> addAfter(String baseName, String name, Command<K, V, C> command);
+
+    /**
+     * Removes the specified {@link Command} from this pipeline.
+     *
+     * @param command the {@link PipelineProcess} to remove
+     * @throws NoSuchElementException if there's no such handler in this pipeline
+     * @throws NullPointerException   if the specified handler is {@code null}
+     */
+    Pipeline<K, V, C> remove(Command<K, V, C> command);
 
     /**
      * Removes the {@link Command} with the specified name from this pipeline.
@@ -60,27 +69,17 @@ public interface Pipeline<K, V, C extends Map<K, V>> {
      * @throws NoSuchElementException if there's no such handler with the specified name in this pipeline
      * @throws NullPointerException   if the specified name is {@code null}
      */
-    Pipeline<K, V, C> remove(String name);
-
-    /**
-     * Removes the specified {@link Command} from this pipeline.
-     *
-     * @param handler the {@link PipelineProcess} to remove
-     * @throws NoSuchElementException if there's no such handler in this pipeline
-     * @throws NullPointerException   if the specified handler is {@code null}
-     */
-    Pipeline<K, V, C> remove(Command<K, V, C> handler);
+    Command<K, V, C> remove(String name);
 
     /**
      * Removes the {@link Command} of the specified type from this pipeline.
      *
-     * @param <T>         the type of the handler
-     * @param handlerType the type of the handler
+     * @param commandType the type of the command
      * @return the removed handler
      * @throws NoSuchElementException if there's no such handler of the specified type in this pipeline
      * @throws NullPointerException   if the specified handler type is {@code null}
      */
-    <T extends Command> T remove(Class<T> handlerType);
+    Command remove(Class commandType);
 
     /**
      * Removes the first {@link Command} in this pipeline.
@@ -140,7 +139,7 @@ public interface Pipeline<K, V, C extends Map<K, V>> {
     /**
      * Returns the context of the last {@link Command} in this pipeline.
      *
-     * @return the context of the last handler.  {@code null} if this pipeline is empty.
+     * @return the context of the last command.  {@code null} if this pipeline is empty.
      */
     PipelineProcess<K, V, C> lastContext();
 
@@ -148,10 +147,10 @@ public interface Pipeline<K, V, C extends Map<K, V>> {
      * Returns the context object of the specified {@link Command} in
      * this pipeline.
      *
-     * @return the context object of the specified handler.
+     * @return the context object of the specified command.
      * {@code null} if there's no such handler in this pipeline.
      */
-    PipelineProcess<K, V, C> context(Command<K, V, C> handler);
+    PipelineProcess<K, V, C> context(Command<K, V, C> command);
 
     /**
      * Returns the context object of the {@link Command} with the
@@ -169,7 +168,7 @@ public interface Pipeline<K, V, C extends Map<K, V>> {
      * @return the context object of the handler of the specified type.
      * {@code null} if there's no such handler in this pipeline.
      */
-    PipelineProcess<K, V, C> context(Class<? extends Command> handlerType);
+    PipelineProcess<K, V, C> context(Class<? extends Command> commandType);
 
     /**
      * Returns the {@link List} of the handler names.
