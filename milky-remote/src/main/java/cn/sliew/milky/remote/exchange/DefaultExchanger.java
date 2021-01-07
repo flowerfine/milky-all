@@ -25,13 +25,13 @@ public class DefaultExchanger implements Exchanger {
     }
 
     @Override
-    public List<TcpChannel> openConnection(Node node, ConnectionProfile profile) {
+    public List<TcpChannel> openConnection(Node node, ConnectionProfile profile, Dispatcher dispatcher) {
         //todo 创建连接，transport
         return Collections.emptyList();
     }
 
     @Override
-    public void bindServer() {
+    public void bindServer(Dispatcher dispatcher) {
         //todo 绑定端口，transport
     }
 

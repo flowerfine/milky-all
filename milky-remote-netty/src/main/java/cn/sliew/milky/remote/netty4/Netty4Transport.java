@@ -21,7 +21,6 @@ package cn.sliew.milky.remote.netty4;
 import cn.sliew.milky.common.collect.SetOnce;
 import cn.sliew.milky.common.log.Logger;
 import cn.sliew.milky.common.log.LoggerFactory;
-import cn.sliew.milky.remote.netty4.example.Netty4ChannelHandler;
 import cn.sliew.milky.remote.transport.*;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
@@ -59,17 +58,10 @@ public class Netty4Transport extends TcpTransport {
     private volatile ServerBootstrap serverBootstrap;
     private volatile Bootstrap clientBootstrap;
 
-    private ChannelListener channelListener = new Netty4ChannelHandler();
-
     public Netty4Transport() {
         this.recvByteBufAllocator = new FixedRecvByteBufAllocator(1024);
         createServerBootstrap();
         createClientBootstrap();
-    }
-
-    @Override
-    public ChannelListener getChannelListener() {
-        return channelListener;
     }
 
     private void createClientBootstrap() {
@@ -117,7 +109,7 @@ public class Netty4Transport extends TcpTransport {
     }
 
     @Override
-    protected TcpChannel connect(Node node) throws IOException {
+    protected TcpChannel connect(Node node, ChannelListener listener) throws IOException {
         InetSocketAddress address = InetSocketAddress.createUnresolved(node.getHostAddress(), node.getPort());
         Bootstrap bootstrapWithHandler = clientBootstrap.clone();
         bootstrapWithHandler.handler(new ClientChannelInitializer());
@@ -135,7 +127,7 @@ public class Netty4Transport extends TcpTransport {
     }
 
     @Override
-    protected Netty4TcpServerChannel doBind(InetSocketAddress address) throws IOException {
+    protected Netty4TcpServerChannel doBind(InetSocketAddress address, ChannelListener listener) throws IOException {
         serverBootstrap.childAttr(AttributeKey.newInstance("milky-123-tcp-server-channel"), "hhh");
         Channel channel = serverBootstrap.bind(address).syncUninterruptibly().channel();
         Netty4TcpServerChannel tcpServerChannel = new Netty4TcpServerChannel(channel);

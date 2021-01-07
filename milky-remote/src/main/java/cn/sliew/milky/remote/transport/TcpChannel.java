@@ -42,6 +42,7 @@ public interface TcpChannel extends Channel {
 
     /**
      * 注册监听器，处理连接，断连接，发送消息，接受消息和异常信息等事件
+     * todo remove it
      */
     void registerListener(ChannelListener<TcpChannel> listener);
 }

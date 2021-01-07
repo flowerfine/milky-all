@@ -103,6 +103,14 @@ final class Netty4MessageChannelHandler extends ChannelDuplexHandler {
         super.channelInactive(ctx);
     }
 
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        Netty4TcpChannel tcpChannel = ctx.channel().attr(Netty4Transport.TCP_CHANNEL_KEY).get();
+        transport.getChannelListener().connected(tcpChannel);
+        super.channelActive(ctx);
+    }
+
+
     private void doFlush(ChannelHandlerContext ctx) {
         assert ctx.executor().inEventLoop();
         final Channel channel = ctx.channel();
