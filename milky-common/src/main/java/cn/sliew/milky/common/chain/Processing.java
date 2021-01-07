@@ -2,7 +2,7 @@ package cn.sliew.milky.common.chain;
 
 /**
  * A <code>Processing</code> encapsulates states that can be returned by
- * commands. 
+ * commands.
  * <p>
  * {@link Command}s should either return <code>FINISHED</code> if the
  * processing of the given context has been completed, or return
@@ -12,7 +12,7 @@ package cn.sliew.milky.common.chain;
 public enum Processing {
 
     /**
-     * Commands should return continue if the processing of the given 
+     * Commands should return continue if the processing of the given
      * context should be delegated to a subsequent command in an enclosing chain.
      */
     CONTINUE,
@@ -21,6 +21,5 @@ public enum Processing {
      * Commands should return finished if the processing of the given context
      * has been completed.
      */
-    FINISHED
-    ;
+    FINISHED;
 }

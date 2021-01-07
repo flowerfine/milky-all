@@ -18,9 +18,16 @@ public interface PipelineProcess<K, V, C extends Map<K, V>> {
     Executor executor();
 
     /**
+     * The {@link Command} that is bound this {@link PipelineProcess}.
+     */
+    Command<K, V, C> command();
+
+    /**
      * Return the assigned {@link Pipeline}
      */
     Pipeline<K, V, C> pipeline();
+
+    Pipeline fireEvent();
 
     /**
      * A {@link Command} received an {@link Throwable} in one of its operations.
@@ -28,5 +35,5 @@ public interface PipelineProcess<K, V, C extends Map<K, V>> {
      * This will result in having the  {@link Command#exceptionCaught(Command, Throwable)}
      * method  called of the next  {@link Command} contained in the  {@link Pipeline}.
      */
-    PipelineProcess<K, V, C> fireExceptionCaught(Throwable cause);
+    Pipeline fireExceptionCaught(Throwable cause);
 }

@@ -12,8 +12,8 @@ public interface Command<K, V, C extends Map<K, V>> {
      * finished, or delegate remaining processing to the subsequent command
      * in the enclosing {@link Pipeline} by returning continue.
      *
-     * @param context The {@link Context} to be processed by this
-     *                {@link Command}
+     * @param process The command context
+     * @param context The {@link Context} to be processed by this {@link Command}
      * @param future  The result container
      * @return {@link Processing#FINISHED} if the processing of this contex
      * has been completed. Returns {@link Processing#CONTINUE} if the processing
@@ -22,7 +22,7 @@ public interface Command<K, V, C extends Map<K, V>> {
      * @throws PipelineException        general purpose exception return to indicate abnormal termination
      * @throws IllegalArgumentException if <code>context</code> is <code>null</code>
      */
-    Processing execute(C context, Future<?> future);
+    Processing execute(PipelineProcess<K, V, C> process, C context, Future<?> future);
 
     /**
      * Gets called if a {@link Throwable} was thrown.
