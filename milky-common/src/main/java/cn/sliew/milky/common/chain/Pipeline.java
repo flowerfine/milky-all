@@ -3,6 +3,7 @@ package cn.sliew.milky.common.chain;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.concurrent.CompletableFuture;
 
 public interface Pipeline<K, V> {
 
@@ -181,7 +182,7 @@ public interface Pipeline<K, V> {
      */
     Map<String, Command<K, V>> toMap();
 
-    Pipeline fireEvent(Context<K, V> context);
+    Pipeline fireEvent(Context<K, V> context, CompletableFuture<?> future);
 
-    Pipeline fireExceptionCaught(Throwable cause);
+    Pipeline fireExceptionCaught(Context<K, V> context, Throwable cause, CompletableFuture<?> future);
 }

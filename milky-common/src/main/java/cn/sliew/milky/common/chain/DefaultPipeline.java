@@ -4,9 +4,9 @@ import cn.sliew.milky.common.log.Logger;
 import cn.sliew.milky.common.log.LoggerFactory;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class DefaultPipeline<K, V> implements Pipeline<K, V> {
 
@@ -279,12 +279,12 @@ public class DefaultPipeline<K, V> implements Pipeline<K, V> {
     }
 
     @Override
-    public Pipeline fireEvent(Context<K, V> context) {
+    public Pipeline fireEvent(Context<K, V> context, CompletableFuture<?> future) {
         return null;
     }
 
     @Override
-    public Pipeline fireExceptionCaught(Throwable cause) {
+    public Pipeline fireExceptionCaught(Context<K, V> context, Throwable cause, CompletableFuture<?> future) {
         return null;
     }
 
@@ -380,18 +380,20 @@ public class DefaultPipeline<K, V> implements Pipeline<K, V> {
         }
 
         @Override
-        public void onEvent(AbstractPipelineProcess process, Context context, Future future) {
+        public void onEvent(AbstractPipelineProcess process, Context context, CompletableFuture future) {
             if (future.isDone() || future.isCancelled()) {
                 logger.warn("finished or cancelled event! process: {}, context: {}", process, context);
             } else {
                 logger.warn("unhandled event triggered! process: {}, context: {}", process, context);
+                future.complete(null);
             }
         }
 
         @Override
-        public void exceptionCaught(AbstractPipelineProcess process, Context context, Future future, Throwable cause) throws PipelineException {
+        public void exceptionCaught(AbstractPipelineProcess process, Context context, CompletableFuture future, Throwable cause) throws PipelineException {
             logger.warn("An exceptionCaught() event was fired, and it reached at the tail of the pipeline. " +
                     "It usually means the last handler in the pipeline did not handle the exception. process: {}, context: {}", process, context, cause);
+            future.completeExceptionally(cause);
         }
     }
 
@@ -407,13 +409,13 @@ public class DefaultPipeline<K, V> implements Pipeline<K, V> {
         }
 
         @Override
-        public void onEvent(AbstractPipelineProcess process, Context context, Future future) {
+        public void onEvent(AbstractPipelineProcess process, Context context, CompletableFuture future) {
             process.fireEvent(context, future);
         }
 
         @Override
-        public void exceptionCaught(AbstractPipelineProcess process, Context context, Future future, Throwable cause) throws PipelineException {
-
+        public void exceptionCaught(AbstractPipelineProcess process, Context context, CompletableFuture future, Throwable cause) throws PipelineException {
+            process.fireExceptionCaught(context, future, cause);
         }
     }
 }

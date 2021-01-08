@@ -4,6 +4,7 @@ import cn.sliew.milky.common.exception.ThrowableUtil;
 import cn.sliew.milky.common.log.Logger;
 import cn.sliew.milky.common.log.LoggerFactory;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 
@@ -16,7 +17,6 @@ abstract class AbstractPipelineProcess<K, V> implements PipelineProcess<K, V> {
     volatile AbstractPipelineProcess next;
     volatile AbstractPipelineProcess prev;
 
-
     private final DefaultPipeline pipeline;
     private final String name;
 
@@ -27,7 +27,6 @@ abstract class AbstractPipelineProcess<K, V> implements PipelineProcess<K, V> {
         this.pipeline = pipeline;
         this.executor = executor;
     }
-
 
     @Override
     public String name() {
@@ -45,13 +44,13 @@ abstract class AbstractPipelineProcess<K, V> implements PipelineProcess<K, V> {
     }
 
     @Override
-    public PipelineProcess<K, V> fireEvent(Context<K, V> context, Future<?> future) {
+    public PipelineProcess<K, V> fireEvent(Context<K, V> context, CompletableFuture<?> future) {
         invokeEvent(this.next, context, future);
         return this;
     }
 
     @Override
-    public PipelineProcess fireExceptionCaught(Context<K, V> context, Future<?> future, Throwable cause) {
+    public PipelineProcess fireExceptionCaught(Context<K, V> context, CompletableFuture<?> future, Throwable cause) {
         invokeExceptionCaught(this.next, context, future, cause);
         return this;
     }
@@ -59,11 +58,11 @@ abstract class AbstractPipelineProcess<K, V> implements PipelineProcess<K, V> {
     /**
      * fixme 判断是否为同一个线程内运行
      */
-    static <K, V> void invokeEvent(final AbstractPipelineProcess next, final Context<K, V> context, final Future<?> future) {
+    static <K, V> void invokeEvent(final AbstractPipelineProcess next, final Context<K, V> context, final CompletableFuture<?> future) {
         next.invokeEvent(context, future);
     }
 
-    private void invokeEvent(final Context<K, V> context, final Future<?> future) {
+    private void invokeEvent(final Context<K, V> context, final CompletableFuture<?> future) {
         try {
             command().onEvent(this, context, future);
         } catch (Throwable t) {
@@ -71,7 +70,7 @@ abstract class AbstractPipelineProcess<K, V> implements PipelineProcess<K, V> {
         }
     }
 
-    static <K, V> void invokeExceptionCaught(final AbstractPipelineProcess next, final Context<K, V> context, final Future<?> future, final Throwable cause) {
+    static <K, V> void invokeExceptionCaught(final AbstractPipelineProcess next, final Context<K, V> context, final CompletableFuture<?> future, final Throwable cause) {
         try {
             next.invokeExceptionCaught(context, future, cause);
         } catch (Throwable t) {
@@ -82,7 +81,7 @@ abstract class AbstractPipelineProcess<K, V> implements PipelineProcess<K, V> {
         }
     }
 
-    private void invokeExceptionCaught(final Context<K, V> context, final Future<?> future, final Throwable cause) {
+    private void invokeExceptionCaught(final Context<K, V> context, final CompletableFuture<?> future, final Throwable cause) {
         try {
             command().exceptionCaught(this, context, future, cause);
         } catch (Throwable error) {

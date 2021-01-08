@@ -1,6 +1,6 @@
 package cn.sliew.milky.common.chain;
 
-import java.util.concurrent.Future;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 没有添加netty的@Shareable特性，如果Command被添加如多个pipeline，需要 {@link Command}
@@ -21,10 +21,10 @@ public interface Command<K, V> {
      * @throws PipelineException        general purpose exception return to indicate abnormal termination
      * @throws IllegalArgumentException if <code>context</code> is <code>null</code>
      */
-    void onEvent(AbstractPipelineProcess<K, V> process, Context<K, V> context, Future<?> future);
+    void onEvent(AbstractPipelineProcess<K, V> process, Context<K, V> context, CompletableFuture<?> future);
 
     /**
      * Gets called if a {@link Throwable} was thrown.
      */
-    void exceptionCaught(AbstractPipelineProcess<K, V> process, Context<K, V> context, Future<?> future, Throwable cause) throws PipelineException;
+    void exceptionCaught(AbstractPipelineProcess<K, V> process, Context<K, V> context, CompletableFuture<?> future, Throwable cause) throws PipelineException;
 }

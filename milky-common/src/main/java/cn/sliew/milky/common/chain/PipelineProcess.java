@@ -1,7 +1,7 @@
 package cn.sliew.milky.common.chain;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Future;
 
 public interface PipelineProcess<K, V> {
 
@@ -27,13 +27,13 @@ public interface PipelineProcess<K, V> {
      */
     Pipeline<K, V> pipeline();
 
-    PipelineProcess<K, V> fireEvent(Context<K, V> context, Future<?> future);
+    PipelineProcess<K, V> fireEvent(Context<K, V> context, CompletableFuture<?> future);
 
     /**
      * A {@link Command} received an {@link Throwable} in one of its operations.
      * <p>
-     * This will result in having the  {@link Command#exceptionCaught(AbstractPipelineProcess, Context, Future, Throwable)}
+     * This will result in having the  {@link Command#exceptionCaught(AbstractPipelineProcess, Context, java.util.concurrent.CompletableFuture, Throwable)}
      * method  called of the next  {@link Command} contained in the  {@link Pipeline}.
      */
-    PipelineProcess fireExceptionCaught(Context<K, V> context, Future<?> future, Throwable cause);
+    PipelineProcess fireExceptionCaught(Context<K, V> context, CompletableFuture<?> future, Throwable cause);
 }
