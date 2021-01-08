@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * Thread local context.
- * Note: RpcContext is a temporary state holder.
+ * Note: ExecuteContext is a temporary state holder.
  */
 public class ExecuteContext {
 
