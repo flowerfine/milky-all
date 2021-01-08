@@ -1,5 +1,8 @@
 package cn.sliew.milky.common.log;
 
+/**
+ * fixme 抛出异常时设置多个参数
+ */
 public interface Logger {
 
     /**
