@@ -6,7 +6,6 @@ import cn.sliew.milky.common.log.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Future;
 
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
 
@@ -95,5 +94,10 @@ abstract class AbstractPipelineProcess<K, V> implements PipelineProcess<K, V> {
                         "method while handling the following exception:", error, cause);
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s(%s, %s)", PipelineProcess.class.getSimpleName(), name(), command());
     }
 }

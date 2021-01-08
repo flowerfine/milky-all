@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public class Explanation {
 
-    public static final String DEFAULT_NAME = "";
+    public static final String DEFAULT_NAME = "default";
     public static final String DEFAULT_DESCRIPTION = "";
 
     private String name;                                                 // node name

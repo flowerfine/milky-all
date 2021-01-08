@@ -280,12 +280,14 @@ public class DefaultPipeline<K, V> implements Pipeline<K, V> {
 
     @Override
     public Pipeline fireEvent(Context<K, V> context, CompletableFuture<?> future) {
-        return null;
+        AbstractPipelineProcess.invokeEvent(head, context, future);
+        return this;
     }
 
     @Override
     public Pipeline fireExceptionCaught(Context<K, V> context, Throwable cause, CompletableFuture<?> future) {
-        return null;
+        AbstractPipelineProcess.invokeExceptionCaught(head, context, future, cause);
+        return this;
     }
 
     private AbstractPipelineProcess newContext(Executor executor, String name, Command command) {
@@ -392,8 +394,13 @@ public class DefaultPipeline<K, V> implements Pipeline<K, V> {
         @Override
         public void exceptionCaught(AbstractPipelineProcess process, Context context, CompletableFuture future, Throwable cause) throws PipelineException {
             logger.warn("An exceptionCaught() event was fired, and it reached at the tail of the pipeline. " +
-                    "It usually means the last handler in the pipeline did not handle the exception. process: {}, context: {}", process, context, cause);
+                    "It usually means the last handler in the pipeline did not handle the exception. context: {}", context, cause);
             future.completeExceptionally(cause);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("%s(%s, %s)", PipelineProcess.class.getSimpleName(), name(), TailContext.class.getCanonicalName());
         }
     }
 
@@ -416,6 +423,11 @@ public class DefaultPipeline<K, V> implements Pipeline<K, V> {
         @Override
         public void exceptionCaught(AbstractPipelineProcess process, Context context, CompletableFuture future, Throwable cause) throws PipelineException {
             process.fireExceptionCaught(context, future, cause);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("%s(%s, %s)", PipelineProcess.class.getSimpleName(), name(), HeadContext.class.getCanonicalName());
         }
     }
 }

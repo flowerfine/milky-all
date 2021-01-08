@@ -1,5 +1,7 @@
 package cn.sliew.milky.common.context;
 
+import cn.sliew.milky.common.explain.Explanation;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +18,8 @@ public class ExecuteContext {
     private boolean profile = false;
 
     private boolean explain = false;
+
+    private Explanation explanation = new Explanation();
 
     protected ExecuteContext() {
 
@@ -93,20 +97,20 @@ public class ExecuteContext {
         this.attachments.clear();
     }
 
-
     public boolean profile() {
         return profile;
     }
 
-    public void setProfile(boolean profile) {
-        this.profile = profile;
+    public void openProfile() {
+        this.profile = true;
     }
 
     public boolean explain() {
         return explain;
     }
 
-    public void setExplain(boolean explain) {
-        this.explain = explain;
+    public void openExplain() {
+        this.explain = true;
     }
+
 }
