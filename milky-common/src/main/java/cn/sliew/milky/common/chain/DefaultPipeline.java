@@ -5,6 +5,7 @@ import cn.sliew.milky.common.log.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class DefaultPipeline<K, V, C extends Map<K, V>> implements Pipeline<K, V, C> {
@@ -14,12 +15,19 @@ public class DefaultPipeline<K, V, C extends Map<K, V>> implements Pipeline<K, V
     private static final String HEAD_NAME = "HeadContext#0";
     private static final String TAIL_NAME = "TailContext#0";
 
-    private static final ThreadLocal<Map<Class<?>, String>> nameCaches = ThreadLocal.withInitial(() -> new WeakHashMap<>());
-
     final AbstractPipelineProcess head;
     final AbstractPipelineProcess tail;
 
+    final Executor executor;
+
+    /**
+     * todo final chain target，maybe not exists，need one invoker
+     */
+    final Object invoker = new Object();
+
     protected DefaultPipeline() {
+        this.executor = Executors.newFixedThreadPool(2);
+
         tail = new TailContext(this);
         head = new HeadContext(this);
         head.next = tail;
@@ -31,7 +39,8 @@ public class DefaultPipeline<K, V, C extends Map<K, V>> implements Pipeline<K, V
     public Pipeline addFirst(String name, Command command) {
         final AbstractPipelineProcess newCtx;
         synchronized (this) {
-            newCtx = newContext(null, name, command);
+            checkDuplicateName(name);
+            newCtx = newContext(executor, name, command);
             addFirst0(newCtx);
         }
         return this;
@@ -49,7 +58,8 @@ public class DefaultPipeline<K, V, C extends Map<K, V>> implements Pipeline<K, V
     public Pipeline addLast(String name, Command command) {
         final AbstractPipelineProcess newCtx;
         synchronized (this) {
-            newCtx = newContext(null, name, command);
+            checkDuplicateName(name);
+            newCtx = newContext(executor, name, command);
             addLast0(newCtx);
         }
         return this;
@@ -68,8 +78,9 @@ public class DefaultPipeline<K, V, C extends Map<K, V>> implements Pipeline<K, V
         final AbstractPipelineProcess newCtx;
         final AbstractPipelineProcess ctx;
         synchronized (this) {
+            checkDuplicateName(name);
             ctx = getContextOrDie(baseName);
-            newCtx = newContext(null, name, command);
+            newCtx = newContext(executor, name, command);
             addBefore0(ctx, newCtx);
         }
         return this;
@@ -87,8 +98,9 @@ public class DefaultPipeline<K, V, C extends Map<K, V>> implements Pipeline<K, V
         final AbstractPipelineProcess newCtx;
         final AbstractPipelineProcess ctx;
         synchronized (this) {
+            checkDuplicateName(name);
             ctx = getContextOrDie(baseName);
-            newCtx = newContext(null, name, command);
+            newCtx = newContext(executor, name, command);
             addAfter0(ctx, newCtx);
         }
         return this;
@@ -119,12 +131,18 @@ public class DefaultPipeline<K, V, C extends Map<K, V>> implements Pipeline<K, V
 
     @Override
     public Command removeFirst() {
-        return null;
+        if (head.next == tail) {
+            throw new NoSuchElementException();
+        }
+        return remove(head.next).command();
     }
 
     @Override
     public Command removeLast() {
-        return null;
+        if (head.next == tail) {
+            throw new NoSuchElementException();
+        }
+        return remove(tail.prev).command();
     }
 
     private AbstractPipelineProcess remove(final AbstractPipelineProcess ctx) {
@@ -236,9 +254,9 @@ public class DefaultPipeline<K, V, C extends Map<K, V>> implements Pipeline<K, V
 
     @Override
     public List<String> names() {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         AbstractPipelineProcess ctx = head.next;
-        for (;;) {
+        for (; ; ) {
             if (ctx == null) {
                 return list;
             }
@@ -249,7 +267,15 @@ public class DefaultPipeline<K, V, C extends Map<K, V>> implements Pipeline<K, V
 
     @Override
     public Map<String, Command<K, V, C>> toMap() {
-        return null;
+        Map<String, Command<K, V, C>> map = new LinkedHashMap<>();
+        AbstractPipelineProcess ctx = head.next;
+        for (; ; ) {
+            if (ctx == tail) {
+                return map;
+            }
+            map.put(ctx.name(), ctx.command());
+            ctx = ctx.next;
+        }
     }
 
     @Override
@@ -304,6 +330,44 @@ public class DefaultPipeline<K, V, C extends Map<K, V>> implements Pipeline<K, V
         }
     }
 
+    private void checkDuplicateName(String name) {
+        if (context0(name) != null) {
+            throw new IllegalArgumentException("Duplicate command name: " + name);
+        }
+    }
+
+    /**
+     * Returns the {@link String} representation of this pipeline.
+     */
+    @Override
+    public final String toString() {
+        StringBuilder buf = new StringBuilder()
+                .append(this.getClass().getSimpleName())
+                .append('{');
+        AbstractPipelineProcess ctx = head.next;
+        for (; ; ) {
+            if (ctx == tail) {
+                break;
+            }
+
+            buf.append('(')
+                    .append(ctx.name())
+                    .append(" = ")
+                    .append(ctx.command().getClass().getName())
+                    .append(')');
+
+            ctx = ctx.next;
+            if (ctx == tail) {
+                break;
+            }
+
+            buf.append(", ");
+        }
+        buf.append('}');
+        return buf.toString();
+    }
+
+
     final class TailContext extends AbstractPipelineProcess implements Command {
 
         TailContext(DefaultPipeline pipeline) {
@@ -316,13 +380,18 @@ public class DefaultPipeline<K, V, C extends Map<K, V>> implements Pipeline<K, V
         }
 
         @Override
-        public Processing execute(PipelineProcess process, Map context, Future future) {
-            return null;
+        public void onEvent(AbstractPipelineProcess process, Context context, Future future) {
+            if (future.isDone() || future.isCancelled()) {
+                logger.warn("finished or cancelled event! process: {}, context: {}", process, context);
+            } else {
+                logger.warn("unhandled event triggered! process: {}, context: {}", process, context);
+            }
         }
 
         @Override
-        public void exceptionCaught(Command command, Throwable cause) throws PipelineException {
-
+        public void exceptionCaught(AbstractPipelineProcess process, Context context, Future future, Throwable cause) throws PipelineException {
+            logger.warn("An exceptionCaught() event was fired, and it reached at the tail of the pipeline. " +
+                    "It usually means the last handler in the pipeline did not handle the exception. process: {}, context: {}", process, context, cause);
         }
     }
 
@@ -338,12 +407,12 @@ public class DefaultPipeline<K, V, C extends Map<K, V>> implements Pipeline<K, V
         }
 
         @Override
-        public Processing execute(PipelineProcess process, Map context, Future future) {
-            return null;
+        public void onEvent(AbstractPipelineProcess process, Context context, Future future) {
+            process.fireEvent(context, future);
         }
 
         @Override
-        public void exceptionCaught(Command command, Throwable cause) throws PipelineException {
+        public void exceptionCaught(AbstractPipelineProcess process, Context context, Future future, Throwable cause) throws PipelineException {
 
         }
     }

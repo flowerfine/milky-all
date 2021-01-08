@@ -2,6 +2,7 @@ package cn.sliew.milky.common.chain;
 
 import java.util.Map;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Future;
 
 public interface PipelineProcess<K, V, C extends Map<K, V>> {
 
@@ -27,13 +28,13 @@ public interface PipelineProcess<K, V, C extends Map<K, V>> {
      */
     Pipeline<K, V, C> pipeline();
 
-    Pipeline<K, V, C> fireEvent(Context<K, V> context);
+    PipelineProcess<K, V, C> fireEvent(Context<K, V> context, Future<?> future);
 
     /**
      * A {@link Command} received an {@link Throwable} in one of its operations.
      * <p>
-     * This will result in having the  {@link Command#exceptionCaught(Command, Throwable)}
+     * This will result in having the  {@link Command#exceptionCaught(AbstractPipelineProcess, Context, Future, Throwable)}
      * method  called of the next  {@link Command} contained in the  {@link Pipeline}.
      */
-    Pipeline fireExceptionCaught(Throwable cause);
+    PipelineProcess fireExceptionCaught(Context<K, V> context, Future<?> future, Throwable cause);
 }

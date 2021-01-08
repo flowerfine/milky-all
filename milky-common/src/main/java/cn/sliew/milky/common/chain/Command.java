@@ -3,6 +3,10 @@ package cn.sliew.milky.common.chain;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+/**
+ * 没有添加netty的@Shareable特性，如果Command被添加如多个pipeline，需要 {@link Command}
+ * 处理并发等问题
+ */
 public interface Command<K, V, C extends Map<K, V>> {
 
     /**
@@ -15,17 +19,13 @@ public interface Command<K, V, C extends Map<K, V>> {
      * @param process The command context
      * @param context The {@link Context} to be processed by this {@link Command}
      * @param future  The result container
-     * @return {@link Processing#FINISHED} if the processing of this contex
-     * has been completed. Returns {@link Processing#CONTINUE} if the processing
-     * of this context should be delegated to a subsequent command in an
-     * enclosing chain.
      * @throws PipelineException        general purpose exception return to indicate abnormal termination
      * @throws IllegalArgumentException if <code>context</code> is <code>null</code>
      */
-    Processing execute(PipelineProcess<K, V, C> process, C context, Future<?> future);
+    void onEvent(AbstractPipelineProcess<K, V, C> process, Context<K, V> context, Future<?> future);
 
     /**
      * Gets called if a {@link Throwable} was thrown.
      */
-    void exceptionCaught(Command<K, V, C> command, Throwable cause) throws PipelineException;
+    void exceptionCaught(AbstractPipelineProcess<K, V, C> process, Context<K, V> context, Future<?> future, Throwable cause) throws PipelineException;
 }
