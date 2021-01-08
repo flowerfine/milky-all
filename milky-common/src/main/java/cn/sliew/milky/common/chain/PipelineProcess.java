@@ -1,10 +1,9 @@
 package cn.sliew.milky.common.chain;
 
-import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 
-public interface PipelineProcess<K, V, C extends Map<K, V>> {
+public interface PipelineProcess<K, V> {
 
     /**
      * The unique name of the {@link Command}.The name was used when then {@link Command}
@@ -21,14 +20,14 @@ public interface PipelineProcess<K, V, C extends Map<K, V>> {
     /**
      * The {@link Command} that is bound this {@link PipelineProcess}.
      */
-    Command<K, V, C> command();
+    Command<K, V> command();
 
     /**
      * Return the assigned {@link Pipeline}
      */
-    Pipeline<K, V, C> pipeline();
+    Pipeline<K, V> pipeline();
 
-    PipelineProcess<K, V, C> fireEvent(Context<K, V> context, Future<?> future);
+    PipelineProcess<K, V> fireEvent(Context<K, V> context, Future<?> future);
 
     /**
      * A {@link Command} received an {@link Throwable} in one of its operations.

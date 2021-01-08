@@ -21,7 +21,7 @@ public class PipelineException extends RuntimeException {
     /**
      * Command that failed when exception occurred.
      */
-    private final Command<?, ?, ?> failedCommand;
+    private final Command<?, ?> failedCommand;
 
     /**
      * Create an exception object with a message.
@@ -65,7 +65,7 @@ public class PipelineException extends RuntimeException {
      *                      thrown.
      */
     public <K, V, C extends Map<K, V>> PipelineException(String message, Throwable cause,
-                                                         C context, Command<K, V, C> failedCommand) {
+                                                         C context, Command<K, V> failedCommand) {
         super(message, cause);
         this.context = context;
         this.failedCommand = failedCommand;
@@ -83,7 +83,7 @@ public class PipelineException extends RuntimeException {
      * @return The {@link Command} object in which the original exception was
      * thrown.
      */
-    public Command<?, ?, ?> getFailedCommand() {
+    public Command<?, ?> getFailedCommand() {
         return failedCommand;
     }
 

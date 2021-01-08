@@ -4,13 +4,12 @@ import cn.sliew.milky.common.exception.ThrowableUtil;
 import cn.sliew.milky.common.log.Logger;
 import cn.sliew.milky.common.log.LoggerFactory;
 
-import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
 
-abstract class AbstractPipelineProcess<K, V> implements PipelineProcess<K, V, Context<K, V>> {
+abstract class AbstractPipelineProcess<K, V> implements PipelineProcess<K, V> {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractPipelineProcess.class);
 
@@ -46,7 +45,7 @@ abstract class AbstractPipelineProcess<K, V> implements PipelineProcess<K, V, Co
     }
 
     @Override
-    public PipelineProcess<K, V, Context<K, V>> fireEvent(Context<K, V> context, Future<?> future) {
+    public PipelineProcess<K, V> fireEvent(Context<K, V> context, Future<?> future) {
         invokeEvent(this.next, context, future);
         return this;
     }

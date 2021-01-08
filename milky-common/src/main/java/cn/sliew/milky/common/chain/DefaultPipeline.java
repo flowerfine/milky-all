@@ -8,7 +8,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class DefaultPipeline<K, V, C extends Map<K, V>> implements Pipeline<K, V, C> {
+public class DefaultPipeline<K, V> implements Pipeline<K, V> {
 
     static final Logger logger = LoggerFactory.getLogger(DefaultPipeline.class);
 
@@ -266,8 +266,8 @@ public class DefaultPipeline<K, V, C extends Map<K, V>> implements Pipeline<K, V
     }
 
     @Override
-    public Map<String, Command<K, V, C>> toMap() {
-        Map<String, Command<K, V, C>> map = new LinkedHashMap<>();
+    public Map<String, Command<K, V>> toMap() {
+        Map<String, Command<K, V>> map = new LinkedHashMap<>();
         AbstractPipelineProcess ctx = head.next;
         for (; ; ) {
             if (ctx == tail) {
