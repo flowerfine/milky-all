@@ -8,6 +8,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+/**
+ * fixme 线程池组件出来后在添加任务自定义执行线程池的功能
+ */
 public class DefaultPipeline<K, V> implements Pipeline<K, V> {
 
     static final Logger logger = LoggerFactory.getLogger(DefaultPipeline.class);
