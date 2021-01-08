@@ -181,7 +181,7 @@ public interface Pipeline<K, V, C extends Map<K, V>> {
      */
     Map<String, Command<K, V, C>> toMap();
 
-    Pipeline fireEvent();
+    Pipeline fireEvent(Context<K, V> context);
 
     Pipeline fireExceptionCaught(Throwable cause);
 }

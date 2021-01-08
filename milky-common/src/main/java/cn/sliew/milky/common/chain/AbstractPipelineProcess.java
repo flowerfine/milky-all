@@ -3,11 +3,12 @@ package cn.sliew.milky.common.chain;
 import cn.sliew.milky.common.log.Logger;
 import cn.sliew.milky.common.log.LoggerFactory;
 
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
 
-abstract class AbstractPipelineProcess implements PipelineProcess {
+abstract class AbstractPipelineProcess<K, V, C extends Map<K, V>> implements PipelineProcess <K, V, C> {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractPipelineProcess.class);
 
@@ -48,7 +49,7 @@ abstract class AbstractPipelineProcess implements PipelineProcess {
     }
 
     @Override
-    public Pipeline fireEvent() {
+    public Pipeline<K, V, C> fireEvent(Context<K, V> context) {
         return null;
     }
 

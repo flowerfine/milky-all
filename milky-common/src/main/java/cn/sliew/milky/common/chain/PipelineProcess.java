@@ -27,7 +27,7 @@ public interface PipelineProcess<K, V, C extends Map<K, V>> {
      */
     Pipeline<K, V, C> pipeline();
 
-    Pipeline fireEvent();
+    Pipeline<K, V, C> fireEvent(Context<K, V> context);
 
     /**
      * A {@link Command} received an {@link Throwable} in one of its operations.

@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 
-public class DefaultPipeline implements Pipeline {
+public class DefaultPipeline<K, V, C extends Map<K, V>> implements Pipeline<K, V, C> {
 
     static final Logger logger = LoggerFactory.getLogger(DefaultPipeline.class);
 
@@ -248,12 +248,12 @@ public class DefaultPipeline implements Pipeline {
     }
 
     @Override
-    public Map<String, Command> toMap() {
+    public Map<String, Command<K, V, C>> toMap() {
         return null;
     }
 
     @Override
-    public Pipeline fireEvent() {
+    public Pipeline fireEvent(Context<K, V> context) {
         return null;
     }
 
