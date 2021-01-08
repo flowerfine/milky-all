@@ -16,7 +16,7 @@ public class PipelineException extends RuntimeException {
     /**
      * Context used when exception occurred.
      */
-    private final Map<?, ?> context;
+    private final Context<?, ?> context;
 
     /**
      * Command that failed when exception occurred.
@@ -52,7 +52,6 @@ public class PipelineException extends RuntimeException {
      *
      * @param <K>           Context key type
      * @param <V>           Context value type
-     * @param <C>           Type of the context associated with this command
      * @param message       the detail message. The detail message is saved for
      *                      later retrieval by the {@link #getMessage()} method.
      * @param cause         the cause (which is saved for later retrieval by the
@@ -64,8 +63,7 @@ public class PipelineException extends RuntimeException {
      * @param failedCommand The Command object in which the exception was
      *                      thrown.
      */
-    public <K, V, C extends Map<K, V>> PipelineException(String message, Throwable cause,
-                                                         C context, Command<K, V> failedCommand) {
+    public <K, V> PipelineException(String message, Throwable cause, Context<K, V> context, Command<K, V> failedCommand) {
         super(message, cause);
         this.context = context;
         this.failedCommand = failedCommand;
@@ -80,8 +78,7 @@ public class PipelineException extends RuntimeException {
     }
 
     /**
-     * @return The {@link Command} object in which the original exception was
-     * thrown.
+     * @return The {@link Command} object in which the original exception was thrown.
      */
     public Command<?, ?> getFailedCommand() {
         return failedCommand;

@@ -11,13 +11,13 @@ public interface Command<K, V> {
     /**
      * Execute a unit of processing work to be performed.
      * <p>
-     * A command may either complete the required processing and return
-     * finished, or delegate remaining processing to the subsequent command
-     * in the enclosing {@link Pipeline} by returning continue.
+     * A command may either complete the required processing and just return or call async future,
+     * or delegate remaining processing to the subsequent command
+     * in the enclosing {@link Pipeline} by continue fire event.
      *
-     * @param process The command context
+     * @param process The command context through whole {@link Pipeline}
      * @param context The {@link Context} to be processed by this {@link Command}
-     * @param future  The result container
+     * @param future  The result container and async listener
      * @throws PipelineException        general purpose exception return to indicate abnormal termination
      * @throws IllegalArgumentException if <code>context</code> is <code>null</code>
      */

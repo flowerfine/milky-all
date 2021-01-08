@@ -32,8 +32,9 @@ public interface PipelineProcess<K, V> {
     /**
      * A {@link Command} received an {@link Throwable} in one of its operations.
      * <p>
-     * This will result in having the  {@link Command#exceptionCaught(AbstractPipelineProcess, Context, java.util.concurrent.CompletableFuture, Throwable)}
-     * method  called of the next  {@link Command} contained in the  {@link Pipeline}.
+     * This will result in having the
+     * {@link Command#exceptionCaught(AbstractPipelineProcess, Context, java.util.concurrent.CompletableFuture, Throwable)}
+     * method called of the next {@link Command} contained in the {@link Pipeline}.
      */
     PipelineProcess fireExceptionCaught(Context<K, V> context, CompletableFuture<?> future, Throwable cause);
 }
