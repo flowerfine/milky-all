@@ -13,10 +13,10 @@ public class Netty4TransportMain {
 
     public static void main(String[] args) throws Exception {
         Netty4Transport transport = new Netty4Transport();
-        transport.bind(new InetSocketAddress(InetAddress.getByName("localhost"), 10086));
+        transport.bind(new InetSocketAddress(InetAddress.getByName("localhost"), 10086), new Netty4ChannelHandler());
         Node node = new Node("test_node", UUID.randomUUID().toString(), "localhost", "wangqi", 10086, Collections.emptyMap());
         Thread.sleep(1000 * 3);
-        TcpChannel connnect = transport.connnect(node);
+        TcpChannel connnect = transport.connnect(node, new Netty4ChannelHandler());
         Thread.sleep(1000 * 3);
         connnect.sendMessage("hhhhh".getBytes());
     }
