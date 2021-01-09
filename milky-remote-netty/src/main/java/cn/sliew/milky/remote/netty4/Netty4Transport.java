@@ -49,6 +49,7 @@ public class Netty4Transport extends TcpTransport {
 
     private static final Logger logger = LoggerFactory.getLogger(Netty4Transport.class);
 
+    static final AttributeKey<ChannelListener> CHANNEL_LISTENER_KEY = AttributeKey.newInstance("milky-remote-channel-listener");
     static final AttributeKey<Netty4TcpChannel> TCP_CHANNEL_KEY = AttributeKey.newInstance("milky-remote-tcp-channel");
     static final AttributeKey<SetOnce<Netty4TcpServerChannel>> TCP_SERVER_CHANNEL_KEY = AttributeKey.newInstance("milky-remote-tcp-server-channel");
 
@@ -123,12 +124,13 @@ public class Netty4Transport extends TcpTransport {
 
         Netty4TcpChannel nettyChannel = new Netty4TcpChannel(channel, false, connectFuture);
         channel.attr(TCP_CHANNEL_KEY).set(nettyChannel);
+        channel.attr(CHANNEL_LISTENER_KEY).set(listener);
         return nettyChannel;
     }
 
     @Override
     protected Netty4TcpServerChannel doBind(InetSocketAddress address, ChannelListener listener) throws IOException {
-        serverBootstrap.childAttr(AttributeKey.newInstance("milky-123-tcp-server-channel"), "hhh");
+        serverBootstrap.childAttr(CHANNEL_LISTENER_KEY, listener);
         Channel channel = serverBootstrap.bind(address).syncUninterruptibly().channel();
         Netty4TcpServerChannel tcpServerChannel = new Netty4TcpServerChannel(channel);
         tcpServerChannelHolder.set(tcpServerChannel);
