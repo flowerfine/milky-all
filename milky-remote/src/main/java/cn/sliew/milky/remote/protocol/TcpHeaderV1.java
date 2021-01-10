@@ -18,25 +18,24 @@ public class TcpHeaderV1 {
      * magic code for message handle type.
      * eg. request, response, one way
      * elasticsearch use status handle message handle type、 response status、compress
+     *
+     * @see MessageHandleType
      */
     public static final int MESSAGE_HANDEL_TYPE_SIZE = 1;
 
     /**
      * magic code for message type.
      * eg. payload, ping
+     *
+     * @see MessageType
      */
-    public static final int MESSAGE_TYPE_SIZE = 2;
+    public static final int MESSAGE_TYPE_SIZE = 1;
 
     /**
      * magic code for message type version.
      * eg. v1, v2...
      */
     public static final int MESSAGE_TYPE_VERSION_SIZE = 1;
-
-    /**
-     * request id.
-     */
-    public static final int REQUEST_ID_SIZE = 8;
 
     /**
      * magic code for serializer.
@@ -51,9 +50,9 @@ public class TcpHeaderV1 {
     public static final int ENCRYPTION_TYPE = 1;
 
     /**
-     * crc size.
+     * request id.
      */
-    public static final int CRC_SIZE = 4;
+    public static final int REQUEST_ID_SIZE = 8;
 
     /**
      * request time out.
@@ -72,13 +71,21 @@ public class TcpHeaderV1 {
     public static final int VARIABLE_HEADER_SIZE = 4;
 
     /**
+     * variable action size.
+     */
+    public static final int VARIABLE_ACTION_SIZE = 4;
+
+    /**
      * variable content size.
      */
     public static final int VARIABLE_CONTENT_SIZE = 4;
 
+    /**
+     * crc size.
+     */
+    public static final int CRC_SIZE = 4;
+
     public static final int HEADER_SIZE = PROTOCOL_SIZE + PROTOCOL_VERSION_SIZE + MESSAGE_HANDEL_TYPE_SIZE +
             MESSAGE_TYPE_SIZE + MESSAGE_TYPE_VERSION_SIZE + REQUEST_ID_SIZE + CODEC_ID_SIZE + ENCRYPTION_TYPE +
-            CRC_SIZE + VARIABLE_HEADER_SIZE + VARIABLE_CONTENT_SIZE;
-
-
+            VARIABLE_HEADER_SIZE + VARIABLE_ACTION_SIZE + VARIABLE_CONTENT_SIZE + CRC_SIZE;
 }
