@@ -28,10 +28,10 @@ public abstract class StreamOutput extends OutputStream {
     private static byte ONE = 1;
     private static byte TWO = 2;
 
-    private static final Map<Class<?>, Writeable.Writer> WRITERS;
+    private static final Map<Class<?>, Writable.Writer> WRITERS;
 
     static {
-        Map<Class<?>, Writeable.Writer> writers = new HashMap<>();
+        Map<Class<?>, Writable.Writer> writers = new HashMap<>();
         writers.put(Byte.class, (o, v) -> {
             o.writeByte((byte) 0);
             o.writeByte((Byte) v);
@@ -321,7 +321,7 @@ public abstract class StreamOutput extends OutputStream {
             writeByte((byte) -1);
             return;
         }
-        final Writeable.Writer writer = WRITERS.get(value.getClass());
+        final Writable.Writer writer = WRITERS.get(value.getClass());
         if (writer != null) {
             writer.write(this, value);
         } else {

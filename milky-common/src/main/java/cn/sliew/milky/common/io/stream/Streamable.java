@@ -5,6 +5,6 @@ package cn.sliew.milky.common.io.stream;
  * implements equals and hashCode then a copy made by serializing and deserializing must be equal and have the same hashCode.
  * It isn't required that such a copy be entirely unchanged.
  */
-public interface Streamable extends Writeable, Readable {
+public interface Streamable extends Writable, Readable {
 
 }

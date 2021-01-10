@@ -1,5 +1,8 @@
 package cn.sliew.milky.remote.protocol;
 
+/**
+ * todo 添加协议的自定义数据
+ */
 public class ProtocolV1 implements Protocol {
 
     /**

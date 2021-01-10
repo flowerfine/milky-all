@@ -2,7 +2,10 @@ package cn.sliew.milky.common.io.stream;
 
 import java.io.IOException;
 
-public interface Writeable {
+/**
+ * todo 如果使用它作为transport层的传输对象，则无法嵌入自定义的协议
+ */
+public interface Writable {
 
     /**
      * Write this object's fields to a {@linkplain StreamOutput}.
