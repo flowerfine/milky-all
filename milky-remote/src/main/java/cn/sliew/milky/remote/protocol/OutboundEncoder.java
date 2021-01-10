@@ -1,8 +1,7 @@
 package cn.sliew.milky.remote.protocol;
 
+import cn.sliew.milky.remote.buffer.ChannelBuffer;
 import cn.sliew.milky.remote.transport.TcpChannel;
-
-import java.io.Serializable;
 
 public interface OutboundEncoder<T extends TcpChannel> {
 
@@ -10,8 +9,8 @@ public interface OutboundEncoder<T extends TcpChannel> {
      * Encode object into bytes.
      *
      * @param channel
-     * @param msg
-     * @param out bytes container
+     * @param message
+     * @param out     bytes container
      */
-    void encode(T channel, Serializable msg, Object out);
+    void encode(T channel, Object message, ChannelBuffer out);
 }
