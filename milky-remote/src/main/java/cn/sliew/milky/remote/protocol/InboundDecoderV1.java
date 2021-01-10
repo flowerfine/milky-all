@@ -1,5 +1,6 @@
 package cn.sliew.milky.remote.protocol;
 
+import cn.sliew.milky.common.io.stream.StreamInput;
 import cn.sliew.milky.remote.buffer.ChannelBuffer;
 import cn.sliew.milky.remote.transport.TcpChannel;
 
@@ -17,7 +18,7 @@ public class InboundDecoderV1 implements InboundDecoder {
 
 
     @Override
-    public void decode(TcpChannel channel, ChannelBuffer in, List out) {
+    public void decode(TcpChannel channel, StreamInput in, List out) {
 
     }
 }

@@ -2,19 +2,24 @@ package cn.sliew.milky.remote.protocol;
 
 public class ProtocolV1 implements Protocol {
 
-    public static final byte PROTOCOL_CODE       = (byte) 1;
-    /** version 1, is the same with RpcProtocol */
-    public static final byte PROTOCOL_VERSION_1  = (byte) 1;
+    /**
+     * default protocol
+     */
+    public static final byte PROTOCOL_CODE = (byte) 1;
+    /**
+     * version 1
+     */
+    public static final byte PROTOCOL_VERSION_1 = (byte) 1;
 
-    private static final int REQUEST_HEADER_LEN  = 23;
+    private static final int REQUEST_HEADER_LEN = 23;
     private static final int RESPONSE_HEADER_LEN = 21;
 
     private final OutboundEncoder encoder;
     private final InboundDecoder decoder;
 
     public ProtocolV1() {
-        this.encoder = new RpcCommandEncoderV2();
-        this.decoder = new RpcCommandDecoderV2();
+        this.encoder = new OutboundEncoderV2();
+        this.decoder = new InboundDecoderV1();
     }
 
     public static int getRequestHeaderLength() {
@@ -28,11 +33,11 @@ public class ProtocolV1 implements Protocol {
 
     @Override
     public OutboundEncoder getEncoder() {
-        return null;
+        return this.encoder;
     }
 
     @Override
     public InboundDecoder getDecoder() {
-        return null;
+        return this.decoder;
     }
 }
