@@ -17,6 +17,7 @@ public class TcpHeaderV1 {
     /**
      * magic code for message handle type.
      * eg. request, response, one way
+     * elasticsearch use status handle message handle type、 response status、compress
      */
     public static final int MESSAGE_HANDEL_TYPE_SIZE = 1;
 
@@ -75,16 +76,9 @@ public class TcpHeaderV1 {
      */
     public static final int VARIABLE_CONTENT_SIZE = 4;
 
+    public static final int HEADER_SIZE = PROTOCOL_SIZE + PROTOCOL_VERSION_SIZE + MESSAGE_HANDEL_TYPE_SIZE +
+            MESSAGE_TYPE_SIZE + MESSAGE_TYPE_VERSION_SIZE + REQUEST_ID_SIZE + CODEC_ID_SIZE + ENCRYPTION_TYPE +
+            CRC_SIZE + VARIABLE_HEADER_SIZE + VARIABLE_CONTENT_SIZE;
 
-    public static final int BYTES_REQUIRED_FOR_MESSAGE_SIZE = MARKER_BYTES_SIZE + MESSAGE_LENGTH_SIZE;
 
-    public static final int VERSION_POSITION = MARKER_BYTES_SIZE + MESSAGE_LENGTH_SIZE + REQUEST_ID_SIZE + STATUS_SIZE;
-
-    public static final int VARIABLE_HEADER_SIZE_POSITION = VERSION_POSITION + VERSION_ID_SIZE;
-
-    private static final int PRE_76_HEADER_SIZE = VERSION_POSITION + VERSION_ID_SIZE;
-
-    public static final int BYTES_REQUIRED_FOR_VERSION = PRE_76_HEADER_SIZE;
-
-    private static final int HEADER_SIZE = PRE_76_HEADER_SIZE + VARIABLE_HEADER_SIZE;
 }
