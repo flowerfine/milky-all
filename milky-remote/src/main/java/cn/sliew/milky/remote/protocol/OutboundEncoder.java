@@ -1,4 +1,6 @@
-package cn.sliew.milky.remote.transport;
+package cn.sliew.milky.remote.protocol;
+
+import cn.sliew.milky.remote.transport.TcpChannel;
 
 import java.io.Serializable;
 

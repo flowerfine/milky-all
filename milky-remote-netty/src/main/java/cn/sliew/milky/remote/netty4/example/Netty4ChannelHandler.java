@@ -12,6 +12,7 @@ public class Netty4ChannelHandler implements ChannelListener<TcpChannel> {
 
     @Override
     public void disconnected(TcpChannel channel) {
+        System.out.println("失去连接: 服务端: " + channel.isServerChannel() + " channel: " + channel);
     }
 
     @Override
@@ -26,6 +27,7 @@ public class Netty4ChannelHandler implements ChannelListener<TcpChannel> {
         byteBuf.readBytes(bytes);
         System.out.println("收到消息: "+new String(bytes));
         byteBuf.release();
+        channel.close();
     }
 
     @Override
