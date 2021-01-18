@@ -6,12 +6,11 @@
     <parent>
         <artifactId>milky</artifactId>
         <groupId>cn.sliew</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>milky-test</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
