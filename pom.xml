@@ -15,13 +15,14 @@
         <module>milky-remote-netty</module>
         <module>milky-test</module>
         <module>milky-cache</module>
-        <module>milky-remote-netty</module>
     </modules>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.version>1.8</maven.compiler.version>
+        <maven.test.skip>true</maven.test.skip>
+        <maven.deploy.skip>true</maven.deploy.skip>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -89,7 +90,7 @@
                 </configuration>
             </plugin>
 
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>3.9.0</version>
@@ -120,40 +121,40 @@
                     </sourceDirectories>
                 </configuration>
                 <dependencies>
-                    <!--指定依赖的checkstyle版本-->
+                    &lt;!&ndash;指定依赖的checkstyle版本&ndash;&gt;
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
                         <version>8.35</version>
                     </dependency>
                 </dependencies>
-            </plugin>
+            </plugin>-->
 
-            <plugin>
+            <!--<plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>3.0.4</version>
                 <configuration>
-                    <!-- 设置分析工作的等级，可以为Min、Default和Max -->
+                    &lt;!&ndash; 设置分析工作的等级，可以为Min、Default和Max &ndash;&gt;
                     <effort>Low</effort>
-                    <!-- Low、Medium和High (Low最严格) -->
+                    &lt;!&ndash; Low、Medium和High (Low最严格) &ndash;&gt;
                     <threshold>Medium</threshold>
                     <failOnError>true</failOnError>
                     <includeTests>true</includeTests>
-                    <!--findbugs需要忽略的错误的配置文件-->
-                    <!--  <excludeFilterFile>compile.bat</excludeFilterFile> -->
+                    &lt;!&ndash;findbugs需要忽略的错误的配置文件&ndash;&gt;
+                    &lt;!&ndash;  <excludeFilterFile>compile.bat</excludeFilterFile> &ndash;&gt;
                 </configuration>
                 <executions>
                     <execution>
                         <id>run-findbugs</id>
-                        <!-- 在install 阶段触发执行findbugs检查，比如执行 mvn clean install，就会执行findbugs:check命令-->
+                        &lt;!&ndash; 在install 阶段触发执行findbugs检查，比如执行 mvn clean install，就会执行findbugs:check命令&ndash;&gt;
                         <phase>compile</phase>
                         <goals>
-                            <goal>check</goal> <!--指定执行check命令-->
+                            <goal>check</goal> &lt;!&ndash;指定执行check命令&ndash;&gt;
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 

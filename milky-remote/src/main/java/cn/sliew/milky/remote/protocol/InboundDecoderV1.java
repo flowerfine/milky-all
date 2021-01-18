@@ -10,10 +10,10 @@ public class InboundDecoderV1 implements InboundDecoder {
 
     private int lessLen;
 
-    {
-        lessLen = RpcProtocolV2.getResponseHeaderLength() < RpcProtocolV2.getRequestHeaderLength() ? RpcProtocolV2
-                .getResponseHeaderLength() : RpcProtocolV2.getRequestHeaderLength();
-    }
+//    {
+//        lessLen = RpcProtocolV2.getResponseHeaderLength() < RpcProtocolV2.getRequestHeaderLength() ? RpcProtocolV2
+//                .getResponseHeaderLength() : RpcProtocolV2.getRequestHeaderLength();
+//    }
 
 
 
