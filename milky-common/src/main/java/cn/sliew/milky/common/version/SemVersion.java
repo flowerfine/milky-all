@@ -7,8 +7,6 @@ package cn.sliew.milky.common.version;
  */
 public class SemVersion {
 
-    private static final String REGEX = "(0|[1-9]d*).(0|[1-9]d*).(0|[1-9]d*)";
-
     private final int major;
     private final int minor;
     private final int patch;
@@ -17,6 +15,18 @@ public class SemVersion {
         this.major = major;
         this.minor = minor;
         this.patch = patch;
+    }
+
+    public SemVersion upMajor() {
+        return SemVersion.semVersion(this.major + 1, this.minor, this.patch);
+    }
+
+    public SemVersion upMinor() {
+        return SemVersion.semVersion(this.major, this.minor + 1, this.patch);
+    }
+
+    public SemVersion upPatch() {
+        return SemVersion.semVersion(this.major, this.minor, this.patch + 1);
     }
 
     public static SemVersion semVersion() {
