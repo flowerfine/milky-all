@@ -2,6 +2,8 @@ package cn.sliew.milky.common.exception;
 
 public class BizException extends RuntimeException {
 
+    private static final long serialVersionUID = 9196589398441900408L;
+
     protected long code = BizExceptionEnum.FAILURE.getCode();
 
     protected boolean retryable = BizExceptionEnum.FAILURE.isRetryable();
