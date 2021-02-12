@@ -4,12 +4,16 @@ import cn.sliew.milky.common.util.ToStringBuilder;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static cn.sliew.milky.common.check.Ensures.condition;
 import static cn.sliew.milky.common.check.Ensures.notBlank;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -74,6 +78,66 @@ public class TokenFormat implements Serializable {
         String[] parts = source.split(String.valueOf(this.segmentDelimiter));
         List<Segment> segments = Arrays.stream(parts).map(this::createSegment).collect(toList());
         return new UniqueId(this, segments);
+    }
+
+    private Segment createSegment(String segmentString) throws TokenParseException {
+        Matcher segmentMatcher = this.segmentPattern.matcher(segmentString);
+        if (!segmentMatcher.matches()) {
+            throw new TokenParseException(String.format("'%s' is not a well-formed UniqueId segment", segmentString));
+        }
+        String type = decode(checkAllowed(segmentMatcher.group(1)));
+        String value = decode(checkAllowed(segmentMatcher.group(2)));
+        return new Segment(type, value);
+    }
+
+    private String checkAllowed(String typeOrValue) {
+        checkDoesNotContain(typeOrValue, this.segmentDelimiter);
+        checkDoesNotContain(typeOrValue, this.typeValueSeparator);
+        checkDoesNotContain(typeOrValue, this.openSegment);
+        checkDoesNotContain(typeOrValue, this.closeSegment);
+        return typeOrValue;
+    }
+
+    private void checkDoesNotContain(String typeOrValue, char forbiddenCharacter) {
+        condition(typeOrValue.indexOf(forbiddenCharacter) < 0,
+                () -> String.format("type or value '%s' must not contain '%s'", typeOrValue, forbiddenCharacter));
+    }
+
+    /**
+     * Format and return the string representation of the supplied {@code UniqueId}.
+     */
+    String format(Token token) {
+        return token.getSegments().stream()
+                .map(this::describe)
+                .collect(joining(String.valueOf(this.segmentDelimiter)));
+    }
+
+    private String describe(Segment segment) {
+        String body = encode(segment.getType()) + typeValueSeparator + encode(segment.getValue());
+        return openSegment + body + closeSegment;
+    }
+
+    private String encode(String s) {
+        StringBuilder builder = new StringBuilder(s.length());
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            String value = encodedCharacterMap.get(c);
+            if (value == null) {
+                builder.append(c);
+                continue;
+            }
+            builder.append(value);
+        }
+        return builder.toString();
+    }
+
+    private static String decode(String s) {
+        try {
+            return URLDecoder.decode(s, StandardCharsets.UTF_8.name());
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new TokenParseException("UTF-8 should be supported", e);
+        }
     }
 
 
