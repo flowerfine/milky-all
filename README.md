@@ -1,6 +1,7 @@
 # 组件列表
 
 * 单位组件。如时间、byte、内存等。
+* 遍历组件。树形遍历，图形遍历
 
 
 
@@ -14,3 +15,6 @@
 
 
 
+## 遍历组件
+
+`Visitor`和`Filter`。参考dolphinscheduler或junit5
