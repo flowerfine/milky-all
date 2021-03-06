@@ -17,4 +17,4 @@
 
 ## 遍历组件
 
-`Visitor`和`Filter`。参考dolphinscheduler或junit5
+`Visitor`和`Filter`。参考dolphinscheduler或junit5的`NodeTreeWalker`。
