@@ -27,7 +27,7 @@ public class Token implements Cloneable, Serializable {
     }
 
     /**
-     * Create a root unique ID from the supplied {@code segmentType} and
+     * Create a root Token from the supplied {@code segmentType} and
      * {@code value} using the default format.
      *
      * @param segmentType the segment type; never {@code null} or blank
@@ -49,7 +49,7 @@ public class Token implements Cloneable, Serializable {
     }
 
     /**
-     * Initialize a {@code UniqueId} instance.
+     * Initialize a {@code Token} instance.
      *
      * @implNote A defensive copy of the segment list is <b>not</b> created by
      * this implementation. All callers should immediately drop the reference
@@ -66,22 +66,22 @@ public class Token implements Cloneable, Serializable {
 
     /**
      * Get the immutable list of {@linkplain TokenFormat.Segment segments} that make up this
-     * {@code UniqueId}.
+     * {@code Token}.
      */
     public final List<TokenFormat.Segment> getSegments() {
         return unmodifiableList(this.segments);
     }
 
     /**
-     * Construct a new {@code UniqueId} by appending a new {@link TokenFormat.Segment}, based
+     * Construct a new {@code Token} by appending a new {@link TokenFormat.Segment}, based
      * on the supplied {@code segmentType} and {@code value}, to the end of this
-     * {@code UniqueId}.
+     * {@code Token}.
      *
-     * <p>This {@code UniqueId} will not be modified.
+     * <p>This {@code Token} will not be modified.
      *
      * <p>Neither the {@code segmentType} nor the {@code value} may contain any
      * of the special characters used for constructing the string representation
-     * of this {@code UniqueId}.
+     * of this {@code Token}.
      *
      * @param segmentType the type of the segment; never {@code null} or blank
      * @param value       the value of the segment; never {@code null} or blank
@@ -91,10 +91,10 @@ public class Token implements Cloneable, Serializable {
     }
 
     /**
-     * Construct a new {@code UniqueId} by appending a new {@link TokenFormat.Segment} to
-     * the end of this {@code UniqueId}.
+     * Construct a new {@code Token} by appending a new {@link TokenFormat.Segment} to
+     * the end of this {@code Token}.
      *
-     * <p>This {@code UniqueId} will not be modified.
+     * <p>This {@code Token} will not be modified.
      *
      * @param segment the segment to be appended; never {@code null}
      */
@@ -108,10 +108,9 @@ public class Token implements Cloneable, Serializable {
 
     /**
      * Determine if the supplied {@code Token} is a prefix for this
-     * {@code UniqueId}.
+     * {@code Token}.
      *
-     * @param potentialPrefix the {@code UniqueId} to be checked; never {@code null}
-     * @since 1.1
+     * @param potentialPrefix the {@code Token} to be checked; never {@code null}
      */
     public boolean hasPrefix(Token potentialPrefix) {
         checkNotNull(potentialPrefix, "potentialPrefix must not be null");
@@ -121,13 +120,12 @@ public class Token implements Cloneable, Serializable {
     }
 
     /**
-     * Construct a new {@code UniqueId} and removing the last {@link TokenFormat.Segment} of
-     * this {@code UniqueId}.
+     * Construct a new {@code Token} and removing the last {@link TokenFormat.Segment} of
+     * this {@code Token}.
      *
-     * <p>This {@code UniqueId} will not be modified.
+     * <p>This {@code Token} will not be modified.
      *
-     * @return a new {@code UniqueId}; never {@code null}
-     * @since 1.5
+     * @return a new {@code Token}; never {@code null}
      */
     public Token removeLastSegment() {
         checkState(this.segments.size() > 1, "Cannot remove last remaining segment");
@@ -135,10 +133,9 @@ public class Token implements Cloneable, Serializable {
     }
 
     /**
-     * Get the last {@link TokenFormat.Segment} of this {@code UniqueId}.
+     * Get the last {@link TokenFormat.Segment} of this {@code Token}.
      *
      * @return the last {@code Segment}; never {@code null}
-     * @since 1.5
      */
     public TokenFormat.Segment getLastSegment() {
         return this.segments.get(this.segments.size() - 1);
@@ -184,7 +181,7 @@ public class Token implements Cloneable, Serializable {
     }
 
     /**
-     * Generate the unique, formatted string representation of this {@code UniqueId}
+     * Generate the unique, formatted string representation of this {@code Token}
      * using the configured {@link TokenFormat}.
      */
     @Override
