@@ -372,7 +372,7 @@
                                 </goals>
                                 <configuration>
                                     <resourceBundles>
-                                        <resourceBundle>org.apache:apache-jar-resource-bundle:1.5-SNAPSHOT
+                                        <resourceBundle>org.apache:apache-jar-resource-bundle:1.4
                                         </resourceBundle>
                                     </resourceBundles>
                                 </configuration>
