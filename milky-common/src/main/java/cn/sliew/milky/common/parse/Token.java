@@ -44,8 +44,8 @@ public class Token implements Cloneable, Serializable {
     // lazily computed
     private transient SoftReference<String> toString;
 
-    private Token(TokenFormat uniqueIdFormat, TokenFormat.Segment segment) {
-        this(uniqueIdFormat, singletonList(segment));
+    private Token(TokenFormat tokenFormat, TokenFormat.Segment segment) {
+        this(tokenFormat, singletonList(segment));
     }
 
     /**
