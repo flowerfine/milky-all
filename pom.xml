@@ -58,6 +58,7 @@
         <module>milky-remote-netty</module>
         <module>milky-test</module>
         <module>milky-cache</module>
+        <module>milky-all</module>
     </modules>
 
     <properties>
