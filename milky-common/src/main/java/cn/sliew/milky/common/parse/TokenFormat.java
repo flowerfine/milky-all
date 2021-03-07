@@ -77,7 +77,7 @@ public class TokenFormat implements Serializable {
     Token parse(String source) throws TokenParseException {
         String[] parts = source.split(String.valueOf(this.segmentDelimiter));
         List<Segment> segments = Arrays.stream(parts).map(this::createSegment).collect(toList());
-        return new UniqueId(this, segments);
+        return new Token(this, segments);
     }
 
     private Segment createSegment(String segmentString) throws TokenParseException {
