@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.sliew</groupId>
+        <artifactId>milky</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <artifactId>milky-all</artifactId>
+    <packaging>jar</packaging>
+    <name>milky</name>
+    <url>https://github.com/kalencaya/milky</url>
+    <description>Milky is an userful java component toolset.</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.sliew</groupId>
+            <artifactId>milky-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.sliew</groupId>
+            <artifactId>milky-concurrent</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.sliew</groupId>
+            <artifactId>milky-test</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createSourcesJar>true</createSourcesJar>
+                            <artifactSet>
+                                <includes>
+                                    <include>${project.groupId}:*:*</include>
+                                </includes>
+                            </artifactSet>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/maven/**</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

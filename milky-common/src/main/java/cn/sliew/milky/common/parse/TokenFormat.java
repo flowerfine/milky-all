@@ -77,13 +77,13 @@ public class TokenFormat implements Serializable {
     Token parse(String source) throws TokenParseException {
         String[] parts = source.split(String.valueOf(this.segmentDelimiter));
         List<Segment> segments = Arrays.stream(parts).map(this::createSegment).collect(toList());
-        return new UniqueId(this, segments);
+        return new Token(this, segments);
     }
 
     private Segment createSegment(String segmentString) throws TokenParseException {
         Matcher segmentMatcher = this.segmentPattern.matcher(segmentString);
         if (!segmentMatcher.matches()) {
-            throw new TokenParseException(String.format("'%s' is not a well-formed UniqueId segment", segmentString));
+            throw new TokenParseException(String.format("'%s' is not a well-formed Token segment", segmentString));
         }
         String type = decode(checkAllowed(segmentMatcher.group(1)));
         String value = decode(checkAllowed(segmentMatcher.group(2)));
@@ -104,7 +104,7 @@ public class TokenFormat implements Serializable {
     }
 
     /**
-     * Format and return the string representation of the supplied {@code UniqueId}.
+     * Format and return the string representation of the supplied {@code Token}.
      */
     String format(Token token) {
         return token.getSegments().stream()
@@ -134,8 +134,7 @@ public class TokenFormat implements Serializable {
     private static String decode(String s) {
         try {
             return URLDecoder.decode(s, StandardCharsets.UTF_8.name());
-        }
-        catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             throw new TokenParseException("UTF-8 should be supported", e);
         }
     }
@@ -202,6 +201,5 @@ public class TokenFormat implements Serializable {
         }
 
     }
-
 
 }

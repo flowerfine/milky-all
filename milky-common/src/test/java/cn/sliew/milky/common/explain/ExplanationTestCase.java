@@ -1,7 +1,7 @@
 package cn.sliew.milky.common.explain;
 
 import cn.sliew.milky.test.MilkyTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ExplanationTestCase extends MilkyTestCase {
 

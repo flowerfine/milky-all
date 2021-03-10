@@ -17,4 +17,11 @@
 
 ## 遍历组件
 
-`Visitor`和`Filter`。参考dolphinscheduler或junit5
+`Visitor`和`Filter`。参考dolphinscheduler或junit5的`NodeTreeWalker`。
+
+
+
+##占位符组件
+
+参考mybatis的`#{}`和`${}`的占位符解析。
+

@@ -4,14 +4,14 @@ import cn.sliew.milky.common.log.Logger;
 import cn.sliew.milky.common.log.LoggerFactory;
 import cn.sliew.milky.common.log.StdOutLoggerFactory;
 import cn.sliew.milky.test.MilkyTestCase;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CompletableFuture;
 
 public class DefaultPipelineTestCase extends MilkyTestCase {
 
-    @Before
+    @BeforeEach
     public void before() {
         LoggerFactory.setDefaultFactory(StdOutLoggerFactory.INSTANCE);
     }

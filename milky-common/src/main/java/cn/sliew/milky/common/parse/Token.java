@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static cn.sliew.milky.common.check.Ensures.checkNotNull;
-import static cn.sliew.milky.common.check.Ensures.notBlank;
+import static cn.sliew.milky.common.check.Ensures.*;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.unmodifiableList;
 
@@ -28,7 +27,7 @@ public class Token implements Cloneable, Serializable {
     }
 
     /**
-     * Create a root unique ID from the supplied {@code segmentType} and
+     * Create a root Token from the supplied {@code segmentType} and
      * {@code value} using the default format.
      *
      * @param segmentType the segment type; never {@code null} or blank
@@ -45,12 +44,12 @@ public class Token implements Cloneable, Serializable {
     // lazily computed
     private transient SoftReference<String> toString;
 
-    private Token(TokenFormat uniqueIdFormat, TokenFormat.Segment segment) {
-        this(uniqueIdFormat, singletonList(segment));
+    private Token(TokenFormat tokenFormat, TokenFormat.Segment segment) {
+        this(tokenFormat, singletonList(segment));
     }
 
     /**
-     * Initialize a {@code UniqueId} instance.
+     * Initialize a {@code Token} instance.
      *
      * @implNote A defensive copy of the segment list is <b>not</b> created by
      * this implementation. All callers should immediately drop the reference
@@ -66,23 +65,23 @@ public class Token implements Cloneable, Serializable {
     }
 
     /**
-     * Get the immutable list of {@linkplain Segment segments} that make up this
-     * {@code UniqueId}.
+     * Get the immutable list of {@linkplain TokenFormat.Segment segments} that make up this
+     * {@code Token}.
      */
     public final List<TokenFormat.Segment> getSegments() {
         return unmodifiableList(this.segments);
     }
 
     /**
-     * Construct a new {@code UniqueId} by appending a new {@link Segment}, based
+     * Construct a new {@code Token} by appending a new {@link TokenFormat.Segment}, based
      * on the supplied {@code segmentType} and {@code value}, to the end of this
-     * {@code UniqueId}.
+     * {@code Token}.
      *
-     * <p>This {@code UniqueId} will not be modified.
+     * <p>This {@code Token} will not be modified.
      *
      * <p>Neither the {@code segmentType} nor the {@code value} may contain any
      * of the special characters used for constructing the string representation
-     * of this {@code UniqueId}.
+     * of this {@code Token}.
      *
      * @param segmentType the type of the segment; never {@code null} or blank
      * @param value       the value of the segment; never {@code null} or blank
@@ -92,10 +91,10 @@ public class Token implements Cloneable, Serializable {
     }
 
     /**
-     * Construct a new {@code UniqueId} by appending a new {@link Segment} to
-     * the end of this {@code UniqueId}.
+     * Construct a new {@code Token} by appending a new {@link TokenFormat.Segment} to
+     * the end of this {@code Token}.
      *
-     * <p>This {@code UniqueId} will not be modified.
+     * <p>This {@code Token} will not be modified.
      *
      * @param segment the segment to be appended; never {@code null}
      */
@@ -108,60 +107,37 @@ public class Token implements Cloneable, Serializable {
     }
 
     /**
-     * Construct a new {@code UniqueId} by appending a new {@link Segment}, based
-     * on the supplied {@code engineId}, to the end of this {@code UniqueId}.
+     * Determine if the supplied {@code Token} is a prefix for this
+     * {@code Token}.
      *
-     * <p>This {@code UniqueId} will not be modified.
-     *
-     * <p>The engine ID will be stored in a {@link Segment} with
-     * {@link Segment#getType type} {@value ENGINE_SEGMENT_TYPE}.
-     *
-     * @param engineId the engine ID; never {@code null} or blank
-     * @since 1.8
+     * @param potentialPrefix the {@code Token} to be checked; never {@code null}
      */
-    public UniqueId appendEngine(String engineId) {
-        return append(new Segment(ENGINE_SEGMENT_TYPE, engineId));
-    }
-
-    /**
-     * Determine if the supplied {@code UniqueId} is a prefix for this
-     * {@code UniqueId}.
-     *
-     * @param potentialPrefix the {@code UniqueId} to be checked; never {@code null}
-     * @since 1.1
-     */
-    @API(status = STABLE, since = "1.1")
-    public boolean hasPrefix(UniqueId potentialPrefix) {
-        Preconditions.notNull(potentialPrefix, "potentialPrefix must not be null");
+    public boolean hasPrefix(Token potentialPrefix) {
+        checkNotNull(potentialPrefix, "potentialPrefix must not be null");
         int size = this.segments.size();
         int prefixSize = potentialPrefix.segments.size();
         return size >= prefixSize && this.segments.subList(0, prefixSize).equals(potentialPrefix.segments);
     }
 
     /**
-     * Construct a new {@code UniqueId} and removing the last {@link Segment} of
-     * this {@code UniqueId}.
+     * Construct a new {@code Token} and removing the last {@link TokenFormat.Segment} of
+     * this {@code Token}.
      *
-     * <p>This {@code UniqueId} will not be modified.
+     * <p>This {@code Token} will not be modified.
      *
-     * @return a new {@code UniqueId}; never {@code null}
-     * @throws org.junit.platform.commons.PreconditionViolationException if this {@code UniqueId} contains a single segment
-     * @since 1.5
+     * @return a new {@code Token}; never {@code null}
      */
-    @API(status = STABLE, since = "1.5")
-    public UniqueId removeLastSegment() {
-        Preconditions.condition(this.segments.size() > 1, "Cannot remove last remaining segment");
-        return new UniqueId(uniqueIdFormat, new ArrayList<>(this.segments.subList(0, this.segments.size() - 1)));
+    public Token removeLastSegment() {
+        checkState(this.segments.size() > 1, "Cannot remove last remaining segment");
+        return new Token(tokenFormat, new ArrayList<>(this.segments.subList(0, this.segments.size() - 1)));
     }
 
     /**
-     * Get the last {@link Segment} of this {@code UniqueId}.
+     * Get the last {@link TokenFormat.Segment} of this {@code Token}.
      *
      * @return the last {@code Segment}; never {@code null}
-     * @since 1.5
      */
-    @API(status = STABLE, since = "1.5")
-    public Segment getLastSegment() {
+    public TokenFormat.Segment getLastSegment() {
         return this.segments.get(this.segments.size() - 1);
     }
 
@@ -179,7 +155,7 @@ public class Token implements Cloneable, Serializable {
             return false;
         }
 
-        UniqueId that = (UniqueId) o;
+        Token that = (Token) o;
         return this.segments.equals(that.segments);
     }
 
@@ -205,15 +181,15 @@ public class Token implements Cloneable, Serializable {
     }
 
     /**
-     * Generate the unique, formatted string representation of this {@code UniqueId}
-     * using the configured {@link UniqueIdFormat}.
+     * Generate the unique, formatted string representation of this {@code Token}
+     * using the configured {@link TokenFormat}.
      */
     @Override
     public String toString() {
         SoftReference<String> s = this.toString;
         String value = s == null ? null : s.get();
         if (value == null) {
-            value = this.uniqueIdFormat.format(this);
+            value = this.tokenFormat.format(this);
             // this is a benign race like String#hash
             // we potentially read and write values from multiple threads
             // without a happens-before relationship
