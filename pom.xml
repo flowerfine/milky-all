@@ -15,6 +15,7 @@
         <module>milky-remote-netty</module>
         <module>milky-test</module>
         <module>milky-cache</module>
+        <module>milky-resource</module>
     </modules>
 
     <properties>
