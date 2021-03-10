@@ -60,6 +60,7 @@
         <module>milky-cache</module>
         <module>milky-resource</module>
         <module>milky-all</module>
+        <module>milky-objectsize</module>
     </modules>
 
     <properties>
