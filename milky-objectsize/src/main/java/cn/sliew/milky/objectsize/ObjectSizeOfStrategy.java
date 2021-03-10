@@ -1,7 +1,5 @@
 package cn.sliew.milky.objectsize;
 
-import java.io.Serializable;
-
 public interface ObjectSizeOfStrategy {
 
     /**
@@ -10,7 +8,5 @@ public interface ObjectSizeOfStrategy {
      * @param obj The serializable object to compute size of
      * @return The size of the object in bytes. failed with -1.
      */
-    long sizeOf(Serializable obj);
-
     long sizeOf(Object obj);
 }
