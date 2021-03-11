@@ -61,6 +61,7 @@
         <module>milky-resource</module>
         <module>milky-all</module>
         <module>milky-objectsize</module>
+        <module>milky-serialize</module>
     </modules>
 
     <properties>
