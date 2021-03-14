@@ -5,15 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.sliew</groupId>
-        <artifactId>milky-all</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <artifactId>milky-serialize</artifactId>
+        <version>1.0.0</version>
     </parent>
-    <artifactId>milky-cache</artifactId>
+    <artifactId>milky-serialize-api</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>cn.sliew</groupId>
-            <artifactId>milky-concurrent</artifactId>
+            <artifactId>milky-common</artifactId>
         </dependency>
     </dependencies>
 

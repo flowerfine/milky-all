@@ -1,4 +1,6 @@
 # 组件列表
+## 发布命令
+mvn clean deploy -Dmaven.deploy.skip=false -Poss-release -projects milky
 
 * 单位组件。如时间、byte、内存等。
 * 遍历组件。树形遍历，图形遍历
