@@ -11,7 +11,7 @@
     <artifactId>milky</artifactId>
     <packaging>jar</packaging>
     <name>milky</name>
-    <url>https://github.com/kalencaya/milky</url>
+    <url>https://github.com/kalencaya/milky-all</url>
     <description>Milky is an userful java component toolset.</description>
 
     <dependencies>
@@ -28,12 +28,6 @@
             <artifactId>milky-test</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-
-        </plugins>
-    </build>
 
 
 </project>
