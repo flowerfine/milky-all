@@ -61,6 +61,7 @@
         <module>milky-cache</module>
         <module>milky-resource</module>
         <module>milky-objectsize</module>
+        <module>milky-serialize</module>
     </modules>
 
     <properties>
