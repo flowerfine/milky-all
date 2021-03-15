@@ -24,6 +24,10 @@ public class NativeJavaDataOutputView implements DataOutputView {
         this.outputStream = out;
     }
 
+    protected ObjectOutputStream getObjectOutputStream() {
+        return outputStream;
+    }
+
     @Override
     public void write(int b) throws IOException {
         this.outputStream.write(b);

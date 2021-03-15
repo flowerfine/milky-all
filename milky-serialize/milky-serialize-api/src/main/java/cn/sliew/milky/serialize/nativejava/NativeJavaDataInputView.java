@@ -24,6 +24,10 @@ public class NativeJavaDataInputView implements DataInputView {
         this.inputStream = is;
     }
 
+    protected ObjectInputStream getObjectInputStream() {
+        return inputStream;
+    }
+
     @Override
     public void readFully(@NotNull byte[] b) throws IOException {
         this.inputStream.read(b);
