@@ -19,8 +19,6 @@ public class NativeJavaDataInputViewTestCase extends MilkyTestCase {
         temp = path.resolve("temp.txt").toFile();
     }
 
-
-
     @Test
     public void testWithFile() throws IOException {
         FileOutputStream outputStream = new FileOutputStream(temp);

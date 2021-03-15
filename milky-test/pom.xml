@@ -38,11 +38,11 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>net.jqwik</groupId>
             <artifactId>jqwik</artifactId>
             <version>1.5.0</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>org.mockito</groupId>
