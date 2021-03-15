@@ -8,7 +8,7 @@
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>milky-all</name>
-    <url>https://github.com/kalencaya/milky</url>
+    <url>https://github.com/kalencaya/milky-all</url>
     <description>Milky is an userful java component toolset.</description>
 
     <licenses>
@@ -20,9 +20,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git@github.com:kalencaya/milky.git</connection>
-        <developerConnection>scm:git:git@github.com:kalencaya/milky.git</developerConnection>
-        <url>https://github.com/kalencaya/milky</url>
+        <connection>scm:git:git@github.com:kalencaya/milky-all.git</connection>
+        <developerConnection>scm:git:git@github.com:kalencaya/milky-all.git</developerConnection>
+        <url>https://github.com/kalencaya/milky-all</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -46,7 +46,7 @@
         </snapshotRepository>
         <repository>
             <id>sonatype-nexus</id>
-            <name>Nexus Release Repository</name>
+            <name>Sonatype Nexus Release</name>
             <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
@@ -166,22 +166,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>${surefire.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-gpg-plugin</artifactId>
-                    <version>1.6</version>
-                    <configuration>
-                        <useAgent>true</useAgent>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>sign-artifacts</id>
-                            <goals>
-                                <goal>sign</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
