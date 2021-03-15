@@ -1,5 +1,6 @@
 package cn.sliew.milky.test;
 
+import cn.sliew.milky.test.extension.time.TimingExtension;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +22,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 
 @ExtendWith(TimingExtension.class)
-public class MilkyTestCase extends Randomness {
+public class MilkyTestCase {
 
     private static final Collection<String> nettyLoggedLeaks = new ArrayList<>();
 

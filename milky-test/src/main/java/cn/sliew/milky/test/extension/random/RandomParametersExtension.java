@@ -1,4 +1,4 @@
-package cn.sliew.milky.test;
+package cn.sliew.milky.test.extension.random;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
