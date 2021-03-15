@@ -2,7 +2,7 @@ package cn.sliew.milky.test.extension.random;
 
 import java.util.Random;
 
-class Randomness {
+public class Randomness {
 
     private final long seed;
     private final Random random;

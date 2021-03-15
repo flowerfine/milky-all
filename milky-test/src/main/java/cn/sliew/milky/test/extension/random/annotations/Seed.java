@@ -5,10 +5,6 @@ import java.lang.annotation.*;
 /**
  * Defines the starting seed for a given test or the entire suite.
  *
- * <p>If applied to the
- * suite, it semantically overrides {@link SysGlobals#SYSPROP_RANDOM_SEED}, but
- * does not affect individual test cases (these should be repeatable anyway).</p>
- *
  * <p>If applied to the method, it overrides the default randomized value that is derived
  * from the global suite's seed.</p>
  *
@@ -27,7 +23,7 @@ public @interface Seed {
      *
      * <p>The default value <code>random</code> can be used to construct a list of known
      * seeds for which a test previously failed and a random seed in addition to that (coverage
-     * of previous failures + randomized run). See {@link Seeds} for more info.
+     * of previous failures + randomized run).
      */
     String value() default "random";
 }

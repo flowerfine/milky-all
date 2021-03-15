@@ -3,21 +3,19 @@ package cn.sliew.milky.test.extension.random;
 /**
  * Hash routines for primitive types. The implementation is based on the finalization step
  * from Austin Appleby's <code>MurmurHash3</code>.
- * 
+ *
  * @see "http://sites.google.com/site/murmurhash/"
  */
-final class MurmurHash3
-{
-    private MurmurHash3()
-    {
-        // no instances.
+final class MurmurHash3 {
+
+    private MurmurHash3() {
+        throw new IllegalStateException("can't do this!");
     }
 
     /**
      * Hashes a 4-byte sequence (Java int).
      */
-    public static int hash(int k)
-    {
+    public static int hash(int k) {
         k ^= k >>> 16;
         k *= 0x85ebca6b;
         k ^= k >>> 13;
@@ -29,8 +27,7 @@ final class MurmurHash3
     /**
      * Hashes an 8-byte sequence (Java long).
      */
-    public static long hash(long k)
-    {
+    public static long hash(long k) {
         k ^= k >>> 33;
         k *= 0xff51afd7ed558ccdL;
         k ^= k >>> 33;
