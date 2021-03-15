@@ -103,4 +103,10 @@ public class NativeJavaDataInputView implements DataInputView {
     public String readUTF() throws IOException {
         return this.inputStream.readUTF();
     }
+
+    @Override
+    public Object readObject() throws IOException, ClassNotFoundException {
+        return this.inputStream.readObject();
+    }
+
 }

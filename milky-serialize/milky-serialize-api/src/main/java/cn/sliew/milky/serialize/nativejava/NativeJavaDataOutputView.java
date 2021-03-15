@@ -97,4 +97,9 @@ public class NativeJavaDataOutputView implements DataOutputView {
     public void writeUTF(@NotNull String s) throws IOException {
         this.outputStream.writeUTF(s);
     }
+
+    @Override
+    public void writeObject(Object obj) throws IOException {
+        this.outputStream.writeObject(obj);
+    }
 }

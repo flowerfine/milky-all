@@ -29,6 +29,7 @@ public class JavaDataOutputView extends NativeJavaDataOutputView {
         }
     }
 
+    @Override
     public void writeObject(Object obj) throws IOException {
         if (obj == null) {
             getObjectOutputStream().writeByte(0);

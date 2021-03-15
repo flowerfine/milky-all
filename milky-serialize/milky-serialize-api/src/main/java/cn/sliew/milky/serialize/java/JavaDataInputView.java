@@ -11,8 +11,6 @@ import java.io.ObjectInputStream;
  */
 public class JavaDataInputView extends NativeJavaDataInputView {
 
-    public final static int MAX_BYTE_ARRAY_LENGTH = 8 * 1024 * 1024;
-
     public JavaDataInputView(InputStream is) throws IOException {
         super(new ObjectInputStream(is));
     }
@@ -31,6 +29,7 @@ public class JavaDataInputView extends NativeJavaDataInputView {
         return getObjectInputStream().readUTF();
     }
 
+    @Override
     public Object readObject() throws IOException, ClassNotFoundException {
         byte b = getObjectInputStream().readByte();
         if (b == 0) {
