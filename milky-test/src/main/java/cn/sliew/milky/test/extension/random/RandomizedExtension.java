@@ -8,14 +8,19 @@ import org.junit.jupiter.api.extension.ExtensionContext.Store;
 
 public class RandomizedExtension implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
 
-    @Override
-    public void afterTestExecution(ExtensionContext extensionContext) throws Exception {
+    private static final String RANDOMIZED_CONTEXT = "RandomizedContext";
 
+    @Override
+    public void beforeTestExecution(ExtensionContext context) throws Exception {
+        RandomizedContext randomizedContext = RandomizedContext.current();
+        randomizedContext.initializeContext(context);
+        getStore(context).put(RANDOMIZED_CONTEXT, randomizedContext);
     }
 
     @Override
-    public void beforeTestExecution(ExtensionContext extensionContext) throws Exception {
-
+    public void afterTestExecution(ExtensionContext context) throws Exception {
+        getStore(context).remove(RANDOMIZED_CONTEXT, RandomizedContext.class);
+        RandomizedContext.remove();
     }
 
     private Store getStore(ExtensionContext context) {

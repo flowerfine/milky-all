@@ -1,5 +1,6 @@
 package cn.sliew.milky.test;
 
+import cn.sliew.milky.test.extension.random.RandomizedExtension;
 import cn.sliew.milky.test.extension.time.TimingExtension;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -21,7 +22,7 @@ import java.util.Collection;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 
-@ExtendWith(TimingExtension.class)
+@ExtendWith({TimingExtension.class, RandomizedExtension.class})
 public class MilkyTestCase {
 
     private static final Collection<String> nettyLoggedLeaks = new ArrayList<>();
