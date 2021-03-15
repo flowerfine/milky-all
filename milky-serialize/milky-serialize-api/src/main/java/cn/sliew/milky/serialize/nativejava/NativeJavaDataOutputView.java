@@ -102,4 +102,9 @@ public class NativeJavaDataOutputView implements DataOutputView {
     public void writeObject(Object obj) throws IOException {
         this.outputStream.writeObject(obj);
     }
+
+    @Override
+    public void flushBuffer() throws IOException {
+        this.outputStream.flush();
+    }
 }

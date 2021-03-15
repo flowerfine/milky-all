@@ -65,22 +65,22 @@ public class NativeJavaDataInputView implements DataInputView {
 
     @Override
     public int readUnsignedShort() throws IOException {
-        return this.readUnsignedShort();
+        return this.inputStream.readUnsignedShort();
     }
 
     @Override
     public char readChar() throws IOException {
-        return this.readChar();
+        return this.inputStream.readChar();
     }
 
     @Override
     public int readInt() throws IOException {
-        return this.readInt();
+        return this.inputStream.readInt();
     }
 
     @Override
     public long readLong() throws IOException {
-        return this.readLong();
+        return this.inputStream.readLong();
     }
 
     @Override

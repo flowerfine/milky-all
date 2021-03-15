@@ -1,8 +1,6 @@
 package cn.sliew.milky.common.exception;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 
 public final class ThrowableUtil {
 
@@ -25,6 +23,22 @@ public final class ThrowableUtil {
             } catch (IOException ignore) {
                 // ignore as should never happen
             }
+        }
+    }
+
+    public static String exceptionToString(Throwable t) {
+        if (t == null) {
+            return "(null)";
+        }
+
+        try {
+            StringWriter stm = new StringWriter();
+            PrintWriter wrt = new PrintWriter(stm);
+            t.printStackTrace(wrt);
+            wrt.close();
+            return stm.toString();
+        } catch (Throwable ignored) {
+            return t.getClass().getName() + " (error while printing stack trace)";
         }
     }
 

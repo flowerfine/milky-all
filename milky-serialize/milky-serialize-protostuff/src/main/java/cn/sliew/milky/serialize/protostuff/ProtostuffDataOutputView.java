@@ -122,4 +122,8 @@ public class ProtostuffDataOutputView implements DataOutputView {
         dos.write(bytes);
     }
 
+    @Override
+    public void flushBuffer() throws IOException {
+        this.dos.flush();
+    }
 }

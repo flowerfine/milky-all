@@ -8,4 +8,6 @@ public interface DataOutputView extends DataOutput, Serializable {
 
     void writeObject(Object obj) throws IOException;
 
+    void flushBuffer() throws IOException;
+
 }

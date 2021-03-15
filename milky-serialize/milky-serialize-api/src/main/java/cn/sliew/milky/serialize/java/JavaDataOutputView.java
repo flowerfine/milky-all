@@ -38,4 +38,9 @@ public class JavaDataOutputView extends NativeJavaDataOutputView {
             getObjectOutputStream().writeObject(obj);
         }
     }
+
+    @Override
+    public void flushBuffer() throws IOException {
+        getObjectOutputStream().flush();
+    }
 }

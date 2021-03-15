@@ -27,3 +27,5 @@ mvn clean deploy -Dmaven.deploy.skip=false -Poss-release -projects milky
 
 参考mybatis的`#{}`和`${}`的占位符解析。
 
+com.carrotsearch.randomizedtesting.rules.RamUsageEstimator
+
