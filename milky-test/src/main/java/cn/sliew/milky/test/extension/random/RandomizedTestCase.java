@@ -1,26 +1,41 @@
 package cn.sliew.milky.test.extension.random;
 
-import cn.sliew.milky.test.extension.random.generators.RandomStrings;
+import cn.sliew.milky.test.extension.random.generators.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
 
 @ExtendWith(RandomizedExtension.class)
 public class RandomizedTestCase {
+
+    /**
+     * The global multiplier property (Double).
+     *
+     * @see #multiplier()
+     */
+    public static final String SYSPROP_MULTIPLIER = "randomized.multiplier";
+
+    /**
+     * Default multiplier.
+     *
+     * @see #SYSPROP_MULTIPLIER
+     */
+    private static final double DEFAULT_MULTIPLIER = 1.0d;
 
     /**
      * Shortcut for {@link RandomizedContext#current()}.
      */
     public static RandomizedContext getContext() {
         return RandomizedContext.current();
+    }
+
+    /**
+     * Returns true if {@link Nightly} test group is enabled.
+     *
+     * @see Nightly
+     */
+    public static boolean isNightly() {
+        return false;
     }
 
     /**
@@ -76,7 +91,6 @@ public class RandomizedTestCase {
     //
     // Biased value pickers.
     //
-
     /**
      * A biased "evil" random float between min and max (inclusive).
      *
@@ -98,7 +112,6 @@ public class RandomizedTestCase {
     //
     // Delegates to RandomBytes.
     //
-
     /**
      * Returns a byte array with random content.
      *
@@ -123,7 +136,6 @@ public class RandomizedTestCase {
     //
     // Delegates to RandomNumbers.
     //
-
     /**
      * A random integer from 0..max (inclusive).
      */
@@ -217,7 +229,6 @@ public class RandomizedTestCase {
     //
     // Delegates to RandomPicks
     //
-
     /**
      * Pick a random object from the given array. The array must not be empty.
      */
@@ -263,7 +274,6 @@ public class RandomizedTestCase {
     //
     // "multiplied" or scaled value pickers. These will be affected by global multiplier.
     //
-
     /**
      * A multiplier can be used to linearly scale certain values. It can be used to make data
      * or iterations of certain tests "heavier" for nightly runs, for example.
@@ -273,7 +283,6 @@ public class RandomizedTestCase {
      * @see #SYSPROP_MULTIPLIER
      */
     public static double multiplier() {
-        checkContext();
         return systemPropertyAsDouble(SYSPROP_MULTIPLIER, DEFAULT_MULTIPLIER);
     }
 
@@ -317,212 +326,7 @@ public class RandomizedTestCase {
         }
     }
 
-    // Methods to help with I/O and environment.
-
-    /**
-     * @see #globalTempDir()
-     */
-    private static Path globalTempDir;
-
-    /**
-     *
-     */
-    private static AtomicInteger tempSubFileNameCount = new AtomicInteger(0);
-
-    /**
-     * Global temporary directory created for the duration of this class's lifespan. If
-     * multiple class loaders are used, there may be more global temp dirs, but it
-     * shouldn't really be the case in practice.
-     */
-    public static Path globalTempDir() throws IOException {
-        checkContext();
-        synchronized (RandomizedTest.class) {
-            if (globalTempDir == null) {
-                String tempDirPath = System.getProperty("java.io.tmpdir");
-                if (tempDirPath == null)
-                    throw new IOException("No property java.io.tmpdir?");
-
-                Path tempDir = Paths.get(tempDirPath);
-                if (!Files.isDirectory(tempDir) || !Files.isWritable(tempDir)) {
-                    throw new IOException("Temporary folder not accessible: " + tempDir.toAbsolutePath());
-                }
-
-                globalTempDir = createTemp(tempDir, true, () -> {
-                    SimpleDateFormat tsFormat = new SimpleDateFormat("'tests-'yyyyMMddHHmmss'-'SSS", Locale.ROOT);
-                    return tsFormat.format(new Date());
-                });
-
-                Runtime.getRuntime().addShutdownHook(new Thread() {
-                    @SuppressForbidden("Legitimate use of syserr.")
-                    public void run() {
-                        try {
-                            rmDir(globalTempDir);
-                        } catch (IOException e) {
-                            // Not much else to do but to log and quit.
-                            System.err.println("Could not delete global temporary folder: "
-                                    + globalTempDir.toAbsolutePath() + ". Cause: ");
-                            e.printStackTrace(System.err);
-                        }
-                    }
-                });
-            }
-            return globalTempDir;
-        }
-    }
-
-    private static Path createTemp(Path parent, boolean dir, Supplier<String> nameSupplier) throws IOException {
-        int retries = 10;
-        Path target;
-        do {
-            try {
-                Path candidate = parent.resolve(nameSupplier.get());
-                if (dir) {
-                    target = Files.createDirectory(candidate);
-                } else {
-                    target = Files.createFile(candidate);
-                }
-                break;
-            } catch (FileAlreadyExistsException e) {
-                if (--retries < 0) {
-                    throw new IOException("Could not create a unique temporary folder under: " + parent);
-                }
-                try {
-                    Thread.sleep(new Random().nextInt(250));
-                } catch (InterruptedException ex) {
-                    throw new IOException(ex);
-                }
-            }
-        } while (true);
-        return target;
-    }
-
-    /**
-     * Creates a new temporary directory for the {@link LifecycleScope#TEST} duration.
-     *
-     * @see #globalTempDir()
-     */
-    public Path newTempDir() throws IOException {
-        return newTempDir(LifecycleScope.TEST);
-    }
-
-    /**
-     * Creates a temporary directory, deleted after the given lifecycle phase.
-     * Temporary directory is created relative to a globally picked temporary directory.
-     */
-    public static Path newTempDir(LifecycleScope scope) throws IOException {
-        checkContext();
-        synchronized (RandomizedTest.class) {
-            Path tempDir = createTemp(globalTempDir(), true, RandomizedTest::nextTempName);
-            getContext().closeAtEnd(new TempPathResource(tempDir), scope);
-            return tempDir;
-        }
-    }
-
-    /**
-     * Registers a {@link Closeable} resource that should be closed after the test
-     * completes.
-     *
-     * @return <code>resource</code> (for call chaining).
-     */
-    public <T extends Closeable> T closeAfterTest(T resource) {
-        return getContext().closeAtEnd(resource, LifecycleScope.TEST);
-    }
-
-    /**
-     * Registers a {@link Closeable} resource that should be closed after the suite
-     * completes.
-     *
-     * @return <code>resource</code> (for call chaining).
-     */
-    public static <T extends Closeable> T closeAfterSuite(T resource) {
-        return getContext().closeAtEnd(resource, LifecycleScope.SUITE);
-    }
-
-    /**
-     * Creates a new temporary file for the {@link LifecycleScope#TEST} duration.
-     */
-    public Path newTempFile() throws IOException {
-        return newTempFile(LifecycleScope.TEST);
-    }
-
-    /**
-     * Creates a new temporary file deleted after the given lifecycle phase completes.
-     * The file is physically created on disk, but is not locked or opened.
-     */
-    public static Path newTempFile(LifecycleScope scope) throws IOException {
-        checkContext();
-        synchronized (RandomizedTest.class) {
-            Path tempFile = createTemp(globalTempDir(), false, RandomizedTest::nextTempName);
-            getContext().closeAtEnd(new TempPathResource(tempFile), scope);
-            return tempFile;
-        }
-    }
-
-    /**
-     * Next temporary filename.
-     */
-    protected static String nextTempName() {
-        return String.format(Locale.ROOT, "%04d has-space", tempSubFileNameCount.getAndIncrement());
-    }
-
-    /**
-     * Recursively delete a folder. Throws an exception if any failure occurs.
-     *
-     * @param path Path to the folder to be (recursively) deleted. The folder must
-     *             exist.
-     */
-    public static void rmDir(Path path) throws IOException {
-        if (!Files.isDirectory(path)) {
-            throw new IOException("Not a folder: " + path);
-        }
-
-        try {
-            Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
-                @Override
-                public FileVisitResult postVisitDirectory(Path dir, IOException iterationError) throws IOException {
-                    if (iterationError != null) {
-                        throw iterationError;
-                    }
-                    Files.delete(dir);
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    Files.delete(file);
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult visitFileFailed(Path file, IOException e) throws IOException {
-                    throw e;
-                }
-            });
-        } catch (IOException e) {
-            throw new IOException("Could not remove directory: " + path, e);
-        }
-    }
-
-    /**
-     * Assign a temporary server socket. If you need a temporary port one can
-     * assign a server socket and close it immediately, just to acquire its port
-     * number.
-     *
-     * @param scope The lifecycle scope to close the socket after. If the socket is
-     *              closed earlier, nothing happens (silently dropped).
-     */
-    public static ServerSocket newServerSocket(LifecycleScope scope) throws IOException {
-        final ServerSocket socket = new ServerSocket(0);
-        getContext().closeAtEnd(new Closeable() {
-            public void close() throws IOException {
-                if (!socket.isClosed())
-                    socket.close();
-            }
-        }, scope);
-
-        return socket;
-    }
-
+    // Methods to help with environment.
     /**
      * Return a random Locale from the available locales on the system.
      *
@@ -556,23 +360,6 @@ public class RandomizedTestCase {
     //
     // Characters and strings. Delegates to RandomStrings and that in turn to StringGenerators.
     //
-
-    /**
-     * @deprecated Use {@link #randomAsciiLettersOfLengthBetween} instead.
-     */
-    @Deprecated
-    public static String randomAsciiOfLengthBetween(int minCodeUnits, int maxCodeUnits) {
-        return randomAsciiLettersOfLengthBetween(minCodeUnits, maxCodeUnits);
-    }
-
-    /**
-     * @deprecated Use {@link #randomAsciiLettersOfLength} instead.
-     */
-    @Deprecated
-    public static String randomAsciiOfLength(int codeUnits) {
-        return randomAsciiLettersOfLength(codeUnits);
-    }
-
     /**
      * @see RandomStrings#randomAsciiLettersOfLengthBetween
      */
