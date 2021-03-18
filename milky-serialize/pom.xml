@@ -15,11 +15,8 @@
     <modules>
         <module>milky-serialize-api</module>
         <module>milky-serialize-protostuff</module>
+        <module>milky-serialize-kryo</module>
     </modules>
-
-    <properties>
-        <kryo.version>5.0.3</kryo.version>
-    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -27,11 +24,6 @@
                 <groupId>cn.sliew</groupId>
                 <artifactId>milky-serialize-api</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.esotericsoftware</groupId>
-                <artifactId>kryo</artifactId>
-                <version>#{kryo.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

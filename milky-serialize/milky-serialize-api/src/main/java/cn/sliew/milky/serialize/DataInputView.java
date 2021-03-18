@@ -4,6 +4,9 @@ import java.io.DataInput;
 import java.io.IOException;
 import java.io.Serializable;
 
+/**
+ * fixme #close()方法
+ */
 public interface DataInputView extends DataInput, Serializable {
 
     Object readObject() throws IOException, ClassNotFoundException;
