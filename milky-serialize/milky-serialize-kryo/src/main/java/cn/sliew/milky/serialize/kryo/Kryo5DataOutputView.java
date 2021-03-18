@@ -3,6 +3,7 @@ package cn.sliew.milky.serialize.kryo;
 import cn.sliew.milky.serialize.DataOutputView;
 import cn.sliew.milky.serialize.kryo.utils.KryoUtils;
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.KryoException;
 import com.esotericsoftware.kryo.io.Output;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,83 +22,147 @@ public class Kryo5DataOutputView implements DataOutputView {
 
     @Override
     public void write(int b) throws IOException {
-        this.output.write(b);
+        try {
+            this.output.write(b);
+        } catch (KryoException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void write(@NotNull byte[] b) throws IOException {
-        output.write(b);
+        try {
+            this.output.write(b);
+        } catch (KryoException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void write(@NotNull byte[] b, int off, int len) throws IOException {
-        output.write(b, off, len);
+        try {
+            output.write(b, off, len);
+        } catch (KryoException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeBoolean(boolean v) throws IOException {
-        output.writeBoolean(v);
+        try {
+            output.writeBoolean(v);
+        } catch (KryoException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeByte(int v) throws IOException {
-        output.writeByte(v);
+        try {
+            output.writeByte(v);
+        } catch (KryoException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeShort(int v) throws IOException {
-        output.writeShort(v);
+        try {
+            output.writeShort(v);
+        } catch (KryoException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeChar(int v) throws IOException {
-        output.writeChar((char) v);
+        try {
+            output.writeChar((char) v);
+        } catch (KryoException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeInt(int v) throws IOException {
-        output.writeInt(v);
+        try {
+            output.writeInt(v);
+        } catch (KryoException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeLong(long v) throws IOException {
-        output.writeLong(v);
+        try {
+            output.writeLong(v);
+        } catch (KryoException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeFloat(float v) throws IOException {
-        output.writeFloat(v);
+        try {
+            output.writeFloat(v);
+        } catch (KryoException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeDouble(double v) throws IOException {
-        output.writeDouble(v);
+        try {
+            output.writeDouble(v);
+        } catch (KryoException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeBytes(@NotNull String s) throws IOException {
-        output.writeString(s);
+        try {
+            output.writeString(s);
+        } catch (KryoException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeChars(@NotNull String s) throws IOException {
-        output.writeString(s);
+        try {
+            output.writeString(s);
+        } catch (KryoException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeUTF(@NotNull String s) throws IOException {
-        output.writeString(s);
+        try {
+            output.writeString(s);
+        } catch (KryoException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeObject(Object obj) throws IOException {
-        // TODO carries class info every time.
-        kryo.writeClassAndObject(output, obj);
+        try {
+            // TODO carries class info every time.
+            kryo.writeClassAndObject(output, obj);
+        } catch (Exception e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void flushBuffer() throws IOException {
-        output.flush();
+        try {
+            output.flush();
+        } catch (KryoException e) {
+            throw new IOException(e);
+        }
     }
 
 }
