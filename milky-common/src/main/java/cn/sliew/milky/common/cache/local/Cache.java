@@ -1,4 +1,4 @@
-package cn.sliew.milky.cache.local;
+package cn.sliew.milky.common.cache.local;
 
 import cn.sliew.milky.common.collect.Tuple;
 import cn.sliew.milky.concurrent.ReleasableLock;

@@ -1,4 +1,4 @@
-package cn.sliew.milky.cache.local;
+package cn.sliew.milky.common.cache.local;
 
 public class RemovalNotification<K, V> {
 
