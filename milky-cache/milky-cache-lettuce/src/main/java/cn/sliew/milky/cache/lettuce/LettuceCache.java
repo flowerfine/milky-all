@@ -4,8 +4,11 @@ import cn.sliew.milky.cache.Cache;
 import cn.sliew.milky.cache.CacheLoader;
 import cn.sliew.milky.common.log.Logger;
 import cn.sliew.milky.common.log.LoggerFactory;
+import cn.sliew.milky.common.util.StringUtils;
 import io.lettuce.core.Limit;
 import io.lettuce.core.Range;
+import io.lettuce.core.RedisClient;
+import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -22,6 +25,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static cn.sliew.milky.common.check.Ensures.checkNotNull;
 
 /**
  * redis缓存没有使用常用的strings类型来搞
@@ -42,8 +47,6 @@ public class LettuceCache<K, V> implements Cache<K, V> {
 
     private static final Logger log = LoggerFactory.getLogger(LettuceCache.class);
 
-    private final String name = "lettuce-cache";
-
     /**
      * 一个小时间轮，用来定时处理sortset和hash中的过期对象。
      */
@@ -51,24 +54,38 @@ public class LettuceCache<K, V> implements Cache<K, V> {
 
     private final StatefulRedisConnection connection;
 
-    public LettuceCache(StatefulRedisConnection connection) {
-        this.connection = connection;
+    private final LettuceCacheOptions<K, V> options;
+
+    public LettuceCache(LettuceCacheOptions<K, V> options) {
+        this.options = checkNotNull(options, "options can't be null");
+
+        RedisURI redisURI = RedisURI.builder()
+                .withHost(options.getHost())
+                .withPort(options.getPort())
+                .withDatabase(options.getDatabase())
+                .withTimeout(Duration.ofMillis(options.getTimeout()))
+                .build();
+        if (StringUtils.isNotBlank(options.getPassword())) {
+            redisURI.setPassword(options.getPassword());
+        }
+        this.connection = RedisClient.create(redisURI).connect(ProtostuffCodec.INSTANCE);
         this.timer = new HashedWheelTimer(1, TimeUnit.SECONDS, 64);
         this.timer.newTimeout(new ExpireTimeTask(timer, this, connection), 1L, TimeUnit.SECONDS);
         this.timer.start();
     }
 
+
     @Override
     public String name() {
-        return name;
+        return this.options.getName();
     }
 
     private String hashKey() {
-        return name + "_hash";
+        return this.name() + "_hash";
     }
 
     private String sortsetKey() {
-        return name + "_sortset";
+        return this.name() + "_sortset";
     }
 
     @Override
@@ -165,9 +182,12 @@ public class LettuceCache<K, V> implements Cache<K, V> {
 
     @Override
     public Iterator<K> hotKeyIterator(int n) {
-        return (Iterator<K>) Collections.emptyList();
+        return Collections.emptyIterator();
     }
 
+    /**
+     * fixme 数据监控
+     */
     @Override
     public void stats(MeterRegistry registry) {
 

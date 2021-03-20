@@ -5,6 +5,9 @@ import cn.sliew.milky.cache.CacheOptions;
 import static cn.sliew.milky.common.check.Ensures.checkArgument;
 import static cn.sliew.milky.common.check.Ensures.notBlank;
 
+/**
+ * fixme cluster options??
+ */
 public class LettuceCacheOptions<K, V> extends CacheOptions<K, V> {
 
     private String host = "localhost";

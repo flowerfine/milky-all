@@ -15,6 +15,7 @@
         <module>milky-cache-api</module>
         <module>milky-cache-ohc</module>
         <module>milky-cache-lettuce</module>
+        <module>milky-cache-caffeine</module>
     </modules>
 
     <dependencyManagement>
