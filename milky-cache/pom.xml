@@ -13,6 +13,7 @@
 
     <modules>
         <module>milky-cache-api</module>
+        <module>milky-cache-ohc</module>
     </modules>
 
     <dependencyManagement>

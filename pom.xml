@@ -111,6 +111,11 @@
                 <artifactId>milky-remote</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.sliew</groupId>
+                <artifactId>milky-serialize-protostuff</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>${project.groupId}</groupId>
