@@ -1,6 +1,6 @@
 package cn.sliew.milky.cache.composite;
 
-import cn.sliew.milky.cache.CacheLoader;
+import cn.sliew.milky.cache.local.CacheLoader;
 
 import java.util.concurrent.ExecutionException;
 

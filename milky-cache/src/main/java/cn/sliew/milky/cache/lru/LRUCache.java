@@ -1,4 +1,4 @@
-package cn.sliew.milky.cache;
+package cn.sliew.milky.cache.lru;
 
 import java.util.LinkedHashMap;
 import java.util.concurrent.locks.Lock;

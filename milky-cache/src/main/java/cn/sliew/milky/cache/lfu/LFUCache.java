@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.sliew.milky.cache;
+package cn.sliew.milky.cache.lfu;
 
 import java.util.HashMap;
 import java.util.Map;

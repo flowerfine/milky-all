@@ -1,4 +1,4 @@
-package cn.sliew.milky.cache;
+package cn.sliew.milky.cache.local;
 
 @FunctionalInterface
 public interface RemovalListener<K, V> {

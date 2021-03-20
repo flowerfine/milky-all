@@ -1,6 +1,7 @@
-package cn.sliew.milky.cache;
+package cn.sliew.milky.cache.local;
 
 public class RemovalNotification<K, V> {
+
     public enum RemovalReason {REPLACED, INVALIDATED, EVICTED}
 
     private final K key;
