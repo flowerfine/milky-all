@@ -1,6 +1,7 @@
 package cn.sliew.milky.cache.lettuce;
 
 import cn.sliew.milky.cache.CacheFactory;
+import cn.sliew.milky.common.util.StringUtils;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
@@ -17,14 +18,16 @@ public class LettuceCacheFactory  implements CacheFactory {
 
     private final StatefulRedisConnection connection;
 
-    public LettuceCacheFactory() {
+    public LettuceCacheFactory(LettuceCacheOptions options) {
         RedisURI redisURI = RedisURI.builder()
-                .withHost("localhost")
-                .withPort(6379)
-                .withPassword("123")
-                .withDatabase(0)
-                .withTimeout(Duration.ofSeconds(1L))
+                .withHost(options.getHost())
+                .withPort(options.getPort())
+                .withDatabase(options.getDatabase())
+                .withTimeout(Duration.ofMillis(options.getTimeout()))
                 .build();
+        if (StringUtils.isNotBlank(options.getPassword())) {
+            redisURI.setPassword(options.getPassword());
+        }
         this.connection = RedisClient.create(redisURI).connect(ProtostuffCodec.INSTANCE);
     }
 
