@@ -1,4 +1,4 @@
-package cn.sliew.milky.cache.composite;
+package cn.sliew.milky.cache;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;

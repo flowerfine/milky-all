@@ -1,4 +1,4 @@
-package cn.sliew.milky.cache.composite;
+package cn.sliew.milky.cache;
 
 import java.util.concurrent.CompletableFuture;
 

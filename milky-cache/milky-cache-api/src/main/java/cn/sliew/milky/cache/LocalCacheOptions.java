@@ -1,4 +1,4 @@
-package cn.sliew.milky.cache.composite;
+package cn.sliew.milky.cache;
 
 public class LocalCacheOptions<K, V> extends CacheOptions<K, V> {
 

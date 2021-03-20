@@ -1,4 +1,4 @@
-package cn.sliew.milky.cache.composite;
+package cn.sliew.milky.cache;
 
 /**
  * Cache writer used for write-through operations.
