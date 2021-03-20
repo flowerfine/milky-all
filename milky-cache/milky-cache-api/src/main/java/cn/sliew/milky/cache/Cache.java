@@ -1,11 +1,9 @@
 package cn.sliew.milky.cache;
 
-import cn.sliew.milky.common.cache.local.CacheLoader;
 import io.micrometer.core.instrument.MeterRegistry;
 
 import java.time.Duration;
 import java.util.Iterator;
-import java.util.concurrent.ExecutionException;
 
 /**
  * todo 异步功能支持

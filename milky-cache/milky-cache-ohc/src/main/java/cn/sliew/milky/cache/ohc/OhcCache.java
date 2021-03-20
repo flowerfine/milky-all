@@ -1,7 +1,7 @@
 package cn.sliew.milky.cache.ohc;
 
 import cn.sliew.milky.cache.Cache;
-import cn.sliew.milky.common.cache.local.CacheLoader;
+import cn.sliew.milky.cache.CacheLoader;
 import cn.sliew.milky.common.log.Logger;
 import cn.sliew.milky.common.log.LoggerFactory;
 import io.micrometer.core.instrument.MeterRegistry;

@@ -2,6 +2,9 @@ package cn.sliew.milky.cache;
 
 public class CacheOptions<K, V> {
 
+    /**
+     * 缓存的四种模式：stand by，read through，write through，write behind。
+     */
     public enum WriteMode {
 
         /**
@@ -29,7 +32,7 @@ public class CacheOptions<K, V> {
     }
 
     public static <K, V> CacheOptions<K, V> defaults() {
-        return new CacheOptions<K, V>();
+        return new CacheOptions<>();
     }
 
     /**

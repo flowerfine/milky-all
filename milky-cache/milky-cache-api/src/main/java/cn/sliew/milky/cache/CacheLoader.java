@@ -2,14 +2,17 @@ package cn.sliew.milky.cache;
 
 import java.util.concurrent.CompletableFuture;
 
-public abstract class CacheLoader<K, V> {
+public interface CacheLoader<K, V> {
 
-    protected CacheLoader() {
-    }
+    V load(K key) throws Exception;
 
-    public abstract V load(K key) throws Exception;
-
-    public CompletableFuture<V> reload(K key, V oldValue) throws Exception {
-        return CompletableFuture.completedFuture(load(key));
+    default CompletableFuture<V> reload(K key, V oldValue) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return load(key);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }
