@@ -1,5 +1,7 @@
 package cn.sliew.milky.cache;
 
+import static cn.sliew.milky.common.check.Ensures.notBlank;
+
 public class CacheOptions<K, V> {
 
     /**
@@ -21,6 +23,8 @@ public class CacheOptions<K, V> {
         WRITE_THROUGH
     }
 
+    private String name = "default-cache";
+
     private CacheLoader<K, V> loader;
     private CacheWriter<K, V> writer;
 
@@ -33,6 +37,22 @@ public class CacheOptions<K, V> {
 
     public static <K, V> CacheOptions<K, V> defaults() {
         return new CacheOptions<>();
+    }
+
+    /**
+     * Sets cache {@code name}.
+     *
+     * @param name cache name
+     * @return MapOptions instance
+     */
+    public CacheOptions<K, V> name(String name) {
+        notBlank(name, "cache name can't be empty");
+        this.name = name;
+        return this;
+    }
+
+    public String getName() {
+        return name;
     }
 
     /**
@@ -98,4 +118,6 @@ public class CacheOptions<K, V> {
     public CacheLoader<K, V> getLoader() {
         return loader;
     }
+
+
 }
