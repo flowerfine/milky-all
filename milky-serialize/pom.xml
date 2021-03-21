@@ -16,6 +16,7 @@
         <module>milky-serialize-api</module>
         <module>milky-serialize-protostuff</module>
         <module>milky-serialize-kryo</module>
+        <module>milky-serialize-kryo5</module>
     </modules>
 
     <dependencyManagement>

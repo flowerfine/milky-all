@@ -10,12 +10,12 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class Kryo5DataOutputView implements DataOutputView {
+public class KryoDataOutputView implements DataOutputView {
 
     private final Kryo kryo;
     private final Output output;
 
-    public Kryo5DataOutputView(OutputStream outputStream) {
+    public KryoDataOutputView(OutputStream outputStream) {
         this.kryo = KryoUtils.get();
         this.output = new Output(outputStream);
     }
