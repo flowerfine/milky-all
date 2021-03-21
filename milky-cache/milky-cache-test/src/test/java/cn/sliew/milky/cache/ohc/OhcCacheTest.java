@@ -8,6 +8,6 @@ public class OhcCacheTest extends AbstractCacheTest {
         OhcCacheOptions options = new OhcCacheOptions();
         options.name("OhcCacheTest");
         OhcCacheFactory factory = new OhcCacheFactory();
-        cache = factory.getCache(options);
+        this.cache = factory.getCache(options);
     }
 }
