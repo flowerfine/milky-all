@@ -184,7 +184,7 @@ public class LettuceCache<K, V> implements Cache<K, V> {
     @Override
     public Iterator<K> keyIterator() {
         RedisCommands commands = connection.sync();
-        return (Iterator<K>) commands.hkeys(hashKey());
+        return (Iterator<K>) commands.hkeys(hashKey()).iterator();
     }
 
     @Override
