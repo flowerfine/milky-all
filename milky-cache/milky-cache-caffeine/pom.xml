@@ -11,7 +11,7 @@
     <artifactId>milky-cache-caffeine</artifactId>
 
     <properties>
-        <caffeine.version>3.0.1</caffeine.version>
+        <caffeine.version>2.9.0</caffeine.version>
     </properties>
 
     <dependencies>
@@ -24,6 +24,12 @@
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
             <version>${caffeine.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.sliew</groupId>
+            <artifactId>milky-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

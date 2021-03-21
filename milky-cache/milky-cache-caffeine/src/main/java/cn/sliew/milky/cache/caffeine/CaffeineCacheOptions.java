@@ -1,7 +1,6 @@
 package cn.sliew.milky.cache.caffeine;
 
 import cn.sliew.milky.cache.CacheOptions;
-import com.github.benmanes.caffeine.cache.CaffeineSpec;
 
 import java.time.Duration;
 
@@ -15,17 +14,17 @@ import static cn.sliew.milky.common.check.Ensures.checkNotNull;
  */
 public class CaffeineCacheOptions<K, V> extends CacheOptions<K, V> {
 
-    private int initialCapacity = 4;
+    private Integer initialCapacity = 4;
 
-    private long maximumSize = 20;
+    private Long maximumSize = 20L;
 
-    private long maximumWeight = 0L;
+    private Long maximumWeight = 0L;
 
-    private boolean weakKeys = false;
+    private Boolean weakKeys = false;
 
-    private boolean weakValues = false;
+    private Boolean weakValues = false;
 
-    private boolean softValues = false;
+    private Boolean softValues = false;
 
     private Duration expireAfterAccess = Duration.ofSeconds(60L);
 

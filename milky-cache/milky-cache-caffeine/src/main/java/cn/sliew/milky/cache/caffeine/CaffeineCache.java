@@ -18,6 +18,9 @@ import static cn.sliew.milky.common.check.Ensures.checkNotNull;
 /**
  * refresh > expire ensure hot key would refreshed before expired.
  * cache key would not be refreshed when no request comes.
+ *
+ * because maximumSize can't be combined with maximumWeight, CaffeineCache
+ * would not support maximumWeight parameter.
  */
 public class CaffeineCache<K, V> implements Cache<K, V> {
 
@@ -33,10 +36,8 @@ public class CaffeineCache<K, V> implements Cache<K, V> {
         Caffeine<K, V> caffeine = (Caffeine<K, V>) Caffeine.newBuilder()
                 .initialCapacity(options.getInitialCapacity())
                 .maximumSize(options.getMaximumSize())
-                .maximumWeight(options.getMaximumWeight())
                 .expireAfterAccess(options.getExpireAfterAccess())
                 .expireAfterWrite(options.getExpireAfterWrite())
-                .refreshAfterWrite(options.getRefreshAfterWrite())
                 .recordStats();
         if (options.isWeakKeys()) {
             caffeine.weakKeys();
@@ -47,7 +48,9 @@ public class CaffeineCache<K, V> implements Cache<K, V> {
         if (options.isSoftValues()) {
             caffeine.softValues();
         }
+        // refreshAfterWrite requires a LoadingCache
         if (options.getLoader() != null) {
+            caffeine.refreshAfterWrite(options.getRefreshAfterWrite());
             this.cache = caffeine.build(new com.github.benmanes.caffeine.cache.CacheLoader<K, V>() {
                 @Override
                 public @Nullable V load(K key) throws Exception {

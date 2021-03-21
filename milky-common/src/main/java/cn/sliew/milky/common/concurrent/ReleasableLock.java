@@ -1,5 +1,4 @@
-package cn.sliew.milky.concurrent;
-
+package cn.sliew.milky.common.concurrent;
 
 import cn.sliew.milky.common.check.Assertions;
 import cn.sliew.milky.common.exception.BizException;
