@@ -178,7 +178,7 @@ public class LettuceCache<K, V> implements Cache<K, V> {
 
     @Override
     public boolean supportNullValue() {
-        return false;
+        return true;
     }
 
     /**
