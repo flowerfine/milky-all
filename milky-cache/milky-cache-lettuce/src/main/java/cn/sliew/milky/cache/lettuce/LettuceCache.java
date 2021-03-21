@@ -22,6 +22,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
 
@@ -157,8 +160,9 @@ public class LettuceCache<K, V> implements Cache<K, V> {
     @Override
     public void removeAll(Iterable<K> keys) {
         RedisCommands commands = connection.sync();
-        commands.hdel(hashKey(), keys);
-        commands.zrem(sortsetKey(), keys);
+        Object[] array = StreamSupport.stream(keys.spliterator(), false).toArray();
+        commands.hdel(hashKey(), array);
+        commands.zrem(sortsetKey(), array);
     }
 
     @Override
