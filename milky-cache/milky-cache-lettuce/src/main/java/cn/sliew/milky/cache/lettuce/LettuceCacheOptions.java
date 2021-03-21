@@ -2,6 +2,8 @@ package cn.sliew.milky.cache.lettuce;
 
 import cn.sliew.milky.cache.CacheOptions;
 
+import java.util.Objects;
+
 import static cn.sliew.milky.common.check.Ensures.checkArgument;
 import static cn.sliew.milky.common.check.Ensures.notBlank;
 
@@ -102,5 +104,23 @@ public class LettuceCacheOptions<K, V> extends CacheOptions<K, V> {
 
     public long getTimeout() {
         return timeout;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        LettuceCacheOptions<?, ?> that = (LettuceCacheOptions<?, ?>) o;
+        return port == that.port &&
+                database == that.database &&
+                timeout == that.timeout &&
+                Objects.equals(host, that.host) &&
+                Objects.equals(password, that.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), host, port, password, database, timeout);
     }
 }

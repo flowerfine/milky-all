@@ -20,10 +20,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
@@ -256,6 +253,20 @@ public class LettuceCache<K, V> implements Cache<K, V> {
 
         public long getExpireAt() {
             return expireAt;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ValueWrapper<?> that = (ValueWrapper<?>) o;
+            return expireAt == that.expireAt &&
+                    Objects.equals(value, that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value, expireAt);
         }
     }
 

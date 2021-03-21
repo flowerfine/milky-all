@@ -3,6 +3,7 @@ package cn.sliew.milky.cache.caffeine;
 import cn.sliew.milky.cache.CacheOptions;
 
 import java.time.Duration;
+import java.util.Objects;
 
 import static cn.sliew.milky.common.check.Ensures.checkArgument;
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
@@ -177,4 +178,25 @@ public class CaffeineCacheOptions<K, V> extends CacheOptions<K, V> {
         return refreshAfterWrite;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        CaffeineCacheOptions<?, ?> that = (CaffeineCacheOptions<?, ?>) o;
+        return Objects.equals(initialCapacity, that.initialCapacity) &&
+                Objects.equals(maximumSize, that.maximumSize) &&
+                Objects.equals(maximumWeight, that.maximumWeight) &&
+                Objects.equals(weakKeys, that.weakKeys) &&
+                Objects.equals(weakValues, that.weakValues) &&
+                Objects.equals(softValues, that.softValues) &&
+                Objects.equals(expireAfterAccess, that.expireAfterAccess) &&
+                Objects.equals(expireAfterWrite, that.expireAfterWrite) &&
+                Objects.equals(refreshAfterWrite, that.refreshAfterWrite);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), initialCapacity, maximumSize, maximumWeight, weakKeys, weakValues, softValues, expireAfterAccess, expireAfterWrite, refreshAfterWrite);
+    }
 }

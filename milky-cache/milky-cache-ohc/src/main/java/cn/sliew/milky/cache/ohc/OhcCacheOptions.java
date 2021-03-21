@@ -6,6 +6,8 @@ import org.caffinitas.ohc.Eviction;
 import org.caffinitas.ohc.HashAlgorithm;
 import org.caffinitas.ohc.Ticker;
 
+import java.util.Objects;
+
 import static cn.sliew.milky.common.check.Ensures.checkArgument;
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
 
@@ -415,5 +417,39 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
 
     public Double getEdenSize() {
         return edenSize;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        OhcCacheOptions<?, ?> that = (OhcCacheOptions<?, ?>) o;
+        return Objects.equals(segmentCount, that.segmentCount) &&
+                Objects.equals(hashTableSize, that.hashTableSize) &&
+                Objects.equals(capacity, that.capacity) &&
+                Objects.equals(chunkSize, that.chunkSize) &&
+                Objects.equals(keySerializer, that.keySerializer) &&
+                Objects.equals(valueSerializer, that.valueSerializer) &&
+                Objects.equals(loadFactor, that.loadFactor) &&
+                Objects.equals(fixedKeySize, that.fixedKeySize) &&
+                Objects.equals(fixedValueSize, that.fixedValueSize) &&
+                Objects.equals(maxEntrySize, that.maxEntrySize) &&
+                Objects.equals(throwOOME, that.throwOOME) &&
+                hashAlgorighm == that.hashAlgorighm &&
+                Objects.equals(unlocked, that.unlocked) &&
+                Objects.equals(defaultTTLmillis, that.defaultTTLmillis) &&
+                Objects.equals(timeouts, that.timeouts) &&
+                Objects.equals(timeoutsSlots, that.timeoutsSlots) &&
+                Objects.equals(timeoutsPrecision, that.timeoutsPrecision) &&
+                Objects.equals(ticker, that.ticker) &&
+                eviction == that.eviction &&
+                Objects.equals(frequencySketchSize, that.frequencySketchSize) &&
+                Objects.equals(edenSize, that.edenSize);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), segmentCount, hashTableSize, capacity, chunkSize, keySerializer, valueSerializer, loadFactor, fixedKeySize, fixedValueSize, maxEntrySize, throwOOME, hashAlgorighm, unlocked, defaultTTLmillis, timeouts, timeoutsSlots, timeoutsPrecision, ticker, eviction, frequencySketchSize, edenSize);
     }
 }

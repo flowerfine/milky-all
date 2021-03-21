@@ -1,5 +1,7 @@
 package cn.sliew.milky.cache;
 
+import java.util.Objects;
+
 import static cn.sliew.milky.common.check.Ensures.notBlank;
 
 public class CacheOptions<K, V> {
@@ -119,5 +121,20 @@ public class CacheOptions<K, V> {
         return loader;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CacheOptions<?, ?> that = (CacheOptions<?, ?>) o;
+        return writeBehindThreads == that.writeBehindThreads &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(loader, that.loader) &&
+                Objects.equals(writer, that.writer) &&
+                writeMode == that.writeMode;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, loader, writer, writeMode, writeBehindThreads);
+    }
 }
