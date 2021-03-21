@@ -33,7 +33,7 @@ public interface Cache<K, V> {
     Iterator<K> hotKeyIterator(int n);
 
     /**
-     * 后续通过MeterBinder进行暴露
+     * 通过MeterBinder进行暴露
      */
     void stats(MeterRegistry registry);
 
