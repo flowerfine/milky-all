@@ -140,6 +140,16 @@ public class OhcCache<K, V> implements Cache<K, V> {
     }
 
     @Override
+    public boolean supportNullKey() {
+        return false;
+    }
+
+    @Override
+    public boolean supportNullValue() {
+        return false;
+    }
+
+    @Override
     public Iterator<K> keyIterator() {
         return ohc.keyIterator();
     }

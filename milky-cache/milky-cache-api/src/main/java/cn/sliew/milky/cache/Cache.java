@@ -28,6 +28,10 @@ public interface Cache<K, V> {
 
     long size();
 
+    boolean supportNullKey();
+
+    boolean supportNullValue();
+
     Iterator<K> keyIterator();
 
     Iterator<K> hotKeyIterator(int n);

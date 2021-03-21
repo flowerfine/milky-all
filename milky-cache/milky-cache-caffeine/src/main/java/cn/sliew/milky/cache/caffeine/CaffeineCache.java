@@ -69,7 +69,7 @@ public class CaffeineCache<K, V> implements Cache<K, V> {
 
     @Override
     public V get(K key) {
-        return this.cache.get(key, value -> (V) value);
+        return this.cache.getIfPresent(key);
     }
 
     @Override
@@ -120,6 +120,16 @@ public class CaffeineCache<K, V> implements Cache<K, V> {
     @Override
     public long size() {
         return this.cache.estimatedSize();
+    }
+
+    @Override
+    public boolean supportNullKey() {
+        return false;
+    }
+
+    @Override
+    public boolean supportNullValue() {
+        return false;
     }
 
     @Override

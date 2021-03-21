@@ -167,6 +167,16 @@ public class LettuceCache<K, V> implements Cache<K, V> {
         return commands.zcard(sortsetKey());
     }
 
+    @Override
+    public boolean supportNullKey() {
+        return false;
+    }
+
+    @Override
+    public boolean supportNullValue() {
+        return false;
+    }
+
     /**
      * fixme hkeys hscan
      * todo 考虑使用sortset的key来搞。zscan
