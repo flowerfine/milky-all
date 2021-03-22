@@ -8,31 +8,20 @@
         <artifactId>milky-serialize</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>milky-serialize-kryo</artifactId>
+    <artifactId>milky-serialize-kryo5</artifactId>
 
     <properties>
-        <kryo.version>4.0.2</kryo.version>
-        <kryo.serializers.version>0.42</kryo.serializers.version>
+        <kryo5.version>5.0.4</kryo5.version>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>cn.sliew</groupId>
             <artifactId>milky-serialize-api</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>com.esotericsoftware</groupId>
-            <artifactId>kryo</artifactId>
-            <version>${kryo.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>de.javakaffee</groupId>
-            <artifactId>kryo-serializers</artifactId>
-            <version>${kryo.serializers.version}</version>
+            <groupId>com.esotericsoftware.kryo</groupId>
+            <artifactId>kryo5</artifactId>
+            <version>${kryo5.version}</version>
         </dependency>
     </dependencies>
-
-
-
 </project>

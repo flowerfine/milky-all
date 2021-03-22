@@ -5,34 +5,30 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.sliew</groupId>
-        <artifactId>milky-serialize</artifactId>
+        <artifactId>milky-cache</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>milky-serialize-kryo</artifactId>
+    <artifactId>milky-cache-lettuce</artifactId>
 
     <properties>
-        <kryo.version>4.0.2</kryo.version>
-        <kryo.serializers.version>0.42</kryo.serializers.version>
+        <lettuce.version>6.0.3.RELEASE</lettuce.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>cn.sliew</groupId>
-            <artifactId>milky-serialize-api</artifactId>
+            <artifactId>milky-cache-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.sliew</groupId>
+            <artifactId>milky-serialize-protostuff</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.esotericsoftware</groupId>
-            <artifactId>kryo</artifactId>
-            <version>${kryo.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>de.javakaffee</groupId>
-            <artifactId>kryo-serializers</artifactId>
-            <version>${kryo.serializers.version}</version>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
+            <version>${lettuce.version}</version>
         </dependency>
     </dependencies>
-
-
 
 </project>
