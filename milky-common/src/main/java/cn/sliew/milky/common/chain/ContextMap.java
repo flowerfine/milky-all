@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ContextMap<K, V> extends ConcurrentHashMap<K, V> implements Context<K, V> {
 
-    private static final Logger logger = LoggerFactory.getLogger(ContextMap.class);
+    protected Logger logger;
 
     /**
      *
@@ -25,7 +25,14 @@ public class ContextMap<K, V> extends ConcurrentHashMap<K, V> implements Context
      * Creates a new, empty Context with a default initial capacity, load factor, and concurrencyLevel.
      */
     public ContextMap() {
+        this(LoggerFactory.getLogger(ContextMap.class));
+    }
 
+    /**
+     * Creates a new, empty Context with a default initial capacity, load factor, and concurrencyLevel.
+     */
+    public ContextMap(Logger logger) {
+        this.logger = logger;
     }
 
     /**
