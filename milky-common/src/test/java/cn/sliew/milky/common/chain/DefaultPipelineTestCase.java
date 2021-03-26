@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CompletableFuture;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 public class DefaultPipelineTestCase extends MilkyTestCase {
 
     @BeforeEach
@@ -24,7 +26,14 @@ public class DefaultPipelineTestCase extends MilkyTestCase {
         pipeline.addAfter(ExceptionCommand.NAME, LogCommand.NAME + "#0", new LogCommand(LoggerFactory.getLogger(DefaultPipelineTestCase.class)));
         ContextMap<String, Object> contextMap = new ContextMap<>();
         contextMap.put("foo", "bar");
-        pipeline.fireEvent(contextMap, new CompletableFuture<>());
+        CompletableFuture<Object> future = new CompletableFuture<>();
+        pipeline.fireEvent(contextMap, future);
+        try {
+            future.get();
+            fail();
+        } catch (Exception e) {
+
+        }
     }
 
     public static class ExceptionCommand implements Command<String, Object> {
