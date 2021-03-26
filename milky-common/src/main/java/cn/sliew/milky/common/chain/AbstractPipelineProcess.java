@@ -9,7 +9,7 @@ import java.util.concurrent.Executor;
 
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
 
-abstract class AbstractPipelineProcess<K, V> implements PipelineProcess<K, V> {
+public abstract class AbstractPipelineProcess<K, V> implements PipelineProcess<K, V> {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractPipelineProcess.class);
 
