@@ -1,5 +1,8 @@
 package cn.sliew.milky.common.chain;
 
+import cn.sliew.milky.common.log.Logger;
+import cn.sliew.milky.common.log.LoggerFactory;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,6 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ContextMap<K, V> extends ConcurrentHashMap<K, V> implements Context<K, V> {
 
+    private static final Logger logger = LoggerFactory.getLogger(ContextMap.class);
+
     /**
      *
      */
@@ -20,6 +25,7 @@ public class ContextMap<K, V> extends ConcurrentHashMap<K, V> implements Context
      * Creates a new, empty Context with a default initial capacity, load factor, and concurrencyLevel.
      */
     public ContextMap() {
+
     }
 
     /**
@@ -63,5 +69,10 @@ public class ContextMap<K, V> extends ConcurrentHashMap<K, V> implements Context
         @SuppressWarnings("unchecked")
         T value = (T) valueObject;
         return value;
+    }
+
+    @Override
+    public Logger logger() {
+        return logger;
     }
 }

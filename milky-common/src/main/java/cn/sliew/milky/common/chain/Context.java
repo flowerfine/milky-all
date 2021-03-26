@@ -1,9 +1,12 @@
 package cn.sliew.milky.common.chain;
 
+import cn.sliew.milky.common.log.Logger;
+
 import java.util.Map;
 
 /**
  * 执行上下文，用来在不同的{@link Command}间传递信息。
+ * Map后面可以考虑使用AttributeMap代替。
  */
 public interface Context<K, V> extends Map<K, V> {
 
@@ -20,4 +23,12 @@ public interface Context<K, V> extends Map<K, V> {
      * @see #get(Object)
      */
     <T extends V> T retrieve(K key);
+
+    /**
+     * This method provider a {@code Logger} utililies for user can't construct a logger
+     * or try to log pipeline context message to one logger file.
+     *
+     * @return logger
+     */
+    Logger logger();
 }
