@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 /**
  * <a href="http://www.slf4j.org/">SLF4J</a> logger.
  */
-final class Slf4JLogger extends AbstractLogger {
+public final class Slf4JLogger extends AbstractLogger {
 
     private static final long serialVersionUID = 108038972685130825L;
 

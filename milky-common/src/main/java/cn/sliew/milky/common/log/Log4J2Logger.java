@@ -10,8 +10,7 @@ import java.security.PrivilegedAction;
 
 import static cn.sliew.milky.common.log.AbstractLogger.EXCEPTION_MESSAGE;
 
-
-class Log4J2Logger extends ExtendedLoggerWrapper implements cn.sliew.milky.common.log.Logger {
+public class Log4J2Logger extends ExtendedLoggerWrapper implements cn.sliew.milky.common.log.Logger {
 
     private static final long serialVersionUID = 5485418394879791397L;
     private static final boolean VARARGS_ONLY;
