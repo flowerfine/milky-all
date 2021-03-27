@@ -11,6 +11,7 @@ import org.caffinitas.ohc.OHCacheBuilder;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Iterator;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
@@ -86,6 +87,7 @@ public class OhcCache<K, V> implements Cache<K, V> {
         if (options.getEdenSize() != null) {
             ohCacheBuilder.edenSize(options.getEdenSize());
         }
+        ohCacheBuilder.executorService(Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors()));
         this.ohc = ohCacheBuilder.build();
     }
 
