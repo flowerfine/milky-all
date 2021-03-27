@@ -4,11 +4,9 @@ import cn.sliew.milky.cache.Cache;
 import cn.sliew.milky.cache.CacheLoader;
 import cn.sliew.milky.common.log.Logger;
 import cn.sliew.milky.common.log.LoggerFactory;
-import cn.sliew.milky.common.util.StringUtils;
 import io.lettuce.core.Limit;
 import io.lettuce.core.Range;
 import io.lettuce.core.RedisClient;
-import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -22,8 +20,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
@@ -58,17 +54,7 @@ public class LettuceCache<K, V> implements Cache<K, V> {
 
     public LettuceCache(LettuceCacheOptions<K, V> options) {
         this.options = checkNotNull(options, "options can't be null");
-
-        RedisURI redisURI = RedisURI.builder()
-                .withHost(options.getHost())
-                .withPort(options.getPort())
-                .withDatabase(options.getDatabase())
-                .withTimeout(Duration.ofMillis(options.getTimeout()))
-                .build();
-        if (StringUtils.isNotBlank(options.getPassword())) {
-            redisURI.setPassword(options.getPassword());
-        }
-        this.connection = RedisClient.create(redisURI).connect(ProtostuffCodec.INSTANCE);
+        this.connection = RedisClient.create(options.getRedisURI()).connect(ProtostuffCodec.INSTANCE);
         this.timer = new HashedWheelTimer(1, TimeUnit.SECONDS, 64);
         this.timer.newTimeout(new ExpireTimeTask(timer, this, connection), 1L, TimeUnit.SECONDS);
         this.timer.start();

@@ -4,106 +4,29 @@ import cn.sliew.milky.cache.CacheOptions;
 
 import java.util.Objects;
 
-import static cn.sliew.milky.common.check.Ensures.checkArgument;
 import static cn.sliew.milky.common.check.Ensures.notBlank;
 
-/**
- * fixme cluster options??
- */
 public class LettuceCacheOptions<K, V> extends CacheOptions<K, V> {
 
-    private String host = "localhost";
-    private int port = 6379;
-    private String password;
-    private int database = 0;
-
-    /**
-     * millseconds, default 1000ms
-     */
-    private long timeout = 1000L;
+    private String redisURI;
 
     public LettuceCacheOptions() {
         super();
     }
 
     /**
-     * Sets redis {@code host}.
+     * Sets {@code redisURI}.
      *
-     * @param host redis host
+     * @param redisURI redisURI
      * @return LettuceCacheOptions instance
      */
-    public LettuceCacheOptions<K, V> host(String host) {
-        notBlank(host, "lettuce host can't be empty");
-        this.host = host;
-        return this;
+    public void redisURI(String redisURI) {
+        notBlank(redisURI, "lettuce redisURI can't be empty");
+        this.redisURI = redisURI;
     }
 
-    public String getHost() {
-        return host;
-    }
-
-    /**
-     * Sets redis {@code port}.
-     *
-     * @param port redis port
-     * @return LettuceCacheOptions instance
-     */
-    public LettuceCacheOptions<K, V> port(int port) {
-        checkArgument(port > 0 && port <= 65535, String.format("lettuce port invalid: %d", port));
-        this.port = port;
-        return this;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    /**
-     * Sets redis {@code password}.
-     *
-     * @param password redis password
-     * @return LettuceCacheOptions instance
-     */
-    public LettuceCacheOptions<K, V> password(String password) {
-        notBlank(password, "lettuce password can't be empty");
-        this.password = password;
-        return this;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Sets redis {@code database}.
-     *
-     * @param database redis database
-     * @return LettuceCacheOptions instance
-     */
-    public LettuceCacheOptions<K, V> database(int database) {
-        checkArgument(database >= 0, String.format("lettuce database invalid: %d", port));
-        this.database = database;
-        return this;
-    }
-
-    public int getDatabase() {
-        return database;
-    }
-
-    /**
-     * Sets redis command {@code timeout}.
-     *
-     * @param timeout redis timeout
-     * @return LettuceCacheOptions instance
-     */
-    public LettuceCacheOptions<K, V> timeout(long timeout) {
-        checkArgument(timeout > 0L, String.format("lettuce timeout invalid: %d", timeout));
-        this.timeout = timeout;
-        return this;
-    }
-
-    public long getTimeout() {
-        return timeout;
+    public String getRedisURI() {
+        return redisURI;
     }
 
     @Override
@@ -112,15 +35,11 @@ public class LettuceCacheOptions<K, V> extends CacheOptions<K, V> {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         LettuceCacheOptions<?, ?> that = (LettuceCacheOptions<?, ?>) o;
-        return port == that.port &&
-                database == that.database &&
-                timeout == that.timeout &&
-                Objects.equals(host, that.host) &&
-                Objects.equals(password, that.password);
+        return Objects.equals(redisURI, that.redisURI);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), host, port, password, database, timeout);
+        return Objects.hash(super.hashCode(), redisURI);
     }
 }
