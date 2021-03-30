@@ -2,7 +2,7 @@
 <Configuration monitorInterval="30" status="WARN" strict="true">
     <Properties>
         <Property name="FILE_PATTERN">%date{yyyy-MM-dd HH:mm:ss.SSS} %3level [%threadId:%threadName] %-40.40logger{39} %-2line 行: %msg%n%exception</Property>
-        <Property name="CONSOLE_PATTERN">%date{yyyy-MM-dd HH:mm:ss.SSS} %highlight{%3level}{FATAL=white, ERROR=red, WARN=yellow, INFO=cyan, DEBUG=green, TRACE=magenta} %highlight{[%threadId:%threadName]}{FATAL=white, ERROR=red, WARN=yellow, INFO=default, DEBUG=default, TRACE=default} %highlight{%-40.40logger{39}}{FATAL=white, ERROR=red, WARN=yellow, INFO=cyan, DEBUG=cyan, TRACE=cyan} %-2line 行: %highlight{%msg%n%exception}{FATAL=white, ERROR=red, WARN=yellow, INFO=default, DEBUG=default, TRACE=default}</Property>
+        <Property name="CONSOLE_PATTERN">%highlight{%date{yyyy-MM-dd HH:mm:ss.SSS}}{FATAL=red, ERROR=red, WARN=yellow, INFO=default, DEBUG=default, TRACE=default} %highlight{%3level}{FATAL=red, ERROR=red, WARN=yellow, INFO=cyan, DEBUG=green, TRACE=magenta} %highlight{[%threadId:%threadName]}{FATAL=red, ERROR=red, WARN=yellow, INFO=default, DEBUG=default, TRACE=default} %highlight{%-40.40logger{39}}{FATAL=red, ERROR=red, WARN=yellow, INFO=cyan, DEBUG=green, TRACE=magenta} %highlight{%-2line 行:}{FATAL=red, ERROR=red, WARN=yellow, INFO=default, DEBUG=default, TRACE=default} %highlight{%msg%n%exception}{FATAL=white, ERROR=red, WARN=yellow, INFO=cyan, DEBUG=green, TRACE=magenta}</Property>
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
