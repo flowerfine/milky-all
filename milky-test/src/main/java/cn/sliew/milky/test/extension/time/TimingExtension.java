@@ -1,14 +1,12 @@
 package cn.sliew.milky.test.extension.time;
 
-import java.lang.reflect.Method;
-
-import cn.sliew.milky.log.Logger;
-import cn.sliew.milky.log.LoggerFactory;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.ExtensionContext.Store;
+
+import java.lang.reflect.Method;
 
 public class TimingExtension implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
 
@@ -24,9 +22,7 @@ public class TimingExtension implements BeforeTestExecutionCallback, AfterTestEx
         Method testMethod = context.getRequiredTestMethod();
         long startTime = getStore(context).remove(START_TIME, long.class);
         long duration = System.currentTimeMillis() - startTime;
-        Logger logger = LoggerFactory.getLogger(TimingExtension.class);
-
-        logger.info("Method [{}()] took {} ms.", testMethod.getName(), duration);
+        System.out.println(String.format("Method [%s()] took %d ms.", testMethod.getName(), duration));
     }
 
     private Store getStore(ExtensionContext context) {
