@@ -1,20 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration monitorInterval="30" status="WARN" strict="true">
+<Configuration monitorInterval="30" status="info" strict="true" verbose="true" >
     <Properties>
+        <Property name="APPLICATION">milky-all</Property>
+        <Property name="LOG_PATH">${sys:user.home}/logs</Property>
         <Property name="FILE_PATTERN">%date{yyyy-MM-dd HH:mm:ss.SSS} %3level [%threadId:%threadName] %-40.40logger{39} %-2line 行: %msg%n%exception</Property>
         <Property name="CONSOLE_PATTERN">%highlight{%date{yyyy-MM-dd HH:mm:ss.SSS}}{FATAL=red, ERROR=red, WARN=yellow, INFO=default, DEBUG=default, TRACE=default} %highlight{%3level}{FATAL=red, ERROR=red, WARN=yellow, INFO=cyan, DEBUG=green, TRACE=magenta} %highlight{[%threadId:%threadName]}{FATAL=red, ERROR=red, WARN=yellow, INFO=default, DEBUG=default, TRACE=default} %highlight{%-40.40logger{39}}{FATAL=red, ERROR=red, WARN=yellow, INFO=cyan, DEBUG=green, TRACE=magenta} %highlight{%-2line 行:}{FATAL=red, ERROR=red, WARN=yellow, INFO=default, DEBUG=default, TRACE=default} %highlight{%msg%n%exception}{FATAL=white, ERROR=red, WARN=yellow, INFO=cyan, DEBUG=green, TRACE=magenta}</Property>
     </Properties>
     <Appenders>
+        <Appender name="">
+            <Filters>
+                <Filter type="MarkerFilter" marker="FLOW" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <Filter type="MarkerFilter" marker="EXCEPTION" onMatch="DENY" onMismatch="ACCEPT"/>
+            </Filters>
+        </Appender>
+        <RollingFile name="Demo" filename="${LOG_PATH}/${APPLICATION}_demo.log"
+                     filepattern="${LOG_PATH}/demo/${APPLICATION}_demo_%d{yyyy-MM-dd}_%i.log">
+            <PatternLayout pattern="${FILE_PATTERN}" />
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="200MB" />
+                <TimeBasedTriggeringPolicy modulate="true" interval="1" />
+            </Policies>
+            <!-- 这里是i的最大值为20，而不是最多保留20个文件 -->
+            <DefaultRolloverStrategy max="20" />
+        </RollingFile>
+        <RollingFile name="Application" filename="${LOG_PATH}/${APPLICATION}_app.log"
+                     filepattern="${LOG_PATH}/app/${APPLICATION}_app_%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="${FILE_PATTERN}" />
+            <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="ACCEPT" />
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1" />
+            </Policies>
+        </RollingFile>
+        <RollingFile name="Debug" filename="${LOG_PATH}/${APPLICATION}_debug.log"
+                     filepattern="${LOG_PATH}/debug/${APPLICATION}_debug_%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="${FILE_PATTERN}" />
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY" />
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1" />
+            </Policies>
+        </RollingFile>
+        <RollingFile name="Info" filename="${LOG_PATH}/${APPLICATION}_info.log"
+                     filepattern="${LOG_PATH}/info/${APPLICATION}_info_%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="${FILE_PATTERN}" />
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1" />
+            </Policies>
+        </RollingFile>
+        <RollingFile name="Warn" filename="${LOG_PATH}/${APPLICATION}_warn.log"
+                     filepattern="${LOG_PATH}/warn/${APPLICATION}_warn_%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="${FILE_PATTERN}" />
+            <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY" />
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1" />
+            </Policies>
+        </RollingFile>
+        <RollingFile name="Error" filename="${LOG_PATH}/${APPLICATION}_error.log"
+                     filepattern="${LOG_PATH}/error/${APPLICATION}_error_%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="${FILE_PATTERN}" />
+            <ThresholdFilter level="ERROR" onMatch="NEUTRAL" onMismatch="DENY" />
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1" />
+            </Policies>
+        </RollingFile>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="${CONSOLE_PATTERN}"/>
         </Console>
     </Appenders>
     <Loggers>
-        <Root level="trace">
-            <AppenderRef ref="Console"/>
-        </Root>
-        <Logger name="com.foo.Bar" level="trace" additivity="false">
-            <AppenderRef ref="Console"/>
-        </Logger>
+        <AsyncRoot level="INFO">
+            <AppenderRef ref="Application"/>
+            <AppenderRef ref="Error"/>
+        </AsyncRoot>
+        <AsyncLogger name="cn.sliew" level="DEBUG" additivity="false">
+            <appender-ref ref="Console"/>
+        </AsyncLogger>
+
+<!--        <Root level="info">-->
+<!--            <AppenderRef ref="Application"/>-->
+<!--            <AppenderRef ref="Error"/>-->
+<!--        </Root>-->
+<!--        <Logger name="cn.sliew" level="debug" additivity="false">-->
+<!--            <appender-ref ref="Debug"/>-->
+<!--            <appender-ref ref="Info"/>-->
+<!--            <appender-ref ref="Warn"/>-->
+<!--            <appender-ref ref="Error"/>-->
+<!--            <appender-ref ref="Console"/>-->
+<!--        </Logger>-->
     </Loggers>
 </Configuration>

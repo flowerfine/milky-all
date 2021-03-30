@@ -23,6 +23,12 @@
             <version>2.6.2</version>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>3.4.2</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>

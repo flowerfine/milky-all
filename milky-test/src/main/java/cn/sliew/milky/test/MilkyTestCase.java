@@ -71,7 +71,7 @@ public class MilkyTestCase extends RandomizedTestCase {
     }
 
     @BeforeAll
-    public final void beforeAll() {
+    public static final void beforeAll() {
         LoggerFactory.setDefaultFactory(Log4J2LoggerFactory.INSTANCE);
     }
 
