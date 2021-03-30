@@ -2,8 +2,8 @@ package cn.sliew.milky.cache.caffeine;
 
 import cn.sliew.milky.cache.Cache;
 import cn.sliew.milky.cache.CacheLoader;
-import cn.sliew.milky.common.log.Logger;
-import cn.sliew.milky.common.log.LoggerFactory;
+import cn.sliew.milky.log.Logger;
+import cn.sliew.milky.log.LoggerFactory;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.binder.cache.CaffeineCacheMetrics;

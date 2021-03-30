@@ -19,8 +19,8 @@
 package cn.sliew.milky.remote.netty4;
 
 import cn.sliew.milky.common.collect.SetOnce;
-import cn.sliew.milky.common.log.Logger;
-import cn.sliew.milky.common.log.LoggerFactory;
+import cn.sliew.milky.log.Logger;
+import cn.sliew.milky.log.LoggerFactory;
 import cn.sliew.milky.remote.transport.*;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;

@@ -2,8 +2,8 @@ package cn.sliew.milky.cache.lettuce;
 
 import cn.sliew.milky.cache.Cache;
 import cn.sliew.milky.cache.CacheLoader;
-import cn.sliew.milky.common.log.Logger;
-import cn.sliew.milky.common.log.LoggerFactory;
+import cn.sliew.milky.log.Logger;
+import cn.sliew.milky.log.LoggerFactory;
 import io.lettuce.core.Limit;
 import io.lettuce.core.Range;
 import io.lettuce.core.RedisClient;

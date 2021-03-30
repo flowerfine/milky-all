@@ -1,7 +1,7 @@
 package cn.sliew.milky.serialize.kryo;
 
-import cn.sliew.milky.common.log.Logger;
-import cn.sliew.milky.common.log.LoggerFactory;
+import cn.sliew.milky.log.Logger;
+import cn.sliew.milky.log.LoggerFactory;
 import cn.sliew.milky.serialize.kryo.utils.ReflectionUtils;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.Serializer;
