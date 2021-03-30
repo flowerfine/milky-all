@@ -12,7 +12,9 @@
 
     <properties>
         <kryo5.version>5.0.4</kryo5.version>
+        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>cn.sliew</groupId>

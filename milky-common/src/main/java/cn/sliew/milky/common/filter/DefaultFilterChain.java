@@ -1,6 +1,6 @@
 package cn.sliew.milky.common.filter;
 
-import org.apache.logging.log4j.Logger;
+import cn.sliew.milky.log.Logger;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
