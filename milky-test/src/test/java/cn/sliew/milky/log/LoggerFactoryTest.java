@@ -40,11 +40,11 @@ public class LoggerFactoryTest extends MilkyTestCase {
     }
 
     private void logSomething(Logger log) {
-        log.trace("Trace message.");
-        log.debug("Debug message.");
-        log.info("Info message.");
-        log.warn("Warning message.");
-        log.error("Error message.");
-        log.error("Error with Exception.", new Exception("Test exception."));
+        log.trace("{}", "Trace message.");
+        log.debug("{}", "Debug message.");
+        log.info("{}", "Info message.");
+        log.warn("{}", "Warning message.");
+        log.error("{}", "Error message.");
+        log.error("{}", "Error with Exception.", new Exception("Test exception."));
     }
 }

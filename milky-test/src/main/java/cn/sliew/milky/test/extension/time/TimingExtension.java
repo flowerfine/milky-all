@@ -12,8 +12,6 @@ import org.junit.jupiter.api.extension.ExtensionContext.Store;
 
 public class TimingExtension implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
 
-    private static final Logger logger = LoggerFactory.getLogger(TimingExtension.class);
-
     private static final String START_TIME = "start time";
 
     @Override
@@ -26,8 +24,9 @@ public class TimingExtension implements BeforeTestExecutionCallback, AfterTestEx
         Method testMethod = context.getRequiredTestMethod();
         long startTime = getStore(context).remove(START_TIME, long.class);
         long duration = System.currentTimeMillis() - startTime;
+        Logger logger = LoggerFactory.getLogger(TimingExtension.class);
 
-        logger.info("Method [%s] took %s ms.", testMethod.getName(), duration);
+        logger.info("Method [{}()] took {} ms.", testMethod.getName(), duration);
     }
 
     private Store getStore(ExtensionContext context) {
