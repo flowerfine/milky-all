@@ -15,7 +15,6 @@ public class LoggerFactoryTest extends MilkyTestCase {
         assertEquals(logger.getClass().getName(), Slf4JLogger.class.getName());
     }
 
-
     @Test
     void shouldUseLog4J2() {
         LoggerFactory.setDefaultFactory(Log4J2LoggerFactory.INSTANCE);
@@ -23,8 +22,6 @@ public class LoggerFactoryTest extends MilkyTestCase {
         logSomething(logger);
         assertEquals(logger.getClass().getName(), Log4J2Logger.class.getName());
     }
-
-
 
     @Test
     void shouldUseStdOut() {
@@ -43,8 +40,10 @@ public class LoggerFactoryTest extends MilkyTestCase {
     }
 
     private void logSomething(Logger log) {
-        log.warn("Warning message.");
+        log.trace("Trace message.");
         log.debug("Debug message.");
+        log.info("Info message.");
+        log.warn("Warning message.");
         log.error("Error message.");
         log.error("Error with Exception.", new Exception("Test exception."));
     }

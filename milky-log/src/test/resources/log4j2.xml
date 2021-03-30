@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="30" status="WARN" strict="true">
+    <Properties>
+        <Property name="FILE_PATTERN">%date{yyyy-MM-dd HH:mm:ss.SSS} %3level [%threadId:%threadName] %-40.40logger{39} %-2line 行: %msg%n%exception</Property>
+        <Property name="CONSOLE_PATTERN">%date{yyyy-MM-dd HH:mm:ss.SSS} %highlight{%3level}{FATAL=white, ERROR=red, WARN=yellow, INFO=cyan, DEBUG=green, TRACE=magenta} %highlight{[%threadId:%threadName]}{FATAL=white, ERROR=red, WARN=yellow, INFO=default, DEBUG=default, TRACE=default} %highlight{%-40.40logger{39}}{FATAL=white, ERROR=red, WARN=yellow, INFO=cyan, DEBUG=cyan, TRACE=cyan} %-2line 行: %highlight{%msg%n%exception}{FATAL=white, ERROR=red, WARN=yellow, INFO=default, DEBUG=default, TRACE=default}</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${CONSOLE_PATTERN}"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="Console"/>
+        </Root>
+        <Logger name="com.foo.Bar" level="trace" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+    </Loggers>
+</Configuration>
