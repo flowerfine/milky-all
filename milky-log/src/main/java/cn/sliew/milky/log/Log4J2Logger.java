@@ -7,7 +7,7 @@ import org.apache.logging.log4j.spi.ExtendedLoggerWrapper;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
-import static cn.sliew.milky.common.log.AbstractLogger.EXCEPTION_MESSAGE;
+import static cn.sliew.milky.log.AbstractLogger.EXCEPTION_MESSAGE;
 
 public class Log4J2Logger extends ExtendedLoggerWrapper implements Logger {
 
@@ -35,7 +35,7 @@ public class Log4J2Logger extends ExtendedLoggerWrapper implements Logger {
         });
     }
 
-    Log4J2Logger(Logger logger) {
+    Log4J2Logger(org.apache.logging.log4j.Logger logger) {
         super((ExtendedLogger) logger, logger.getName(), logger.getMessageFactory());
         if (VARARGS_ONLY) {
             throw new UnsupportedOperationException("Log4J2 version mismatch");

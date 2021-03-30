@@ -1,6 +1,5 @@
 package cn.sliew.milky.log;
 
-
 import org.apache.logging.log4j.LogManager;
 
 public final class Log4J2LoggerFactory extends LoggerFactory {

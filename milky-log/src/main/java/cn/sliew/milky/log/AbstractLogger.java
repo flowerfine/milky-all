@@ -3,8 +3,6 @@ package cn.sliew.milky.log;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 
-import static cn.sliew.milky.common.check.Ensures.checkNotNull;
-
 /**
  * A skeletal implementation of {@link Logger}.  This class implements
  * all methods that have a {@link LogLevel} parameter by default to call
@@ -238,7 +236,10 @@ public abstract class AbstractLogger implements Logger, Serializable {
      * with anonymous classes.
      */
     public static String simpleClassName(Class<?> clazz) {
-        String className = checkNotNull(clazz, "clazz").getName();
+        if (clazz == null) {
+            throw new IllegalArgumentException("clazz can't be null");
+        }
+        String className = clazz.getName();
         final int lastDotIdx = className.lastIndexOf(PACKAGE_SEPARATOR_CHAR);
         if (lastDotIdx > -1) {
             return className.substring(lastDotIdx + 1);
