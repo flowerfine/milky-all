@@ -3,8 +3,8 @@
     <Properties>
         <Property name="APPLICATION">milky-all</Property>
         <Property name="LOG_PATH">${sys:user.home}/logs</Property>
-        <Property name="FILE_PATTERN">%date{yyyy-MM-dd HH:mm:ss.SSS} %3level [%threadId:%threadName] %-40.40logger{39} %-2line 行: %msg%n%exception</Property>
-        <Property name="CONSOLE_PATTERN">%highlight{%date{yyyy-MM-dd HH:mm:ss.SSS}}{FATAL=red, ERROR=red, WARN=yellow, INFO=default, DEBUG=default, TRACE=default} %highlight{%3level}{FATAL=red, ERROR=red, WARN=yellow, INFO=cyan, DEBUG=green, TRACE=magenta} %highlight{[%threadId:%threadName]}{FATAL=red, ERROR=red, WARN=yellow, INFO=default, DEBUG=default, TRACE=default} %highlight{%-40.40logger{39}}{FATAL=red, ERROR=red, WARN=yellow, INFO=cyan, DEBUG=green, TRACE=magenta} %highlight{%-2line 行:}{FATAL=red, ERROR=red, WARN=yellow, INFO=default, DEBUG=default, TRACE=default} %highlight{%msg%n%exception}{FATAL=white, ERROR=red, WARN=yellow, INFO=cyan, DEBUG=green, TRACE=magenta}</Property>
+        <Property name="FILE_PATTERN">%date{yyyy-MM-dd HH:mm:ss.SSS} %3level [%threadId:%threadName] %-10logger %-2line 行: %msg%n%exception</Property>
+        <Property name="CONSOLE_PATTERN">%highlight{%date{yyyy-MM-dd HH:mm:ss.SSS}}{FATAL=red, ERROR=red, WARN=yellow, INFO=default, DEBUG=default, TRACE=default} %highlight{%3level}{FATAL=red, ERROR=red, WARN=yellow, INFO=cyan, DEBUG=green, TRACE=magenta} %highlight{[%threadId:%threadName]}{FATAL=red, ERROR=red, WARN=yellow, INFO=default, DEBUG=default, TRACE=default} %highlight{%-10.80logger{-20}}{FATAL=red, ERROR=red, WARN=yellow, INFO=cyan, DEBUG=green, TRACE=magenta} %highlight{%-2line 行:}{FATAL=red, ERROR=red, WARN=yellow, INFO=default, DEBUG=default, TRACE=default} %highlight{%msg%n%exception}{FATAL=white, ERROR=red, WARN=yellow, INFO=cyan, DEBUG=green, TRACE=magenta}</Property>
     </Properties>
     <Appenders>
         <RollingRandomAccessFile name="Demo" fileName="${LOG_PATH}/${APPLICATION}_demo.log"
