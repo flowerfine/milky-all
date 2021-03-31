@@ -1,10 +1,8 @@
 package cn.sliew.milky.common.chain;
 
-import cn.sliew.milky.common.log.Logger;
-import cn.sliew.milky.common.log.LoggerFactory;
-import cn.sliew.milky.common.log.StdOutLoggerFactory;
+import cn.sliew.milky.log.Logger;
+import cn.sliew.milky.log.LoggerFactory;
 import cn.sliew.milky.test.MilkyTestCase;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CompletableFuture;
@@ -12,11 +10,6 @@ import java.util.concurrent.CompletableFuture;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class DefaultPipelineTestCase extends MilkyTestCase {
-
-    @BeforeEach
-    public void before() {
-        LoggerFactory.setDefaultFactory(StdOutLoggerFactory.INSTANCE);
-    }
 
     @Test
     public void testPipeline() {

@@ -13,6 +13,7 @@ public class LettuceCacheTest extends AbstractCacheTest {
         String escape = escaper.escape("123");
         System.out.println(escape);
         String uriStr = "redis://" + escape + "@localhost:6379/0?timeout=1s";
+        System.out.println(uriStr);
         options.redisURI(uriStr);
         LettuceCacheFactory factory = new LettuceCacheFactory();
         this.cache = factory.getCache(options);
