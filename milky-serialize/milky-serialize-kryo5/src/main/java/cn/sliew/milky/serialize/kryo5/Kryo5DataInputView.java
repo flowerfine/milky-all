@@ -1,19 +1,18 @@
 package cn.sliew.milky.serialize.kryo5;
 
 import cn.sliew.milky.serialize.DataInputView;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
 public class Kryo5DataInputView implements DataInputView {
 
     @Override
-    public void readFully(@NotNull byte[] b) throws IOException {
+    public void readFully(byte[] b) throws IOException {
 
     }
 
     @Override
-    public void readFully(@NotNull byte[] b, int off, int len) throws IOException {
+    public void readFully(byte[] b, int off, int len) throws IOException {
 
     }
 
@@ -77,7 +76,6 @@ public class Kryo5DataInputView implements DataInputView {
         return null;
     }
 
-    @NotNull
     @Override
     public String readUTF() throws IOException {
         return null;

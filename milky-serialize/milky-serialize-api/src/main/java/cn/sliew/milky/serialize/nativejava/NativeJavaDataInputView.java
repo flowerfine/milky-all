@@ -1,7 +1,6 @@
 package cn.sliew.milky.serialize.nativejava;
 
 import cn.sliew.milky.serialize.DataInputView;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,12 +28,12 @@ public class NativeJavaDataInputView implements DataInputView {
     }
 
     @Override
-    public void readFully(@NotNull byte[] b) throws IOException {
+    public void readFully(byte[] b) throws IOException {
         this.inputStream.read(b);
     }
 
     @Override
-    public void readFully(@NotNull byte[] b, int off, int len) throws IOException {
+    public void readFully(byte[] b, int off, int len) throws IOException {
         this.inputStream.read(b, off, len);
     }
 
@@ -98,7 +97,6 @@ public class NativeJavaDataInputView implements DataInputView {
         return this.inputStream.readLine();
     }
 
-    @NotNull
     @Override
     public String readUTF() throws IOException {
         return this.inputStream.readUTF();

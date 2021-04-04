@@ -1,7 +1,6 @@
 package cn.sliew.milky.serialize.kryo5;
 
 import cn.sliew.milky.serialize.DataOutputView;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
@@ -13,12 +12,12 @@ public class Kryo5DataOutputView implements DataOutputView {
     }
 
     @Override
-    public void write(@NotNull byte[] b) throws IOException {
+    public void write(byte[] b) throws IOException {
 
     }
 
     @Override
-    public void write(@NotNull byte[] b, int off, int len) throws IOException {
+    public void write(byte[] b, int off, int len) throws IOException {
 
     }
 
@@ -63,17 +62,17 @@ public class Kryo5DataOutputView implements DataOutputView {
     }
 
     @Override
-    public void writeBytes(@NotNull String s) throws IOException {
+    public void writeBytes(String s) throws IOException {
 
     }
 
     @Override
-    public void writeChars(@NotNull String s) throws IOException {
+    public void writeChars(String s) throws IOException {
 
     }
 
     @Override
-    public void writeUTF(@NotNull String s) throws IOException {
+    public void writeUTF(String s) throws IOException {
 
     }
 

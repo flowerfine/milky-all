@@ -5,7 +5,6 @@ import cn.sliew.milky.serialize.protostuff.utils.WrapperUtils;
 import io.protostuff.GraphIOUtil;
 import io.protostuff.Schema;
 import io.protostuff.runtime.RuntimeSchema;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -23,12 +22,12 @@ public class ProtostuffDataInputView implements DataInputView {
     }
 
     @Override
-    public void readFully(@NotNull byte[] b) throws IOException {
+    public void readFully(byte[] b) throws IOException {
         this.dis.readFully(b);
     }
 
     @Override
-    public void readFully(@NotNull byte[] b, int off, int len) throws IOException {
+    public void readFully(byte[] b, int off, int len) throws IOException {
         this.dis.readFully(b, off, len);
     }
 
@@ -92,7 +91,6 @@ public class ProtostuffDataInputView implements DataInputView {
         return this.dis.readLine();
     }
 
-    @NotNull
     @Override
     public String readUTF() throws IOException {
         return this.dis.readUTF();

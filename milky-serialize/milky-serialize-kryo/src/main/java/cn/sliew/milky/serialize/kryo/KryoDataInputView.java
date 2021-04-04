@@ -5,7 +5,6 @@ import cn.sliew.milky.serialize.kryo.utils.KryoUtils;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoException;
 import com.esotericsoftware.kryo.io.Input;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,7 +20,7 @@ public class KryoDataInputView implements DataInputView {
     }
 
     @Override
-    public void readFully(@NotNull byte[] b) throws IOException {
+    public void readFully(byte[] b) throws IOException {
         try {
             input.read(b);
         } catch (KryoException e) {
@@ -30,7 +29,7 @@ public class KryoDataInputView implements DataInputView {
     }
 
     @Override
-    public void readFully(@NotNull byte[] b, int off, int len) throws IOException {
+    public void readFully(byte[] b, int off, int len) throws IOException {
         try {
             input.read(b, off, len);
         } catch (KryoException e) {
@@ -146,7 +145,6 @@ public class KryoDataInputView implements DataInputView {
         }
     }
 
-    @NotNull
     @Override
     public String readUTF() throws IOException {
         try {

@@ -7,7 +7,6 @@ import io.protostuff.GraphIOUtil;
 import io.protostuff.LinkedBuffer;
 import io.protostuff.Schema;
 import io.protostuff.runtime.RuntimeSchema;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -31,12 +30,12 @@ public class ProtostuffDataOutputView implements DataOutputView {
     }
 
     @Override
-    public void write(@NotNull byte[] b) throws IOException {
+    public void write(byte[] b) throws IOException {
         this.dos.write(b);
     }
 
     @Override
-    public void write(@NotNull byte[] b, int off, int len) throws IOException {
+    public void write(byte[] b, int off, int len) throws IOException {
         this.dos.write(b, off, len);
     }
 
@@ -81,17 +80,17 @@ public class ProtostuffDataOutputView implements DataOutputView {
     }
 
     @Override
-    public void writeBytes(@NotNull String s) throws IOException {
+    public void writeBytes(String s) throws IOException {
         this.dos.writeBytes(s);
     }
 
     @Override
-    public void writeChars(@NotNull String s) throws IOException {
+    public void writeChars(String s) throws IOException {
         this.dos.writeChars(s);
     }
 
     @Override
-    public void writeUTF(@NotNull String s) throws IOException {
+    public void writeUTF(String s) throws IOException {
         this.dos.writeUTF(s);
     }
 
