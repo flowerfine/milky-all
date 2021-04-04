@@ -1,7 +1,7 @@
 package cn.sliew.milky.common.timewheel;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.sliew.milky.log.Logger;
+import cn.sliew.milky.log.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.*;
