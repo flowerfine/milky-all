@@ -1,7 +1,5 @@
 package cn.sliew.milky.concurrent.threadpool;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -27,7 +25,7 @@ class DaemonThreadFactory implements ThreadFactory {
     }
 
     @Override
-    public Thread newThread(@NotNull Runnable runnable) {
+    public Thread newThread(Runnable runnable) {
         Thread thread = new Thread(threadGroup, runnable, nextThreadName());
         thread.setPriority(threadPriority);
         thread.setDaemon(daemon);
