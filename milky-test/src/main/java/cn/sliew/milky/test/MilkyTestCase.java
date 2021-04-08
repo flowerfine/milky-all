@@ -1,7 +1,5 @@
 package cn.sliew.milky.test;
 
-import cn.sliew.milky.log.Log4J2LoggerFactory;
-import cn.sliew.milky.log.LoggerFactory;
 import cn.sliew.milky.test.extension.random.RandomizedTestCase;
 import cn.sliew.milky.test.extension.time.TimingExtension;
 import org.apache.logging.log4j.Level;
@@ -16,7 +14,6 @@ import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.ArrayList;
@@ -68,11 +65,6 @@ public class MilkyTestCase extends RandomizedTestCase {
         }
         loggerConfig.addAppender(appender, null, null);
         ctx.updateLoggers();
-    }
-
-    @BeforeAll
-    public static final void beforeAll() {
-        LoggerFactory.setDefaultFactory(Log4J2LoggerFactory.INSTANCE);
     }
 
     @AfterEach

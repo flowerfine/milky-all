@@ -1,7 +1,6 @@
 package cn.sliew.milky.serialize.nativejava;
 
 import cn.sliew.milky.serialize.DataOutputView;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -34,12 +33,12 @@ public class NativeJavaDataOutputView implements DataOutputView {
     }
 
     @Override
-    public void write(@NotNull byte[] b) throws IOException {
+    public void write(byte[] b) throws IOException {
         this.outputStream.write(b);
     }
 
     @Override
-    public void write(@NotNull byte[] b, int off, int len) throws IOException {
+    public void write(byte[] b, int off, int len) throws IOException {
         this.outputStream.write(b, off, len);
     }
 
@@ -84,17 +83,17 @@ public class NativeJavaDataOutputView implements DataOutputView {
     }
 
     @Override
-    public void writeBytes(@NotNull String s) throws IOException {
+    public void writeBytes(String s) throws IOException {
         this.outputStream.writeBytes(s);
     }
 
     @Override
-    public void writeChars(@NotNull String s) throws IOException {
+    public void writeChars(String s) throws IOException {
         this.outputStream.writeChars(s);
     }
 
     @Override
-    public void writeUTF(@NotNull String s) throws IOException {
+    public void writeUTF(String s) throws IOException {
         this.outputStream.writeUTF(s);
     }
 

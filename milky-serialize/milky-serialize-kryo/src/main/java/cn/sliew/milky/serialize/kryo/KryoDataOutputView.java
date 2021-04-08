@@ -5,7 +5,6 @@ import cn.sliew.milky.serialize.kryo.utils.KryoUtils;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoException;
 import com.esotericsoftware.kryo.io.Output;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -30,7 +29,7 @@ public class KryoDataOutputView implements DataOutputView {
     }
 
     @Override
-    public void write(@NotNull byte[] b) throws IOException {
+    public void write(byte[] b) throws IOException {
         try {
             this.output.write(b);
         } catch (KryoException e) {
@@ -39,7 +38,7 @@ public class KryoDataOutputView implements DataOutputView {
     }
 
     @Override
-    public void write(@NotNull byte[] b, int off, int len) throws IOException {
+    public void write(byte[] b, int off, int len) throws IOException {
         try {
             output.write(b, off, len);
         } catch (KryoException e) {
@@ -120,7 +119,7 @@ public class KryoDataOutputView implements DataOutputView {
     }
 
     @Override
-    public void writeBytes(@NotNull String s) throws IOException {
+    public void writeBytes(String s) throws IOException {
         try {
             output.writeString(s);
         } catch (KryoException e) {
@@ -129,7 +128,7 @@ public class KryoDataOutputView implements DataOutputView {
     }
 
     @Override
-    public void writeChars(@NotNull String s) throws IOException {
+    public void writeChars(String s) throws IOException {
         try {
             output.writeString(s);
         } catch (KryoException e) {
@@ -138,7 +137,7 @@ public class KryoDataOutputView implements DataOutputView {
     }
 
     @Override
-    public void writeUTF(@NotNull String s) throws IOException {
+    public void writeUTF(String s) throws IOException {
         try {
             output.writeString(s);
         } catch (KryoException e) {
