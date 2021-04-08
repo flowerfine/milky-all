@@ -14,5 +14,12 @@
         <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>cn.sliew</groupId>
+            <artifactId>milky-log</artifactId>
+        </dependency>
+    </dependencies>
+
 
 </project>
