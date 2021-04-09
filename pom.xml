@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.sliew</groupId>
     <artifactId>milky-all</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
     <name>milky-all</name>
     <url>https://github.com/kalencaya/milky-all</url>
@@ -63,6 +63,7 @@
         <module>milky-objectsize</module>
         <module>milky-serialize</module>
         <module>milky-log</module>
+        <module>milky-event</module>
     </modules>
 
     <properties>
@@ -73,6 +74,8 @@
         <maven.deploy.skip>false</maven.deploy.skip>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <revision>1.0.0-SNAPSHOT</revision>
 
         <surefire.version>3.0.0-M5</surefire.version>
     </properties>
