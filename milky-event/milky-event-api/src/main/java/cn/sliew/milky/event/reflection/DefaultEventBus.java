@@ -27,11 +27,15 @@ public class DefaultEventBus implements EventBus {
             5L, TimeUnit.SECONDS,
             new LinkedBlockingQueue<>(126));
 
+    @Override
+    public Executor getExecutor() {
+        return defaultExecutor;
+    }
 
     @Override
     public void fire(Event event) {
         List<EventListener> eventListeners = findListener(event.getClass());
-        eventListeners.stream().forEach(eventListener -> CompletableFuture.runAsync(() -> eventListener.execute(event), defaultExecutor));
+        eventListeners.stream().forEach(eventListener -> CompletableFuture.runAsync(() -> eventListener.execute(event), getExecutor()));
     }
 
     @Override
