@@ -5,23 +5,29 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.sliew</groupId>
-        <artifactId>milky-all</artifactId>
+        <artifactId>milky-event</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>milky-event</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>milky-event-test</artifactId>
+    <packaging>jar</packaging>
     <name>${project.artifactId}</name>
 
-    <modules>
-        <module>milky-event-api</module>
-        <module>milky-event-test</module>
-    </modules>
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>cn.sliew</groupId>
+            <artifactId>milky-event-api</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>cn.sliew</groupId>
             <artifactId>milky-test</artifactId>
         </dependency>
     </dependencies>
+
+
 </project>
