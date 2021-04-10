@@ -10,8 +10,12 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>milky-event</artifactId>
+    <packaging>pom</packaging>
     <name>${project.artifactId}</name>
 
+    <modules>
+        <module>milky-event-api</module>
+    </modules>
 
     <dependencies>
         <dependency>
