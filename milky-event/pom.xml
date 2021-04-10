@@ -13,16 +13,14 @@
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
 
+    <properties>
+        <reactor.version>3.4.4</reactor.version>
+    </properties>
+
     <modules>
         <module>milky-event-api</module>
         <module>milky-event-test</module>
         <module>milky-event-reactor</module>
     </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>cn.sliew</groupId>
-            <artifactId>milky-test</artifactId>
-        </dependency>
-    </dependencies>
 </project>
