@@ -1,6 +1,6 @@
 package cn.sliew.milky.event.base;
 
-class EchoEventListener extends AbstractEventListener<EchoEvent> {
+public class EchoEventListener extends AbstractEventListener<EchoEvent> {
 
     @Override
     protected void handleEvent(EchoEvent event) {
