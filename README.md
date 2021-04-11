@@ -14,6 +14,29 @@ mvn clean deploy -Dmaven.deploy.skip=false -Poss-release -projects milky
 
 
 
+## 生命周期
+
+优秀的java框架都提供了生命周期接口，管理框架内组件的生命周期，确保组件正确地初始化、创建和结束。生命周期组件提供接口 `LifiCycle`，它有6个状态，分别表示：
+
+* `INITIALIZING`。正在初始化，还没有完成初始化。
+* `INITIALIZED`。初始化完毕，还没有开始。
+* `STARTING`。正在开始，还没有完成开始。
+* `STARTED`。已经开始，可以正常使用。
+* `STOPPING`。正在结束，还没有完成结束。
+* `STOPPED`。已经结束，可以正常关闭。
+
+## 线程池组件
+
+
+
+## ThreadLocal组件
+
+
+
+## ThreadContext组件
+
+
+
 ## 单位组件
 
 ### 时间单位

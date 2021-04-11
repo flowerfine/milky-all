@@ -64,6 +64,7 @@
         <module>milky-serialize</module>
         <module>milky-log</module>
         <module>milky-event</module>
+        <module>milky-thread</module>
     </modules>
 
     <properties>
