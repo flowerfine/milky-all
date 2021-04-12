@@ -2,14 +2,17 @@ package cn.sliew.milky.common.exception;
 
 import cn.sliew.milky.common.util.ThrowableUtil;
 
+import java.util.Optional;
+
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
 
 /**
  * Component that can collect one Throwable instance.
+ * todo add lambda support, such as andThen or ifEmpty or whenTerminated and so on.
  */
 public class ThrowableCollector {
 
-    private Throwable throwable;
+    private volatile Optional<Throwable> throwableHolder;
 
     /**
      * Execute the supplied {@link Executable} and collect any {@link Throwable}
@@ -39,10 +42,10 @@ public class ThrowableCollector {
     private void add(Throwable t) {
         checkNotNull(t, "Throwable must not be null");
 
-        if (this.throwable == null) {
-            this.throwable = t;
-        } else if (throwable != t) {
-            this.throwable.addSuppressed(t);
+        if (throwableHolder.isPresent()) {
+            throwableHolder = Optional.of(t);
+        } else {
+            throwableHolder.get().addSuppressed(t);
         }
     }
 
@@ -59,7 +62,7 @@ public class ThrowableCollector {
      * @see #isEmpty()
      */
     public Throwable getThrowable() {
-        return this.throwable;
+        return throwableHolder.get();
     }
 
     /**
@@ -67,7 +70,7 @@ public class ThrowableCollector {
      * has not collected any {@code Throwables}).
      */
     public boolean isEmpty() {
-        return (this.throwable == null);
+        return !throwableHolder.isPresent();
     }
 
     /**
@@ -75,7 +78,7 @@ public class ThrowableCollector {
      * has collected at least one {@code Throwable}).
      */
     public boolean isNotEmpty() {
-        return (this.throwable != null);
+        return !isEmpty();
     }
 
     /**
