@@ -13,7 +13,7 @@
     <name>${project.artifactId}</name>
 
     <properties>
-        <caffeine.version>2.9.0</caffeine.version>
+        <caffeine.version>3.0.1</caffeine.version>
         <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 

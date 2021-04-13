@@ -13,7 +13,7 @@
     <name>${project.artifactId}</name>
 
     <properties>
-        <kryo5.version>5.0.4</kryo5.version>
+        <kryo5.version>5.1.0</kryo5.version>
         <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 

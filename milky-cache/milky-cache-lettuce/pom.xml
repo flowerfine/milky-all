@@ -13,7 +13,7 @@
     <name>${project.artifactId}</name>
 
     <properties>
-        <lettuce.version>6.0.3.RELEASE</lettuce.version>
+        <lettuce.version>6.1.0.RELEASE</lettuce.version>
     </properties>
 
     <dependencies>

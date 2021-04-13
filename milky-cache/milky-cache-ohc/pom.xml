@@ -13,7 +13,7 @@
     <name>${project.artifactId}</name>
 
     <properties>
-        <ohc.version>0.7.0</ohc.version>
+        <ohc.version>0.7.1</ohc.version>
     </properties>
 
     <dependencies>
