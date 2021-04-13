@@ -14,6 +14,10 @@
     <url>https://github.com/kalencaya/milky-all</url>
     <description>Milky is an userful java component toolset.</description>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>cn.sliew</groupId>
