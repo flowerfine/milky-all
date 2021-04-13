@@ -12,7 +12,7 @@ import static cn.sliew.milky.common.check.Ensures.checkNotNull;
  */
 public class ThrowableCollector {
 
-    private volatile Optional<Throwable> throwableHolder;
+    private volatile Optional<Throwable> throwableHolder = Optional.empty();
 
     /**
      * Execute the supplied {@link Executable} and collect any {@link Throwable}
