@@ -37,6 +37,10 @@ mvn clean deploy -Poss-release -N versions:update-child-modules
 
 
 
+## 版本管理
+
+`SemVersion`遵从语义化版本管理。链接：https://semver.org/。
+
 ## 单位组件
 
 ### 时间单位
