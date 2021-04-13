@@ -6,11 +6,12 @@
     <parent>
         <groupId>cn.sliew</groupId>
         <artifactId>milky-all</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>milky</artifactId>
     <packaging>jar</packaging>
-    <name>milky</name>
+    <name>${project.artifactId}</name>
     <url>https://github.com/kalencaya/milky-all</url>
     <description>Milky is an userful java component toolset.</description>
 
