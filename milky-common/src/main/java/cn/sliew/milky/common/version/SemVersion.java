@@ -44,7 +44,7 @@ public class SemVersion {
         try {
             String[] parts = new String[0];
             if (version != null && !version.isEmpty()) {
-                parts = version.split(".");
+                parts = version.split("\\.");
             }
 
             int major = 0;
