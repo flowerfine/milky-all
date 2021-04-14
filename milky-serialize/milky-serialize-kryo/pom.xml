@@ -7,8 +7,10 @@
         <groupId>cn.sliew</groupId>
         <artifactId>milky-serialize</artifactId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>milky-serialize-kryo</artifactId>
+    <name>${project.artifactId}</name>
 
     <properties>
         <kryo.version>4.0.2</kryo.version>

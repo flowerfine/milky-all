@@ -7,10 +7,11 @@
         <groupId>cn.sliew</groupId>
         <artifactId>milky-all</artifactId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
-
     <artifactId>milky-concurrent</artifactId>
     <packaging>jar</packaging>
+    <name>${project.artifactId}</name>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>

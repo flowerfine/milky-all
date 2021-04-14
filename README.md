@@ -7,7 +7,7 @@
 * 线程池组件。支持多种形式的线程池，添加新的线程池拒绝策略，支持动态调整线程池参数。
 
 ## 发布命令
-mvn clean deploy -Dmaven.deploy.skip=false -Poss-release -projects milky
+mvn clean deploy -Poss-release -N versions:update-child-modules
 
 * 单位组件。如时间、byte、内存等。
 * 遍历组件。树形遍历，图形遍历
@@ -36,6 +36,10 @@ mvn clean deploy -Dmaven.deploy.skip=false -Poss-release -projects milky
 ## ThreadContext组件
 
 
+
+## 版本管理
+
+`SemVersion`遵从语义化版本管理。链接：https://semver.org/。
 
 ## 单位组件
 

@@ -7,8 +7,10 @@
         <groupId>cn.sliew</groupId>
         <artifactId>milky-serialize</artifactId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>milky-serialize-protostuff</artifactId>
+    <name>${project.artifactId}</name>
 
     <properties>
         <protostuff.version>1.7.2</protostuff.version>
