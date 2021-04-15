@@ -1,11 +1,19 @@
 package cn.sliew.milky.thread;
 
-import org.apache.logging.log4j.ThreadContext;
-
 import java.io.Serializable;
 import java.util.*;
 
 public interface ThreadContextStack extends Collection<String>, Serializable {
+
+    /**
+     * preserve thread context map and set default context
+     */
+    ThreadContext.StoredContext preserveContext();
+
+    /**
+     * preserve thread context map without default context
+     */
+    ThreadContext.StoredContext storeContext();
 
     /**
      * Returns the element at the top of the stack.
@@ -73,6 +81,16 @@ public interface ThreadContextStack extends Collection<String>, Serializable {
         private static final long serialVersionUID = 1L;
 
         private static final Iterator<String> EMPTY_ITERATOR = new EmptyIterator<>();
+
+        @Override
+        public ThreadContext.StoredContext preserveContext() {
+            return () -> {};
+        }
+
+        @Override
+        public ThreadContext.StoredContext storeContext() {
+            return () -> {};
+        }
 
         @Override
         public String pop() {

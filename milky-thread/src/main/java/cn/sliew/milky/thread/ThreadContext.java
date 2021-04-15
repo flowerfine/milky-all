@@ -3,6 +3,7 @@ package cn.sliew.milky.thread;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public final class ThreadContext {
 
@@ -13,6 +14,58 @@ public final class ThreadContext {
 
     private ThreadContext() {
         // empty
+    }
+
+    /**
+     * <pre>
+     *     // current context is stored and replaced with a default context
+     *     try (StoredContext context = threadContext.preserveContext()) {
+     *          // execute();
+     *     }
+     *     // previous context is restored on StoredContext#close()
+     * </pre>
+     */
+    public StoredContext preserveContext() {
+        StoredContext storedContextMap = contextMap.preserveContext();
+        StoredContext storedContextStack = contextStack.preserveContext();
+        return () -> {
+            storedContextMap.restore();
+            storedContextStack.restore();
+        };
+    }
+
+    public StoredContext storeContext() {
+        StoredContext storedContextMap = contextMap.storeContext();
+        StoredContext storedContextStack = contextStack.storeContext();
+        return () -> {
+            storedContextMap.restore();
+            storedContextStack.restore();
+        };
+    }
+
+    /**
+     * <pre>
+     *     Supplier&lt;ThreadContext.StoredContext&gt; restorable = context.newRestorableContext();
+     *     new Thread() {
+     *         public void run() {
+     *             try (ThreadContext.StoredContext ctx = restorable.get()) {
+     *                 // execute with the parents context and restore the threads context afterwards
+     *             }
+     *         }
+     *
+     *     }.start();
+     * </pre>
+     */
+    public Supplier<StoredContext> newRestorableContext() {
+        return wrapRestorable(storeContext());
+    }
+
+    public Supplier<StoredContext> wrapRestorable(StoredContext storedContext) {
+        return () -> {
+            StoredContext context = storeContext();
+            storedContext.restore();
+            return context;
+        };
     }
 
     /**
@@ -265,6 +318,17 @@ public final class ThreadContext {
 
     public static void trim(final int depth) {
         contextStack.trim(depth);
+    }
+
+    @FunctionalInterface
+    public interface StoredContext extends AutoCloseable {
+
+        default void restore() {
+            close();
+        }
+
+        @Override
+        void close();
     }
 
 }

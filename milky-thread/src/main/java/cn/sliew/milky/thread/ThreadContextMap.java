@@ -2,9 +2,17 @@ package cn.sliew.milky.thread;
 
 import java.util.Map;
 
-import org.apache.logging.log4j.ThreadContext;
-
 public interface ThreadContextMap {
+
+    /**
+     * preserve thread context map and set default context
+     */
+    ThreadContext.StoredContext preserveContext();
+
+    /**
+     * preserve thread context map without default context
+     */
+    ThreadContext.StoredContext storeContext();
 
     /**
      * Clears the context.

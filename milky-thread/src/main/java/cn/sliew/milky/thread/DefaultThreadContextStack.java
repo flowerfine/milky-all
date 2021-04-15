@@ -1,19 +1,45 @@
 package cn.sliew.milky.thread;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class DefaultThreadContextStack implements ThreadContextStack {
 
     private static final long serialVersionUID = -4937612028391653349L;
 
-    private static final ThreadLocal<MutableThreadContextStack> STACK = new ThreadLocal<>();
+    private final ThreadLocal<MutableThreadContextStack> STACK;
+
+    public DefaultThreadContextStack() {
+        STACK = createThreadLocalStack();
+    }
+
+    static ThreadLocal<MutableThreadContextStack> createThreadLocalStack() {
+        return new InheritableThreadLocal<MutableThreadContextStack>() {
+            @Override
+            protected MutableThreadContextStack childValue(final MutableThreadContextStack parentValue) {
+                return parentValue != null ?
+                        new MutableThreadContextStack(parentValue.asList()) : new MutableThreadContextStack();
+            }
+        };
+    }
 
     private MutableThreadContextStack getNonNullStackCopy() {
         final MutableThreadContextStack values = STACK.get();
         return (MutableThreadContextStack) (values == null ? new MutableThreadContextStack() : values.copy());
+    }
+
+    /**
+     * preserve context for later store then clear current thread context stack.
+     */
+    public ThreadContext.StoredContext preserveContext() {
+        MutableThreadContextStack threadContextStack = getNonNullStackCopy();
+        STACK.set(new MutableThreadContextStack());
+        return () -> STACK.set(threadContextStack);
+    }
+
+    @Override
+    public ThreadContext.StoredContext storeContext() {
+        MutableThreadContextStack threadContextStack = getNonNullStackCopy();
+        return () -> STACK.set(threadContextStack);
     }
 
     @Override
@@ -68,7 +94,7 @@ public class DefaultThreadContextStack implements ThreadContextStack {
 
     @Override
     public ThreadContextStack copy() {
-        MutableThreadContextStack values = null;
+        MutableThreadContextStack values;
         if ((values = STACK.get()) == null) {
             return new MutableThreadContextStack();
         }
