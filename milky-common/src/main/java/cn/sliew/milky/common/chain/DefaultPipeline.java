@@ -26,9 +26,9 @@ public class DefaultPipeline<K, V> implements Pipeline<K, V> {
     /**
      * todo final chain target，maybe not exists，need one invoker
      */
-    final Object invoker = new Object();
+//    final Object invoker = new Object();
 
-    protected DefaultPipeline() {
+    public DefaultPipeline() {
         this.executor = Executors.newFixedThreadPool(2);
 
         tail = new TailContext(this);
