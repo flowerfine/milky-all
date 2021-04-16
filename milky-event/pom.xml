@@ -14,6 +14,7 @@
     <name>${project.artifactId}</name>
 
     <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
         <reactor.version>3.4.4</reactor.version>
     </properties>
 

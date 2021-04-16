@@ -42,6 +42,16 @@ public class MutableThreadContextStack implements ThreadContextStack {
     }
 
     @Override
+    public ThreadContext.StoredContext preserveContext() {
+        return () -> {};
+    }
+
+    @Override
+    public ThreadContext.StoredContext storeContext() {
+        return () -> {};
+    }
+
+    @Override
     public String pop() {
         checkInvariants();
         if (list.isEmpty()) {

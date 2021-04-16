@@ -28,6 +28,18 @@ public class DefaultThreadContextMap implements ThreadContextMap {
         };
     }
 
+    @Override
+    public ThreadContext.StoredContext preserveContext() {
+        Map<String, String> mapOrNull = getImmutableMapOrNull();
+        localMap.set(new HashMap<>());
+        return () -> localMap.set(mapOrNull);
+    }
+
+    @Override
+    public ThreadContext.StoredContext storeContext() {
+        Map<String, String> mapOrNull = getImmutableMapOrNull();
+        return () -> localMap.set(mapOrNull);
+    }
 
     @Override
     public void put(final String key, final String value) {
