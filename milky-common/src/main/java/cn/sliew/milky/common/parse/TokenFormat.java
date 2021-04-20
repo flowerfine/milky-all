@@ -154,8 +154,8 @@ public class TokenFormat implements Serializable {
          * @param value the value of this segment
          */
         Segment(String type, String value) {
-            notBlank(type, "type must not be null or blank");
-            notBlank(value, "value must not be null or blank");
+            notBlank(type, () -> "type must not be null or blank");
+            notBlank(value, () -> "value must not be null or blank");
             this.type = type;
             this.value = value;
         }

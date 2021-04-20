@@ -1,5 +1,7 @@
 package cn.sliew.milky.common.check;
 
+import java.util.function.Supplier;
+
 /**
  * <a href="https://github.com/google/guava/wiki/ConditionalFailuresExplained">Conditional failures explained</a>
  * guava cache的一篇关于条件检查失败的描述。在大多数时候 {@code if (!condition) throw new RuntimeException();} 即可。
@@ -20,8 +22,8 @@ public enum Asserts {
             throw new AssertionError("assertion failed");
     }
 
-    public static void asserts(boolean assertion, Object message) {
+    public static void asserts(boolean assertion, Supplier<Object> errorMessage) {
         if (!assertion)
-            throw new AssertionError("assertion failed: " + message);
+            throw new AssertionError("assertion failed: " + errorMessage.get());
     }
 }

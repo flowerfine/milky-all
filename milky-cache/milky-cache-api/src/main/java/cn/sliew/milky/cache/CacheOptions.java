@@ -48,7 +48,7 @@ public class CacheOptions<K, V> {
      * @return MapOptions instance
      */
     public CacheOptions<K, V> name(String name) {
-        notBlank(name, "cache name can't be empty");
+        notBlank(name, () -> "cache name can't be empty");
         this.name = name;
         return this;
     }
