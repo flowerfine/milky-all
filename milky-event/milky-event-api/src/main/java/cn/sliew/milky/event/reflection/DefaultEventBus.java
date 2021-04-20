@@ -40,7 +40,7 @@ public class DefaultEventBus implements EventBus {
 
     @Override
     public <E extends Event> void register(EventListener<E> listener) {
-        checkNotNull(listener, "event listener null");
+        checkNotNull(listener, () -> "event listener null");
 
         Optional<Class<? extends Event>> classOptional = determinateEventType(listener);
         Class<? extends Event> eventClazz = classOptional.orElse(Event.class);
@@ -50,8 +50,8 @@ public class DefaultEventBus implements EventBus {
 
     @Override
     public void register(Class<? extends Event> clazz, EventListener listener) {
-        checkNotNull(clazz, "clazz null");
-        checkNotNull(listener, "event listener null");
+        checkNotNull(clazz, () -> "clazz null");
+        checkNotNull(listener, () -> "event listener null");
 
         List<EventListener> eventListeners = findListener(clazz);
         if (eventListeners.contains(listener)) {

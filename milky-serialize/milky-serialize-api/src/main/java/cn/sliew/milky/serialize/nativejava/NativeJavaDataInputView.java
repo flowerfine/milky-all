@@ -19,7 +19,7 @@ public class NativeJavaDataInputView implements DataInputView {
     }
 
     protected NativeJavaDataInputView(ObjectInputStream is) {
-        require(is != null, "input is null");
+        require(is != null, () -> "input is null");
         this.inputStream = is;
     }
 

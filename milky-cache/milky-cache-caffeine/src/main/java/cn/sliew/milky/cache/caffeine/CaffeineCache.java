@@ -18,7 +18,7 @@ import static cn.sliew.milky.common.check.Ensures.checkNotNull;
 /**
  * refresh > expire ensure hot key would refreshed before expired.
  * cache key would not be refreshed when no request comes.
- *
+ * <p>
  * because maximumSize can't be combined with maximumWeight, CaffeineCache
  * would not support maximumWeight parameter.
  */
@@ -31,7 +31,7 @@ public class CaffeineCache<K, V> implements Cache<K, V> {
     private final CaffeineCacheOptions<K, V> options;
 
     public CaffeineCache(CaffeineCacheOptions<K, V> options) {
-        this.options = checkNotNull(options, "options can't be null");
+        this.options = checkNotNull(options, () -> "options can't be null");
 
         Caffeine<K, V> caffeine = (Caffeine<K, V>) Caffeine.newBuilder()
                 .initialCapacity(options.getInitialCapacity())

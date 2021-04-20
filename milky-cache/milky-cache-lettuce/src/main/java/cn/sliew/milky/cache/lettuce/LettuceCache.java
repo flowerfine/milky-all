@@ -53,7 +53,7 @@ public class LettuceCache<K, V> implements Cache<K, V> {
     private final LettuceCacheOptions<K, V> options;
 
     public LettuceCache(LettuceCacheOptions<K, V> options) {
-        this.options = checkNotNull(options, "options can't be null");
+        this.options = checkNotNull(options, () -> "options can't be null");
         this.connection = RedisClient.create(options.getRedisURI()).connect(ProtostuffCodec.INSTANCE);
         this.timer = new HashedWheelTimer(1, TimeUnit.SECONDS, 64);
         this.timer.newTimeout(new ExpireTimeTask(timer, this, connection), 1L, TimeUnit.SECONDS);

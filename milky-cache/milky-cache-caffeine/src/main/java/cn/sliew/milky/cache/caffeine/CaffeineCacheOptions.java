@@ -44,7 +44,7 @@ public class CaffeineCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return CaffeineCacheOptions instance
      */
     public CaffeineCacheOptions<K, V> initialCapacity(int initialCapacity) {
-        checkArgument(initialCapacity > 0, String.format("cache initialCapacity invalid: %d", initialCapacity));
+        checkArgument(initialCapacity > 0, () -> String.format("cache initialCapacity invalid: %d", initialCapacity));
         this.initialCapacity = initialCapacity;
         return this;
     }
@@ -60,7 +60,7 @@ public class CaffeineCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return CaffeineCacheOptions instance
      */
     public CaffeineCacheOptions<K, V> maximumSize(long maximumSize) {
-        checkArgument(maximumSize > 0, String.format("cache maximumSize invalid: %d", maximumSize));
+        checkArgument(maximumSize > 0,() ->  String.format("cache maximumSize invalid: %d", maximumSize));
         this.maximumSize = maximumSize;
         return this;
     }
@@ -76,7 +76,7 @@ public class CaffeineCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return CaffeineCacheOptions instance
      */
     public CaffeineCacheOptions<K, V> maximumWeight(long maximumWeight) {
-        checkArgument(maximumWeight > 0, String.format("cache maximumWeight invalid: %d", maximumWeight));
+        checkArgument(maximumWeight > 0,() ->  String.format("cache maximumWeight invalid: %d", maximumWeight));
         this.maximumWeight = maximumWeight;
         return this;
     }
@@ -137,7 +137,7 @@ public class CaffeineCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return CaffeineCacheOptions instance
      */
     public CaffeineCacheOptions<K, V> expireAfterAccess(Duration expireAfterAccess) {
-        checkNotNull(expireAfterAccess, "cache refreshAfterWrite can't be null");
+        checkNotNull(expireAfterAccess, () -> "cache refreshAfterWrite can't be null");
         this.expireAfterAccess = expireAfterAccess;
         return this;
     }
@@ -153,7 +153,7 @@ public class CaffeineCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return CaffeineCacheOptions instance
      */
     public CaffeineCacheOptions<K, V> expireAfterWrite(Duration expireAfterWrite) {
-        checkNotNull(expireAfterWrite, "cache expireAfterWrite can't be null");
+        checkNotNull(expireAfterWrite, () -> "cache expireAfterWrite can't be null");
         this.expireAfterWrite = expireAfterWrite;
         return this;
     }
@@ -169,7 +169,7 @@ public class CaffeineCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return CaffeineCacheOptions instance
      */
     public CaffeineCacheOptions<K, V> refreshAfterWrite(Duration refreshAfterWrite) {
-        checkNotNull(refreshAfterWrite, "cache refreshAfterWrite can't be null");
+        checkNotNull(refreshAfterWrite, () -> "cache refreshAfterWrite can't be null");
         this.refreshAfterWrite = refreshAfterWrite;
         return this;
     }

@@ -66,7 +66,7 @@ public class DefaultPromise<V> extends AbstractFuture<V> implements Promise<V> {
     }
 
     private boolean setFailure0(Throwable cause) {
-        return setValue0(new CauseHolder(checkNotNull(cause, "cause")));
+        return setValue0(new CauseHolder(checkNotNull(cause, () -> "cause null")));
     }
 
     private boolean setValue0(Object objResult) {
@@ -82,7 +82,7 @@ public class DefaultPromise<V> extends AbstractFuture<V> implements Promise<V> {
 
     @Override
     public Promise<V> addListener(FutureListener<? extends Future<? super V>> listener) {
-        checkNotNull(listener, "listener");
+        checkNotNull(listener, () -> "listener");
 
         synchronized (this) {
             if (this.listeners == null) {
@@ -100,7 +100,7 @@ public class DefaultPromise<V> extends AbstractFuture<V> implements Promise<V> {
 
     @Override
     public Promise<V> removeListener(FutureListener<? extends Future<? super V>> listener) {
-        checkNotNull(listener, "listener");
+        checkNotNull(listener, () -> "listener null");
 
         synchronized (this) {
             this.listeners.remove(listener);

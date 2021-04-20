@@ -106,7 +106,7 @@ public abstract class ConstantPool<T extends Constant<T>> {
      * @return
      */
     private static String checkNotNullAndNotEmpty(String name) {
-        checkNotNull(name, "name");
+        checkNotNull(name, () -> "name null");
 
         if (name.isEmpty()) {
             throw new IllegalArgumentException("empty name");

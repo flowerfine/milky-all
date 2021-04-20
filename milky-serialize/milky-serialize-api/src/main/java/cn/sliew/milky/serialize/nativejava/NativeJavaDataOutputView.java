@@ -19,7 +19,7 @@ public class NativeJavaDataOutputView implements DataOutputView {
     }
 
     protected NativeJavaDataOutputView(ObjectOutputStream out) {
-        require(out != null, "output is null");
+        require(out != null, () -> "output is null");
         this.outputStream = out;
     }
 

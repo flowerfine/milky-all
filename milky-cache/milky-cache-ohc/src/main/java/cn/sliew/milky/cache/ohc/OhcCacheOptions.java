@@ -47,7 +47,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> segmentCount(int segmentCount) {
-        checkArgument(segmentCount > 0, String.format("cache segmentCount invalid: %d", segmentCount));
+        checkArgument(segmentCount > 0, () -> String.format("cache segmentCount invalid: %d", segmentCount));
         this.segmentCount = segmentCount;
         return this;
     }
@@ -64,7 +64,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> hashTableSize(int hashTableSize) {
-        checkArgument(hashTableSize > 0, String.format("cache hashTableSize invalid: %d", hashTableSize));
+        checkArgument(hashTableSize > 0, () -> String.format("cache hashTableSize invalid: %d", hashTableSize));
         this.hashTableSize = hashTableSize;
         return this;
     }
@@ -81,7 +81,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> capacity(long capacity) {
-        checkArgument(capacity > 0, String.format("cache capacity invalid: %d", capacity));
+        checkArgument(capacity > 0, () -> String.format("cache capacity invalid: %d", capacity));
         this.capacity = capacity;
         return this;
     }
@@ -100,7 +100,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> chunkSize(int chunkSize) {
-        checkArgument(chunkSize > 0, String.format("cache chunkSize invalid: %d", chunkSize));
+        checkArgument(chunkSize > 0, () -> String.format("cache chunkSize invalid: %d", chunkSize));
         this.chunkSize = chunkSize;
         return this;
     }
@@ -117,7 +117,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> keySerializer(CacheSerializer<K> keySerializer) {
-        checkNotNull(keySerializer, "cache keySerializer can't be null");
+        checkNotNull(keySerializer, () -> "cache keySerializer can't be null");
         this.keySerializer = keySerializer;
         return this;
     }
@@ -134,7 +134,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> valueSerializer(CacheSerializer<V> valueSerializer) {
-        checkNotNull(valueSerializer, "cache valueSerializer can't be null");
+        checkNotNull(valueSerializer, () -> "cache valueSerializer can't be null");
         this.valueSerializer = valueSerializer;
         return this;
     }
@@ -151,7 +151,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> loadFactor(Float loadFactor) {
-        checkArgument(loadFactor > 0, String.format("cache loadFactor invalid: %d", loadFactor));
+        checkArgument(loadFactor > 0, () -> String.format("cache loadFactor invalid: %d", loadFactor));
         this.loadFactor = loadFactor;
         return this;
     }
@@ -170,7 +170,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> fixedKeySize(Integer fixedKeySize) {
-        checkArgument(fixedKeySize > 0, String.format("cache fixedKeySize invalid: %d", fixedKeySize));
+        checkArgument(fixedKeySize > 0, () -> String.format("cache fixedKeySize invalid: %d", fixedKeySize));
         this.fixedKeySize = fixedKeySize;
         return this;
     }
@@ -189,7 +189,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> fixedValueSize(Integer fixedValueSize) {
-        checkArgument(fixedValueSize > 0, String.format("cache fixedValueSize invalid: %d", fixedValueSize));
+        checkArgument(fixedValueSize > 0, () -> String.format("cache fixedValueSize invalid: %d", fixedValueSize));
         this.fixedValueSize = fixedValueSize;
         return this;
     }
@@ -206,7 +206,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> maxEntrySize(Long maxEntrySize) {
-        checkArgument(maxEntrySize > 0, String.format("cache maxEntrySize invalid: %d", maxEntrySize));
+        checkArgument(maxEntrySize > 0, () -> String.format("cache maxEntrySize invalid: %d", maxEntrySize));
         this.maxEntrySize = maxEntrySize;
         return this;
     }
@@ -223,7 +223,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> throwOOME(Boolean throwOOME) {
-        checkNotNull(throwOOME, "cache throwOOME can't be null");
+        checkNotNull(throwOOME, () -> "cache throwOOME can't be null");
         this.throwOOME = throwOOME;
         return this;
     }
@@ -243,7 +243,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> hashAlgorighm(HashAlgorithm hashAlgorighm) {
-        checkNotNull(hashAlgorighm, "cache hashAlgorighm can't be null");
+        checkNotNull(hashAlgorighm, () -> "cache hashAlgorighm can't be null");
         this.hashAlgorighm = hashAlgorighm;
         return this;
     }
@@ -263,7 +263,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> unlocked(Boolean unlocked) {
-        checkNotNull(unlocked, "cache unlocked can't be null");
+        checkNotNull(unlocked, () -> "cache unlocked can't be null");
         this.unlocked = unlocked;
         return this;
     }
@@ -282,7 +282,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> defaultTTLmillis(Long defaultTTLmillis) {
-        checkArgument(defaultTTLmillis > 0, String.format("cache defaultTTLmillis invalid: %d", defaultTTLmillis));
+        checkArgument(defaultTTLmillis > 0, () -> String.format("cache defaultTTLmillis invalid: %d", defaultTTLmillis));
         this.defaultTTLmillis = defaultTTLmillis;
         return this;
     }
@@ -299,7 +299,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> timeouts(Boolean timeouts) {
-        checkNotNull(timeouts, "cache timeouts can't be null");
+        checkNotNull(timeouts, () -> "cache timeouts can't be null");
         this.timeouts = timeouts;
         return this;
     }
@@ -316,7 +316,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> timeoutsSlots(Integer timeoutsSlots) {
-        checkArgument(timeoutsSlots > 0, String.format("cache timeoutsSlots invalid: %d", timeoutsSlots));
+        checkArgument(timeoutsSlots > 0, () -> String.format("cache timeoutsSlots invalid: %d", timeoutsSlots));
         this.timeoutsSlots = timeoutsSlots;
         return this;
     }
@@ -333,7 +333,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> timeoutsPrecision(Integer timeoutsPrecision) {
-        checkArgument(timeoutsPrecision > 0, String.format("cache timeoutsPrecision invalid: %d", timeoutsPrecision));
+        checkArgument(timeoutsPrecision > 0, () -> String.format("cache timeoutsPrecision invalid: %d", timeoutsPrecision));
         this.timeoutsPrecision = timeoutsPrecision;
         return this;
     }
@@ -350,7 +350,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> ticker(Ticker ticker) {
-        checkNotNull(ticker, "cache ticker can't be null");
+        checkNotNull(ticker, () -> "cache ticker can't be null");
         this.ticker = ticker;
         return this;
     }
@@ -376,7 +376,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> ticker(Eviction eviction) {
-        checkNotNull(eviction, "cache eviction can't be null");
+        checkNotNull(eviction, () -> "cache eviction can't be null");
         this.eviction = eviction;
         return this;
     }
@@ -393,7 +393,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> frequencySketchSize(Integer frequencySketchSize) {
-        checkArgument(frequencySketchSize > 0, String.format("cache frequencySketchSize invalid: %d", frequencySketchSize));
+        checkArgument(frequencySketchSize > 0, () -> String.format("cache frequencySketchSize invalid: %d", frequencySketchSize));
         this.frequencySketchSize = frequencySketchSize;
         return this;
     }
@@ -410,7 +410,7 @@ public class OhcCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return OhcCacheOptions instance
      */
     public OhcCacheOptions<K, V> edenSize(Double edenSize) {
-        checkArgument(edenSize > 0, String.format("cache edenSize invalid: %d", edenSize));
+        checkArgument(edenSize > 0,() ->  String.format("cache edenSize invalid: %d", edenSize));
         this.edenSize = edenSize;
         return this;
     }

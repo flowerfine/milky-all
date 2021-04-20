@@ -28,7 +28,7 @@ public class OhcCache<K, V> implements Cache<K, V> {
     private final OhcCacheOptions<K, V> options;
 
     public OhcCache(OhcCacheOptions<K, V> options) {
-        this.options = checkNotNull(options, "options can't be null");
+        this.options = checkNotNull(options, () -> "options can't be null");
 
         OHCacheBuilder<K, V> ohCacheBuilder = OHCacheBuilder.newBuilder();
         if (options.getSegmentCount() != null) {
