@@ -68,7 +68,7 @@
 <!--            <AppenderRef ref="Error"/>-->
             <AppenderRef ref="Console"/>
         </AsyncRoot>
-        <AsyncLogger name="cn.sliew" level="DEBUG" additivity="false" includeLocation="true">
+        <AsyncLogger name="cn.sliew.milky" level="DEBUG" additivity="false" includeLocation="true">
             <AppenderRef ref="Console"/>
         </AsyncLogger>
 
