@@ -25,19 +25,19 @@ public class ToStringBuilder {
     private final List<String> values = new ArrayList<>();
 
     public ToStringBuilder(Object obj) {
-        this(checkNotNull(obj, "Object must not be null").getClass().getSimpleName());
+        this(checkNotNull(obj, () -> "Object must not be null").getClass().getSimpleName());
     }
 
     public ToStringBuilder(Class<?> type) {
-        this(checkNotNull(type, "Class must not be null").getSimpleName());
+        this(checkNotNull(type, () -> "Class must not be null").getSimpleName());
     }
 
     public ToStringBuilder(String typeName) {
-        this.typeName = checkNotNull(typeName, "Type name must not be null");
+        this.typeName = checkNotNull(typeName, () -> "Type name must not be null");
     }
 
     public ToStringBuilder append(String name, Object value) {
-        notBlank(name, "Name must not be null or blank");
+        notBlank(name, () -> "Name must not be null or blank");
         this.values.add(name + " = " + toString(value));
         return this;
     }

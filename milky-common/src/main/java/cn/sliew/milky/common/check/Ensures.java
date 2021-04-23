@@ -2,7 +2,6 @@ package cn.sliew.milky.common.check;
 
 import cn.sliew.milky.common.util.StringUtils;
 import com.google.common.base.Verify;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Collection;
 import java.util.function.Supplier;
@@ -36,9 +35,9 @@ public enum Ensures {
         }
     }
 
-    public static void checkArgument(boolean expression, Object errorMessage) {
+    public static void checkArgument(boolean expression, Supplier<Object> errorMessage) {
         if (!expression) {
-            throw new IllegalArgumentException(String.valueOf(errorMessage));
+            throw new IllegalArgumentException(errorMessage.get().toString());
         }
     }
 
@@ -48,9 +47,9 @@ public enum Ensures {
         }
     }
 
-    public static void checkState(boolean expression, @Nullable Object errorMessage) {
+    public static void checkState(boolean expression, Supplier<Object> errorMessage) {
         if (!expression) {
-            throw new IllegalStateException(String.valueOf(errorMessage));
+            throw new IllegalStateException(errorMessage.get().toString());
         }
     }
 
@@ -61,9 +60,9 @@ public enum Ensures {
         return reference;
     }
 
-    public static <T extends Object> T checkNotNull(T reference, Object errorMessage) {
+    public static <T extends Object> T checkNotNull(T reference, Supplier<Object> errorMessage) {
         if (reference == null) {
-            throw new NullPointerException(String.valueOf(errorMessage));
+            throw new NullPointerException(errorMessage.get().toString());
         }
         return reference;
     }
@@ -74,15 +73,14 @@ public enum Ensures {
      * <p><strong>WARNING</strong>: this method does NOT check if the supplied
      * array contains any {@code null} elements.
      *
-     * @param array   the array to check
-     * @param message precondition violation message
+     * @param array the array to check
      * @return the supplied array as a convenience
      * @throws IllegalStateException if the supplied array is
      *                               {@code null} or <em>empty</em>
-     * @see #condition(boolean, String)
+     * @see #condition(boolean)
      */
-    public static <T> T[] notEmpty(T[] array, String message) {
-        condition(array != null && array.length > 0, message);
+    public static <T> T[] notEmpty(T[] array) {
+        condition(array != null && array.length > 0);
         return array;
     }
 
@@ -92,15 +90,15 @@ public enum Ensures {
      * <p><strong>WARNING</strong>: this method does NOT check if the supplied
      * array contains any {@code null} elements.
      *
-     * @param array           the array to check
-     * @param messageSupplier precondition violation message supplier
+     * @param array        the array to check
+     * @param errorMessage precondition violation message supplier
      * @return the supplied array as a convenience
      * @throws IllegalStateException if the supplied array is
      *                               {@code null} or <em>empty</em>
-     * @see #condition(boolean, String)
+     * @see #condition(boolean, Supplier)
      */
-    public static <T> T[] notEmpty(T[] array, Supplier<String> messageSupplier) {
-        condition(array != null && array.length > 0, messageSupplier);
+    public static <T> T[] notEmpty(T[] array, Supplier<Object> errorMessage) {
+        condition(array != null && array.length > 0, errorMessage);
         return array;
     }
 
@@ -111,14 +109,12 @@ public enum Ensures {
      * collection contains any {@code null} elements.
      *
      * @param collection the collection to check
-     * @param message    precondition violation message
      * @return the supplied collection as a convenience
      * @throws IllegalStateException if the supplied collection is {@code null} or empty
-     * @see #condition(boolean, String)
+     * @see #condition(boolean)
      */
-    public static <T extends Collection<?>> T notEmpty(T collection, String message) {
-
-        condition(collection != null && !collection.isEmpty(), message);
+    public static <T extends Collection<?>> T notEmpty(T collection) {
+        condition(collection != null && !collection.isEmpty());
         return collection;
     }
 
@@ -128,15 +124,14 @@ public enum Ensures {
      * <p><strong>WARNING</strong>: this method does NOT check if the supplied
      * collection contains any {@code null} elements.
      *
-     * @param collection      the collection to check
-     * @param messageSupplier precondition violation message supplier
+     * @param collection   the collection to check
+     * @param errorMessage precondition violation message supplier
      * @return the supplied collection as a convenience
      * @throws IllegalStateException if the supplied collection is {@code null} or empty
-     * @see #condition(boolean, String)
+     * @see #condition(boolean, Supplier)
      */
-    public static <T extends Collection<?>> T notEmpty(T collection, Supplier<String> messageSupplier) {
-
-        condition(collection != null && !collection.isEmpty(), messageSupplier);
+    public static <T extends Collection<?>> T notEmpty(T collection, Supplier<Object> errorMessage) {
+        condition(collection != null && !collection.isEmpty(), errorMessage);
         return collection;
     }
 
@@ -146,14 +141,13 @@ public enum Ensures {
      * <p>A {@code String} is <em>blank</em> if it is {@code null} or consists
      * only of whitespace characters.
      *
-     * @param str     the string to check
-     * @param message precondition violation message
+     * @param str the string to check
      * @return the supplied string as a convenience
      * @throws IllegalStateException if the supplied string is blank
      * @see #notBlank(String, Supplier)
      */
-    public static String notBlank(String str, String message) {
-        condition(StringUtils.isNotBlank(str), message);
+    public static String notBlank(String str) {
+        condition(StringUtils.isNotBlank(str));
         return str;
     }
 
@@ -163,15 +157,15 @@ public enum Ensures {
      * <p>A {@code String} is <em>blank</em> if it is {@code null} or consists
      * only of whitespace characters.
      *
-     * @param str             the string to check
-     * @param messageSupplier precondition violation message supplier
+     * @param str          the string to check
+     * @param errorMessage precondition violation message supplier
      * @return the supplied string as a convenience
      * @throws IllegalStateException if the supplied string is blank
      * @see StringUtils#isNotBlank(String)
      * @see #condition(boolean, Supplier)
      */
-    public static String notBlank(String str, Supplier<String> messageSupplier) {
-        condition(StringUtils.isNotBlank(str), messageSupplier);
+    public static String notBlank(String str, Supplier<Object> errorMessage) {
+        condition(StringUtils.isNotBlank(str), errorMessage);
         return str;
     }
 
@@ -179,26 +173,26 @@ public enum Ensures {
      * Assert that the supplied {@code predicate} is {@code true}.
      *
      * @param predicate the predicate to check
-     * @param message   precondition violation message
      * @throws IllegalStateException if the predicate is {@code false}
      * @see #condition(boolean, Supplier)
      */
-    public static void condition(boolean predicate, String message) {
+    public static void condition(boolean predicate) {
         if (!predicate) {
-            throw new IllegalStateException(message);
+            throw new IllegalStateException();
         }
     }
 
     /**
      * Assert that the supplied {@code predicate} is {@code true}.
      *
-     * @param predicate       the predicate to check
-     * @param messageSupplier precondition violation message supplier
+     * @param predicate    the predicate to check
+     * @param errorMessage precondition violation message supplier
      * @throws IllegalStateException if the predicate is {@code false}
      */
-    public static void condition(boolean predicate, Supplier<String> messageSupplier) {
+    public static void condition(boolean predicate, Supplier<Object> errorMessage) {
         if (!predicate) {
-            throw new IllegalStateException(messageSupplier.get());
+            throw new IllegalStateException(errorMessage.get().toString());
         }
     }
+
 }

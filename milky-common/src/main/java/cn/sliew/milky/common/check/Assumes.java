@@ -1,5 +1,7 @@
 package cn.sliew.milky.common.check;
 
+import java.util.function.Supplier;
+
 public enum Assumes {
     ;
 
@@ -8,8 +10,8 @@ public enum Assumes {
             throw new AssertionError("assumption failed");
     }
 
-    public static void assume(boolean assumption, Object message) {
+    public static void assume(boolean assumption, Supplier<Object> errorMessage) {
         if (!assumption)
-            throw new AssertionError("assumption failed: " + message);
+            throw new AssertionError("assumption failed: " + errorMessage.get());
     }
 }

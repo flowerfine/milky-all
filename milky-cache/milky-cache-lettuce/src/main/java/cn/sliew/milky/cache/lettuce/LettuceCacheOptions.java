@@ -21,7 +21,7 @@ public class LettuceCacheOptions<K, V> extends CacheOptions<K, V> {
      * @return LettuceCacheOptions instance
      */
     public void redisURI(String redisURI) {
-        notBlank(redisURI, "lettuce redisURI can't be empty");
+        notBlank(redisURI, () -> "lettuce redisURI can't be empty");
         this.redisURI = redisURI;
     }
 

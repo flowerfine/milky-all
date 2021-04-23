@@ -22,7 +22,7 @@ public class Token implements Cloneable, Serializable {
      * @throws TokenParseException if the string cannot be parsed
      */
     public static Token parse(String token) throws TokenParseException {
-        notBlank(token, "Token string must not be null or blank");
+        notBlank(token, () -> "Token string must not be null or blank");
         return TokenFormat.getDefault().parse(token);
     }
 
@@ -99,7 +99,7 @@ public class Token implements Cloneable, Serializable {
      * @param segment the segment to be appended; never {@code null}
      */
     public final Token append(TokenFormat.Segment segment) {
-        checkNotNull(segment, "segment must not be null");
+        checkNotNull(segment, () -> "segment must not be null");
         List<TokenFormat.Segment> baseSegments = new ArrayList<>(this.segments.size() + 1);
         baseSegments.addAll(this.segments);
         baseSegments.add(segment);
@@ -113,7 +113,7 @@ public class Token implements Cloneable, Serializable {
      * @param potentialPrefix the {@code Token} to be checked; never {@code null}
      */
     public boolean hasPrefix(Token potentialPrefix) {
-        checkNotNull(potentialPrefix, "potentialPrefix must not be null");
+        checkNotNull(potentialPrefix, () -> "potentialPrefix must not be null");
         int size = this.segments.size();
         int prefixSize = potentialPrefix.segments.size();
         return size >= prefixSize && this.segments.subList(0, prefixSize).equals(potentialPrefix.segments);
@@ -128,7 +128,7 @@ public class Token implements Cloneable, Serializable {
      * @return a new {@code Token}; never {@code null}
      */
     public Token removeLastSegment() {
-        checkState(this.segments.size() > 1, "Cannot remove last remaining segment");
+        checkState(this.segments.size() > 1, () -> "Cannot remove last remaining segment");
         return new Token(tokenFormat, new ArrayList<>(this.segments.subList(0, this.segments.size() - 1)));
     }
 

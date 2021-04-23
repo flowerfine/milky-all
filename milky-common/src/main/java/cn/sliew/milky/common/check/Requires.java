@@ -1,5 +1,7 @@
 package cn.sliew.milky.common.check;
 
+import java.util.function.Supplier;
+
 public enum Requires {
     ;
 
@@ -8,9 +10,9 @@ public enum Requires {
             throw new IllegalArgumentException("requirement failed");
     }
 
-    public static void require(boolean requirement, Object message) {
+    public static void require(boolean requirement, Supplier<Object> errorMessage) {
         if (!requirement)
-            throw new IllegalArgumentException("requirement failed: " + message);
+            throw new IllegalArgumentException("requirement failed: " + errorMessage.get());
     }
 
 
