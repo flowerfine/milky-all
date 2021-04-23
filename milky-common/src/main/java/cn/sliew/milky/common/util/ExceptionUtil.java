@@ -32,7 +32,7 @@ public final class ExceptionUtil {
      * method to be supplied as the operand in a {@code throw} statement
      */
     public static RuntimeException throwAsUncheckedException(Throwable t) {
-        checkNotNull(t, "Throwable must not be null");
+        checkNotNull(t, () -> "Throwable must not be null");
         throwAs(t);
 
         // Appeasing the compiler: the following line will never be executed.
@@ -48,7 +48,7 @@ public final class ExceptionUtil {
      * Read the stacktrace of the supplied {@link Throwable} into a String.
      */
     public static String readStackTrace(Throwable throwable) {
-        checkNotNull(throwable, "Throwable must not be null");
+        checkNotNull(throwable, () -> "Throwable must not be null");
         StringWriter stringWriter = new StringWriter();
         try (PrintWriter printWriter = new PrintWriter(stringWriter)) {
             throwable.printStackTrace(printWriter);

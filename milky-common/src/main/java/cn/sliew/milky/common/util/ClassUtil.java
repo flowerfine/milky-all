@@ -56,7 +56,7 @@ public final class ClassUtil {
      * @see StringUtils#nullSafeToString(Object)
      */
     public static String nullSafeToString(Function<? super Class<?>, ? extends String> mapper, Class<?>... classes) {
-        checkNotNull(mapper, "Mapping function must not be null");
+        checkNotNull(mapper, () -> "Mapping function must not be null");
 
         if (classes == null || classes.length == 0) {
             return "";

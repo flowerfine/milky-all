@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
+import static cn.sliew.milky.common.check.Ensures.notBlank;
 
 /**
  * 一个{@link Constant}池。
@@ -106,12 +107,7 @@ public abstract class ConstantPool<T extends Constant<T>> {
      * @return
      */
     private static String checkNotNullAndNotEmpty(String name) {
-        checkNotNull(name, "name");
-
-        if (name.isEmpty()) {
-            throw new IllegalArgumentException("empty name");
-        }
-
+        notBlank(name, () -> "name");
         return name;
     }
 

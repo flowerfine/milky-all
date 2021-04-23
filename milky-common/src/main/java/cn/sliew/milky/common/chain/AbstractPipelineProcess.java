@@ -22,7 +22,7 @@ public abstract class AbstractPipelineProcess<K, V> implements PipelineProcess<K
     final Executor executor;
 
     AbstractPipelineProcess(DefaultPipeline pipeline, Executor executor, String name) {
-        this.name = checkNotNull(name, "name");
+        this.name = checkNotNull(name, () -> "name null");
         this.pipeline = pipeline;
         this.executor = executor;
     }

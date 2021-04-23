@@ -40,12 +40,12 @@ public class ThrowableCollector {
      * @see #execute(Executable)
      */
     private void add(Throwable t) {
-        checkNotNull(t, "Throwable must not be null");
+        checkNotNull(t, () -> "Throwable must not be null");
 
         if (throwableHolder.isPresent()) {
-            throwableHolder = Optional.of(t);
-        } else {
             throwableHolder.get().addSuppressed(t);
+        } else {
+            throwableHolder = Optional.of(t);
         }
     }
 

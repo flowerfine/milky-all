@@ -23,7 +23,7 @@ public final class Stopwatch {
   }
 
   Stopwatch(Ticker ticker) {
-    this.ticker = checkNotNull(ticker, "ticker");
+    this.ticker = checkNotNull(ticker, () -> "ticker null");
   }
 
   /**
@@ -41,7 +41,7 @@ public final class Stopwatch {
    * @throws IllegalStateException if the stopwatch is already running.
    */
   public Stopwatch start() {
-    checkState(!running, "This stopwatch is already running.");
+    checkState(!running, () ->  "This stopwatch is already running.");
     running = true;
     startTimeNS = ticker.read();
     return this;
@@ -56,7 +56,7 @@ public final class Stopwatch {
    */
   public Stopwatch stop() {
     long tick = ticker.read();
-    checkState(running, "This stopwatch is already stopped.");
+    checkState(running, () -> "This stopwatch is already stopped.");
     running = false;
     elapsedNanos += tick - startTimeNS;
     return this;
