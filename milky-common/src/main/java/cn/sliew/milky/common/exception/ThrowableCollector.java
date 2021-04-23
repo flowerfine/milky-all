@@ -8,11 +8,20 @@ import static cn.sliew.milky.common.check.Ensures.checkNotNull;
 
 /**
  * Component that can collect one Throwable instance.
- * todo add lambda support, such as andThen or ifEmpty or whenTerminated and so on.
  */
-public class ThrowableCollector {
+public class ThrowableCollector<T> {
 
+    /**
+     * {@link Throwable} holder.
+     */
     private volatile Optional<Throwable> throwableHolder = Optional.empty();
+
+    /**
+     * prevent construct directly, suggest to static factory method {@link ThrowableCollector#create()}.
+     */
+    private ThrowableCollector() {
+
+    }
 
     /**
      * Execute the supplied {@link Executable} and collect any {@link Throwable}
@@ -25,11 +34,19 @@ public class ThrowableCollector {
      * @param executable the {@code Executable} to execute
      */
     public void execute(Executable executable) {
-        try {
+        execute(() -> {
             executable.execute();
+            return null;
+        });
+    }
+
+    public Optional<T> execute(ExecutableWithResult<T> executable) {
+        try {
+            return Optional.ofNullable(executable.execute());
         } catch (Throwable t) {
             ThrowableUtil.rethrowIfUnrecoverable(t);
             add(t);
+            return Optional.empty();
         }
     }
 
@@ -59,26 +76,9 @@ public class ThrowableCollector {
      *
      * @return the first collected {@code Throwable} or {@code null} if this
      * {@code ThrowableCollector} is empty
-     * @see #isEmpty()
      */
-    public Throwable getThrowable() {
-        return throwableHolder.get();
-    }
-
-    /**
-     * Determine if this {@code ThrowableCollector} is <em>empty</em> (i.e.,
-     * has not collected any {@code Throwables}).
-     */
-    public boolean isEmpty() {
-        return !throwableHolder.isPresent();
-    }
-
-    /**
-     * Determine if this {@code ThrowableCollector} is <em>not empty</em> (i.e.,
-     * has collected at least one {@code Throwable}).
-     */
-    public boolean isNotEmpty() {
-        return !isEmpty();
+    public Optional<Throwable> getThrowable() {
+        return throwableHolder;
     }
 
     /**
@@ -96,14 +96,31 @@ public class ThrowableCollector {
     }
 
     /**
-     * Factory for {@code ThrowableCollector} instances.
+     * Functional interface for an executable block of code that may throw a {@link Throwable}.
+     *
+     * @param <T> result type
      */
-    public interface Factory {
+    @FunctionalInterface
+    public interface ExecutableWithResult<T> {
 
         /**
-         * Create a new instance of a {@code ThrowableCollector}.
+         * Execute this executable, potentially throwing a {@link Throwable}
+         * that signals abortion or failure.
+         *
+         * @return executable result
+         * @throws Throwable
          */
-        ThrowableCollector create();
+        T execute() throws Throwable;
 
     }
+
+    /**
+     * Factory method for {@code ThrowableCollector} instances creation.
+     *
+     * @return throwable collector
+     */
+    public static <T> ThrowableCollector<T> create() {
+        return new ThrowableCollector();
+    }
+
 }
