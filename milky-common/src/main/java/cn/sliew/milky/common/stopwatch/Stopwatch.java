@@ -23,9 +23,9 @@ public final class Stopwatch {
         this.ticker = Tickers.systemTicker();
     }
 
-    Stopwatch(Ticker ticker) {
-        this.ticker = checkNotNull(ticker, () -> "ticker null");
-    }
+  Stopwatch(Ticker ticker) {
+    this.ticker = checkNotNull(ticker, () -> "ticker null");
+  }
 
     /**
      * Returns {@code true} if {@link #start()} has been called on this stopwatch, and {@link #stop()}
