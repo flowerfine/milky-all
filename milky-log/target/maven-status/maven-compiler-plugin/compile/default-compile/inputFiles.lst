@@ -1,6 +1,6 @@
 /Users/wangqi/Documents/sliew/milky-all/milky-log/src/main/java/cn/sliew/milky/log/LogLevel.java
-/Users/wangqi/Documents/sliew/milky-all/milky-log/src/main/java/cn/sliew/milky/log/Slf4JLogger.java
 /Users/wangqi/Documents/sliew/milky-all/milky-log/src/main/java/cn/sliew/milky/log/LoggerFactory.java
+/Users/wangqi/Documents/sliew/milky-all/milky-log/src/main/java/cn/sliew/milky/log/Slf4jLoggerFactory.java
 /Users/wangqi/Documents/sliew/milky-all/milky-log/src/main/java/cn/sliew/milky/log/MessageFormatter.java
 /Users/wangqi/Documents/sliew/milky-all/milky-log/src/main/java/cn/sliew/milky/log/LocationAwareSlf4JLogger.java
 /Users/wangqi/Documents/sliew/milky-all/milky-log/src/main/java/cn/sliew/milky/log/FormattingTuple.java
@@ -8,8 +8,8 @@
 /Users/wangqi/Documents/sliew/milky-all/milky-log/src/main/java/cn/sliew/milky/log/Log4J2Logger.java
 /Users/wangqi/Documents/sliew/milky-all/milky-log/src/main/java/cn/sliew/milky/log/NoLoggerFactory.java
 /Users/wangqi/Documents/sliew/milky-all/milky-log/src/main/java/cn/sliew/milky/log/NoLogger.java
+/Users/wangqi/Documents/sliew/milky-all/milky-log/src/main/java/cn/sliew/milky/log/Slf4jLogger.java
 /Users/wangqi/Documents/sliew/milky-all/milky-log/src/main/java/cn/sliew/milky/log/Logger.java
 /Users/wangqi/Documents/sliew/milky-all/milky-log/src/main/java/cn/sliew/milky/log/Log4J2LoggerFactory.java
 /Users/wangqi/Documents/sliew/milky-all/milky-log/src/main/java/cn/sliew/milky/log/StdOutLoggerFactory.java
 /Users/wangqi/Documents/sliew/milky-all/milky-log/src/main/java/cn/sliew/milky/log/StdOutLogger.java
-/Users/wangqi/Documents/sliew/milky-all/milky-log/src/main/java/cn/sliew/milky/log/Slf4JLoggerFactory.java

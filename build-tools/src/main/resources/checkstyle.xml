@@ -69,16 +69,6 @@
             <property name="allowClassImports" value="true"/>
             <property name="allowStaticMemberImports" value="true"/>
         </module>
-        <module name="ImportOrder">
-            <property name="ordered" value="false"/>
-            <property name="groups" value="/^java\./,javax"/>
-            <property name="separated" value="true"/>
-            <property name="separatedStaticGroups" value="true"/>
-            <property name="option" value="bottom"/>
-            <property name="tokens" value="IMPORT, STATIC_IMPORT"/>
-            <message key="import.ordering"
-                     value="Import {0} appears after other imports that it should precede"/>
-        </module>
         <module name="CustomImportOrder">
             <property name="sortImportsInGroupAlphabetically" value="true"/>
             <property name="separateLineBetweenGroups" value="true"/>

@@ -310,6 +310,13 @@
                     <artifactId>scala-maven-plugin</artifactId>
                     <version>4.4.1</version>
                 </plugin>
+
+                <!-- generate configuration docs -->
+                <plugin>
+                    <groupId>org.commonjava.maven.plugins</groupId>
+                    <artifactId>directory-maven-plugin</artifactId>
+                    <version>0.1</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -365,6 +372,24 @@
                 <configuration>
                     <generateBackupPoms>false</generateBackupPoms>
                 </configuration>
+            </plugin>
+            <!-- generate configuration docs -->
+            <plugin>
+                <groupId>org.commonjava.maven.plugins</groupId>
+                <artifactId>directory-maven-plugin</artifactId>
+                <version>0.1</version>
+                <executions>
+                    <execution>
+                        <id>directories</id>
+                        <goals>
+                            <goal>highest-basedir</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <property>rootDir</property>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -473,7 +498,7 @@
                     <plugin>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs-maven-plugin</artifactId>
-                        <version>4.2.0</version>
+                        <version>4.2.3</version>
                         <dependencies>
                             <!-- overwrite dependency on spotbugs if you want to specify the version of spotbugs -->
                             <dependency>
@@ -496,13 +521,10 @@
                             <xmlOutputDirectory>${project.build.directory}/spotbugs</xmlOutputDirectory>
                             <threshold>medium</threshold>
                             <effort>default</effort>
-                            <excludeFilterFile>/buildtools/maven/spotbugs-exclude.xml</excludeFilterFile>
-                            <!--                            <includeFilterFile>/buildtools/maven/spotbugs-include.xml</includeFilterFile>-->
+                            <excludeFilterFile>build-tools/src/main/resources/spotbugs-exclude.xml</excludeFilterFile>
+                            <!--<includeFilterFile>build-tools/src/main/resources/spotbugs-include.xml</includeFilterFile>-->
                             <failOnError>true</failOnError>
-                            <jvmArgs>
-                                <jvmArg>-Xms512m</jvmArg>
-                                <jvmArg>-Xmx1024m</jvmArg>
-                            </jvmArgs>
+                            <jvmArgs>-Xms512m -Xmx1024m</jvmArgs>
                         </configuration>
                     </plugin>
                 </plugins>
