@@ -35,7 +35,8 @@ public final class RandomNumbers {
                 return r.nextLong();
             } else {
                 long first = r.nextLong() & Long.MAX_VALUE;
-                long second = range == Long.MAX_VALUE ? (r.nextLong() & Long.MAX_VALUE) : nextLong(r, range + 1);
+                long second = range == Long.MAX_VALUE ?
+                        (r.nextLong() & Long.MAX_VALUE) : nextLong(r, range + 1);
                 return min + first + second;
             }
         } else {

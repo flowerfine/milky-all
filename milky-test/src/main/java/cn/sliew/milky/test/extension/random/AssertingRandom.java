@@ -129,7 +129,7 @@ public final class AssertingRandom extends Random {
         this.valid = false;
     }
 
-    private final void checkValid() {
+    private void checkValid() {
         // Fastpath if assertions are disabled.
         if (!isVerifying()) {
             return;

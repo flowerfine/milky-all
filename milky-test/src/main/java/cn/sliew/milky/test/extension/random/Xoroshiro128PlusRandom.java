@@ -68,18 +68,6 @@ public class Xoroshiro128PlusRandom extends Random {
     }
 
     @Override
-    public int nextInt(int n) {
-        // Leave superclass's implementation.
-        return super.nextInt(n);
-    }
-
-    @Override
-    public double nextGaussian() {
-        // Leave superclass's implementation.
-        return super.nextGaussian();
-    }
-
-    @Override
     public long nextLong() {
         final long s0 = this.s0;
         long s1 = this.s1;
