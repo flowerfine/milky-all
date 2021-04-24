@@ -30,7 +30,7 @@ mvnw.cmd
 ### VS Code ###
 .vscode/
 
-*/target
-
 ### MAC ###
 *.DS_Store
+
+*.dependency-reduced-pom.xml
