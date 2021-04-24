@@ -436,6 +436,11 @@
                                 <artifactId>checkstyle</artifactId>
                                 <version>8.41</version>
                             </dependency>
+                            <dependency>
+                                <groupId>cn.sliew</groupId>
+                                <artifactId>build-tools</artifactId>
+                                <version>1.0.0-SNAPSHOT</version>
+                            </dependency>
                         </dependencies>
                         <executions>
                             <execution>
@@ -447,8 +452,8 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <configLocation>/buildtools/maven/checkstyle.xml</configLocation>
-                            <suppressionsLocation>/buildtools/maven/suppressions.xml</suppressionsLocation>
+                            <configLocation>build-tools/src/main/resources/checkstyle.xml</configLocation>
+                            <suppressionsLocation>build-tools/src/main/resources/suppressions.xml</suppressionsLocation>
                             <includeTestSourceDirectory>true</includeTestSourceDirectory>
                             <failsOnError>true</failsOnError>
                             <consoleOutput>true</consoleOutput>
@@ -627,19 +632,6 @@
                             <encoding>${project.build.sourceEncoding}</encoding>
                             <docencoding>${project.build.sourceEncoding}</docencoding>
                         </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>

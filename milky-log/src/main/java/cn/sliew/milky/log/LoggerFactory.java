@@ -3,7 +3,7 @@ package cn.sliew.milky.log;
 /**
  * Creates an {@link Logger} or changes the default factory
  * implementation.  This factory allows you to choose what logging framework
- * Netty should use.  The default factory is {@link Slf4JLoggerFactory}.  If SLF4J
+ * Netty should use.  The default factory is {@link Slf4jLoggerFactory}.  If SLF4J
  * is not available, {@link Log4J2LoggerFactory} is used.  You can change it to your preferred
  * logging framework before other Netty classes are loaded:
  * <pre>
@@ -22,7 +22,7 @@ public abstract class LoggerFactory {
     private static LoggerFactory newDefaultFactory(String name) {
         LoggerFactory f;
         try {
-            f = new Slf4JLoggerFactory(true);
+            f = new Slf4jLoggerFactory(true);
             f.newInstance(name).debug("Using SLF4J as the default logging framework");
         } catch (Throwable ignore1) {
             try {
@@ -38,7 +38,7 @@ public abstract class LoggerFactory {
 
     /**
      * Returns the default factory.  The initial default factory is
-     * {@link Slf4JLoggerFactory}.
+     * {@link Slf4jLoggerFactory}.
      */
     public static LoggerFactory getDefaultFactory() {
         if (defaultFactory == null) {

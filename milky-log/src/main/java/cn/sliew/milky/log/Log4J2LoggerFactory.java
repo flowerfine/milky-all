@@ -2,6 +2,9 @@ package cn.sliew.milky.log;
 
 import org.apache.logging.log4j.LogManager;
 
+/**
+ * {@link LoggerFactory} log4j2 implementation.
+ */
 public final class Log4J2LoggerFactory extends LoggerFactory {
 
     public static final LoggerFactory INSTANCE = new Log4J2LoggerFactory();
@@ -10,4 +13,5 @@ public final class Log4J2LoggerFactory extends LoggerFactory {
     public Logger newInstance(String name) {
         return new Log4J2Logger(LogManager.getLogger(name));
     }
+
 }

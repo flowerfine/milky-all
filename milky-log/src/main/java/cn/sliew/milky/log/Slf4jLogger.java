@@ -5,13 +5,13 @@ import org.slf4j.Logger;
 /**
  * <a href="http://www.slf4j.org/">SLF4J</a> logger.
  */
-public final class Slf4JLogger extends AbstractLogger {
+public final class Slf4jLogger extends AbstractLogger {
 
     private static final long serialVersionUID = 108038972685130825L;
 
     private final transient Logger logger;
 
-    Slf4JLogger(Logger logger) {
+    Slf4jLogger(Logger logger) {
         super(logger.getName());
         this.logger = logger;
     }

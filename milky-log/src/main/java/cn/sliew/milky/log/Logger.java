@@ -1,5 +1,8 @@
 package cn.sliew.milky.log;
 
+/**
+ * user log main entry point.
+ */
 public interface Logger {
 
     /**
@@ -10,10 +13,9 @@ public interface Logger {
     String name();
 
     /**
-     * Is the logger instance enabled for the TRACE level?
+     * whether the logger instance enabled for the TRACE level.
      *
-     * @return True if this Logger is enabled for the TRACE level,
-     * false otherwise.
+     * @return True if this Logger is enabled for the TRACE level, false otherwise.
      */
     boolean isTraceEnabled();
 
@@ -55,9 +57,10 @@ public interface Logger {
      * <p/>
      * <p>This form avoids superfluous string concatenation when the logger
      * is disabled for the TRACE level. However, this variant incurs the hidden
-     * (and relatively small) cost of creating an {@code Object[]} before invoking the method,
-     * even if this logger is disabled for TRACE. The variants taking {@link #trace(String, Object) one} and
-     * {@link #trace(String, Object, Object) two} arguments exist solely in order to avoid this hidden cost.</p>
+     * (and relatively small) cost of creating an {@code Object[]} before invoking
+     * the method, even if this logger is disabled for TRACE. The variants
+     * taking {@link #trace(String, Object) one} and {@link #trace(String, Object, Object) two}
+     * arguments exist solely in order to avoid this hidden cost.</p>
      *
      * @param format    the format string
      * @param arguments a list of 3 or more arguments
@@ -81,10 +84,9 @@ public interface Logger {
     void trace(Throwable t);
 
     /**
-     * Is the logger instance enabled for the DEBUG level?
+     * Whether the logger instance enabled for the DEBUG level.
      *
-     * @return True if this Logger is enabled for the DEBUG level,
-     * false otherwise.
+     * @return True if this Logger is enabled for the DEBUG level, false otherwise.
      */
     boolean isDebugEnabled();
 
@@ -153,10 +155,9 @@ public interface Logger {
     void debug(Throwable t);
 
     /**
-     * Is the logger instance enabled for the INFO level?
+     * Whether the logger instance enabled for the INFO level.
      *
-     * @return True if this Logger is enabled for the INFO level,
-     * false otherwise.
+     * @return True if this Logger is enabled for the INFO level, false otherwise.
      */
     boolean isInfoEnabled();
 
@@ -225,10 +226,9 @@ public interface Logger {
     void info(Throwable t);
 
     /**
-     * Is the logger instance enabled for the WARN level?
+     * Whether the logger instance enabled for the WARN level.
      *
-     * @return True if this Logger is enabled for the WARN level,
-     * false otherwise.
+     * @return True if this Logger is enabled for the WARN level, false otherwise.
      */
     boolean isWarnEnabled();
 
@@ -297,10 +297,9 @@ public interface Logger {
     void warn(Throwable t);
 
     /**
-     * Is the logger instance enabled for the ERROR level?
+     * Whether the logger instance enabled for the ERROR level.
      *
-     * @return True if this Logger is enabled for the ERROR level,
-     * false otherwise.
+     * @return True if this Logger is enabled for the ERROR level, false otherwise.
      */
     boolean isErrorEnabled();
 
@@ -369,10 +368,9 @@ public interface Logger {
     void error(Throwable t);
 
     /**
-     * Is the logger instance enabled for the specified {@code level}?
+     * Whether the logger instance enabled for the specified {@code level}.
      *
-     * @return True if this Logger is enabled for the specified {@code level},
-     * false otherwise.
+     * @return True if this Logger is enabled for the specified {@code level}, false otherwise.
      */
     boolean isEnabled(LogLevel level);
 

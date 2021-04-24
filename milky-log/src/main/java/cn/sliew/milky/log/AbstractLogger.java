@@ -221,7 +221,7 @@ public abstract class AbstractLogger implements Logger, Serializable {
         return simpleClassName(this) + '(' + name() + ')';
     }
 
-    public static String simpleClassName(Object o) {
+    private String simpleClassName(Object o) {
         if (o == null) {
             return "null_object";
         } else {
@@ -232,10 +232,10 @@ public abstract class AbstractLogger implements Logger, Serializable {
     private static final char PACKAGE_SEPARATOR_CHAR = '.';
 
     /**
-     * Generates a simplified name from a {@link Class}.  Similar to {@link Class#getSimpleName()}, but it works fine
-     * with anonymous classes.
+     * Generates a simplified name from a {@link Class}.
+     * Similar to {@link Class#getSimpleName()}, but it works fine with anonymous classes.
      */
-    public static String simpleClassName(Class<?> clazz) {
+    private String simpleClassName(Class<?> clazz) {
         if (clazz == null) {
             throw new IllegalArgumentException("clazz can't be null");
         }

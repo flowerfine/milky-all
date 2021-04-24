@@ -1,5 +1,8 @@
 package cn.sliew.milky.log;
 
+/**
+ * Logger implementaion by {@code System.out} and {@code System.error}.
+ */
 public class StdOutLogger extends AbstractLogger {
 
     StdOutLogger(String name) {
