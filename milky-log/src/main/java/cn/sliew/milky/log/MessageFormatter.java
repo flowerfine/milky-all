@@ -67,6 +67,7 @@ import java.util.Set;
  * {@link #arrayFormat(String, Object[])} methods for more details.
  */
 final class MessageFormatter {
+
     private static final String DELIM_STR = "{}";
     private static final char ESCAPE_CHAR = '\\';
 
@@ -98,7 +99,8 @@ final class MessageFormatter {
      * For example,
      * <p/>
      * <pre>
-     * MessageFormatter.format(&quot;Hi {}. My name is {}.&quot;, &quot;Alice&quot;, &quot;Bob&quot;);
+     * MessageFormatter.format(&quot;Hi {}. My name is {}.&quot;,
+     *                         &quot;Alice&quot;, &quot;Bob&quot;);
      * </pre>
      * <p/>
      * will return the string "Hi Alice. My name is Bob.".
@@ -147,7 +149,7 @@ final class MessageFormatter {
 
         StringBuilder sbuf = new StringBuilder(messagePattern.length() + 50);
         int i = 0;
-        int L = 0;
+        int l = 0;
         do {
             boolean notEscaped = j == 0 || messagePattern.charAt(j - 1) != ESCAPE_CHAR;
             if (notEscaped) {
@@ -161,9 +163,9 @@ final class MessageFormatter {
 
             i = j + 2;
             if (notEscaped) {
-                deeplyAppendParameter(sbuf, argArray[L], null);
-                L++;
-                if (L > lastArrIdx) {
+                deeplyAppendParameter(sbuf, argArray[l], null);
+                l++;
+                if (l > lastArrIdx) {
                     break;
                 }
             } else {
@@ -174,7 +176,7 @@ final class MessageFormatter {
 
         // append the characters following the last {} pair.
         sbuf.append(messagePattern, i, messagePattern.length());
-        return new FormattingTuple(sbuf.toString(), L <= lastArrIdx ? throwable : null);
+        return new FormattingTuple(sbuf.toString(), l <= lastArrIdx ? throwable : null);
     }
 
     // special treatment of array values was suggested by 'lizongbo'
@@ -190,7 +192,9 @@ final class MessageFormatter {
                 // Prevent String instantiation for some number types
                 if (objClass == Long.class) {
                     sbuf.append(((Long) o).longValue());
-                } else if (objClass == Integer.class || objClass == Short.class || objClass == Byte.class) {
+                } else if (objClass == Integer.class ||
+                        objClass == Short.class ||
+                        objClass == Byte.class) {
                     sbuf.append(((Number) o).intValue());
                 } else if (objClass == Double.class) {
                     sbuf.append(((Double) o).doubleValue());
@@ -231,12 +235,10 @@ final class MessageFormatter {
 
     private static void safeObjectAppend(StringBuilder sbuf, Object o) {
         try {
-            String oAsString = o.toString();
-            sbuf.append(oAsString);
+            sbuf.append(o.toString());
         } catch (Throwable t) {
-            System.err
-                    .println("SLF4J: Failed toString() invocation on an object of type ["
-                            + o.getClass().getName() + ']');
+            System.err.println("SLF4J: Failed toString() invocation on an object of type [" +
+                    o.getClass().getName() + ']');
             t.printStackTrace();
             sbuf.append("[FAILED toString()]");
         }
@@ -247,7 +249,7 @@ final class MessageFormatter {
             return;
         }
         if (seenSet == null) {
-            seenSet = new HashSet<Object[]>(a.length);
+            seenSet = new HashSet<>(a.length);
         }
         if (seenSet.add(a)) {
             deeplyAppendParameter(sbuf, a[0], seenSet);

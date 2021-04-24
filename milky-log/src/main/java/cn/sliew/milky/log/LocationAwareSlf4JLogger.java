@@ -10,8 +10,9 @@ import static org.slf4j.spi.LocationAwareLogger.*;
  */
 final class LocationAwareSlf4JLogger extends AbstractLogger {
 
-    // IMPORTANT: All our log methods first check if the log level is enabled before call the wrapped
-    // LocationAwareLogger.log(...) method. This is done to reduce GC creation that is caused by varargs.
+    // IMPORTANT: All our log methods first check if the log level is enabled before
+    // call the wrapped LocationAwareLogger.log(...) method. This is done to reduce
+    // GC creation that is caused by varargs.
 
     static final String FQCN = LocationAwareSlf4JLogger.class.getName();
     private static final long serialVersionUID = -8292030083201538180L;
@@ -32,7 +33,8 @@ final class LocationAwareSlf4JLogger extends AbstractLogger {
     }
 
     private void log(final int level, final org.slf4j.helpers.FormattingTuple tuple) {
-        logger.log(null, FQCN, level, tuple.getMessage(), tuple.getArgArray(), tuple.getThrowable());
+        logger.log(null, FQCN, level, tuple.getMessage(),
+                tuple.getArgArray(), tuple.getThrowable());
     }
 
     @Override
