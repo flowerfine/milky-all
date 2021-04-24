@@ -1,0 +1,13 @@
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-api/src/main/java/cn/sliew/milky/serialize/DataInputView.java
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-api/src/main/java/cn/sliew/milky/serialize/java/CompactedObjectOutputStream.java
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-api/src/main/java/cn/sliew/milky/serialize/nativejava/NativeJavaDataInputView.java
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-api/src/main/java/cn/sliew/milky/serialize/nativejava/NativeJavaDataOutputView.java
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-api/src/main/java/cn/sliew/milky/serialize/support/support/SerializationOptimizer.java
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-api/src/main/java/cn/sliew/milky/serialize/Readable.java
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-api/src/main/java/cn/sliew/milky/serialize/java/JavaDataInputView.java
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-api/src/main/java/cn/sliew/milky/serialize/Writeable.java
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-api/src/main/java/cn/sliew/milky/serialize/java/CompactedObjectInputStream.java
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-api/src/main/java/cn/sliew/milky/serialize/java/JavaDataOutputView.java
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-api/src/main/java/cn/sliew/milky/serialize/support/support/SerializableClassRegistry.java
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-api/src/main/java/cn/sliew/milky/serialize/DataOutputView.java
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-api/src/main/java/cn/sliew/milky/serialize/support/Registry.java

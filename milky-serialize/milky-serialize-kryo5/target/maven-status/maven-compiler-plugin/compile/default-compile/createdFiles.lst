@@ -1,0 +1,8 @@
+cn/sliew/milky/serialize/kryo5/utils/Kryo5Utils.class
+cn/sliew/milky/serialize/kryo5/utils/ThreadLocalKryoProvider.class
+cn/sliew/milky/serialize/kryo5/utils/PoolKryoProvider.class
+cn/sliew/milky/serialize/kryo5/Kryo5DataInputView.class
+cn/sliew/milky/serialize/kryo5/KryoProvider.class
+cn/sliew/milky/serialize/kryo5/utils/PoolKryoProvider$1.class
+cn/sliew/milky/serialize/kryo5/utils/PrototypeKryoProvider.class
+cn/sliew/milky/serialize/kryo5/Kryo5DataOutputView.class

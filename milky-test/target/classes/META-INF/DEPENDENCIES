@@ -1,0 +1,63 @@
+// ------------------------------------------------------------------
+// Transitive dependencies of this project determined from the
+// maven pom organized by organization.
+// ------------------------------------------------------------------
+
+milky-test
+
+
+From: 'an unknown organization'
+  - milky-log (https://github.com/kalencaya/milky-all/milky-log) cn.sliew:milky-log:jar:1.0.0-SNAPSHOT
+    License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Disruptor Framework (http://lmax-exchange.github.com/disruptor) com.lmax:disruptor:jar:3.4.2
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Byte Buddy (without dependencies) (https://bytebuddy.net/byte-buddy) net.bytebuddy:byte-buddy:jar:1.10.18
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Byte Buddy agent (https://bytebuddy.net/byte-buddy-agent) net.bytebuddy:byte-buddy-agent:jar:1.10.18
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - org.apiguardian:apiguardian-api (https://github.com/apiguardian-team/apiguardian) org.apiguardian:apiguardian-api:jar:1.1.1
+    License: The Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Hamcrest (http://hamcrest.org/JavaHamcrest/) org.hamcrest:hamcrest:jar:2.2
+    License: BSD License 3  (http://opensource.org/licenses/BSD-3-Clause)
+  - JUnit Jupiter (Aggregator) (https://junit.org/junit5/) org.junit.jupiter:junit-jupiter:jar:5.7.0
+    License: Eclipse Public License v2.0  (https://www.eclipse.org/legal/epl-v20.html)
+  - JUnit Jupiter API (https://junit.org/junit5/) org.junit.jupiter:junit-jupiter-api:jar:5.7.0
+    License: Eclipse Public License v2.0  (https://www.eclipse.org/legal/epl-v20.html)
+  - JUnit Jupiter Engine (https://junit.org/junit5/) org.junit.jupiter:junit-jupiter-engine:jar:5.7.0
+    License: Eclipse Public License v2.0  (https://www.eclipse.org/legal/epl-v20.html)
+  - JUnit Jupiter Params (https://junit.org/junit5/) org.junit.jupiter:junit-jupiter-params:jar:5.7.0
+    License: Eclipse Public License v2.0  (https://www.eclipse.org/legal/epl-v20.html)
+  - JUnit Platform Commons (https://junit.org/junit5/) org.junit.platform:junit-platform-commons:jar:1.7.0
+    License: Eclipse Public License v2.0  (https://www.eclipse.org/legal/epl-v20.html)
+  - JUnit Platform Engine API (https://junit.org/junit5/) org.junit.platform:junit-platform-engine:jar:1.7.0
+    License: Eclipse Public License v2.0  (https://www.eclipse.org/legal/epl-v20.html)
+  - mockito-core (https://github.com/mockito/mockito) org.mockito:mockito-core:jar:3.6.28
+    License: The MIT License  (https://github.com/mockito/mockito/blob/release/3.x/LICENSE)
+  - mockito-junit-jupiter (https://github.com/mockito/mockito) org.mockito:mockito-junit-jupiter:jar:3.6.28
+    License: The MIT License  (https://github.com/mockito/mockito/blob/release/3.x/LICENSE)
+  - org.opentest4j:opentest4j (https://github.com/ota4j-team/opentest4j) org.opentest4j:opentest4j:jar:1.2.0
+    License: The Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'Apache Software Foundation' (http://www.apache.org)
+  - Apache Log4j API (http://logging.apache.org/log4j/2.x/log4j-api/) org.apache.logging.log4j:log4j-api:jar:2.6.2
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache Log4j Core (http://logging.apache.org/log4j/2.x/log4j-core/) org.apache.logging.log4j:log4j-core:jar:2.6.2
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'AssertJ' (https://assertj.github.io/doc/)
+  - AssertJ fluent assertions (https://assertj.github.io/doc/assertj-core/) org.assertj:assertj-core:jar:3.18.1
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'Joe Walnes, Henri Tremblay, Leonardo Mesquita'
+  - Objenesis (http://objenesis.org) org.objenesis:objenesis:jar:3.1
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'QOS.ch' (http://www.qos.ch)
+  - SLF4J API Module (http://www.slf4j.org) org.slf4j:slf4j-api:jar:2.0.0-alpha1
+    License: MIT License  (http://www.opensource.org/licenses/mit-license.php)
+  - SLF4J Simple Binding (http://www.slf4j.org) org.slf4j:slf4j-simple:jar:2.0.0-alpha1
+    License: MIT License  (http://www.opensource.org/licenses/mit-license.php)
+
+
+
+

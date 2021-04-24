@@ -1,0 +1,67 @@
+/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home/jre/../bin/javadoc
+@options
+@packages
+-classpath
+'/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-api/target/milky-serialize-api-1.0.0-SNAPSHOT.jar:/Users/wangqi/Documents/sliew/milky-all/milky-common/target/milky-common-1.0.0-SNAPSHOT.jar:/Users/wangqi/Documents/sliew/milky-all/milky-log/target/milky-log-1.0.0-SNAPSHOT.jar:/Library/Maven/repository/org/apache/logging/log4j/log4j-core/2.6.2/log4j-core-2.6.2.jar:/Library/Maven/repository/org/apache/logging/log4j/log4j-api/2.6.2/log4j-api-2.6.2.jar:/Library/Maven/repository/com/lmax/disruptor/3.4.2/disruptor-3.4.2.jar:/Library/Maven/repository/com/google/guava/guava/29.0-jre/guava-29.0-jre.jar:/Library/Maven/repository/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar:/Library/Maven/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/Library/Maven/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/Library/Maven/repository/org/checkerframework/checker-qual/2.11.1/checker-qual-2.11.1.jar:/Library/Maven/repository/com/google/errorprone/error_prone_annotations/2.3.4/error_prone_annotations-2.3.4.jar:/Library/Maven/repository/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.jar:/Library/Maven/repository/com/esotericsoftware/kryo/4.0.2/kryo-4.0.2.jar:/Library/Maven/repository/com/esotericsoftware/reflectasm/1.11.3/reflectasm-1.11.3.jar:/Library/Maven/repository/org/ow2/asm/asm/5.0.4/asm-5.0.4.jar:/Library/Maven/repository/com/esotericsoftware/minlog/1.3.0/minlog-1.3.0.jar:/Library/Maven/repository/org/objenesis/objenesis/2.5.1/objenesis-2.5.1.jar:/Library/Maven/repository/de/javakaffee/kryo-serializers/0.42/kryo-serializers-0.42.jar:/Library/Maven/repository/org/apiguardian/apiguardian-api/1.1.1/apiguardian-api-1.1.1.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/src/main/java:/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/generated-sources/annotations'
+-author
+-bottom
+'Copyright &#169; 2021. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'milky-serialize-kryo 1.0.0-SNAPSHOT API'
+-linkoffline
+'https://docs.oracle.com/javase/8/docs/api' '/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/javadoc-bundle-options'
+-linkoffline
+'https://github.com/kalencaya/milky-all/milky-serialize/milky-serialize-api/apidocs' '/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-api/target/apidocs'
+-use
+-version
+-windowtitle
+'milky-serialize-kryo 1.0.0-SNAPSHOT API'
+cn.sliew.milky.serialize.kryo.utils
+cn.sliew.milky.serialize.kryo
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-api/target/milky-serialize-api-1.0.0-SNAPSHOT.jar = 1618931403000
+/Users/wangqi/Documents/sliew/milky-all/milky-common/target/milky-common-1.0.0-SNAPSHOT.jar = 1618931330000
+/Users/wangqi/Documents/sliew/milky-all/milky-log/target/milky-log-1.0.0-SNAPSHOT.jar = 1618931232000
+/Library/Maven/repository/org/apache/logging/log4j/log4j-core/2.6.2/log4j-core-2.6.2.jar = 1551245784000
+/Library/Maven/repository/org/apache/logging/log4j/log4j-api/2.6.2/log4j-api-2.6.2.jar = 1551245784000
+/Library/Maven/repository/com/lmax/disruptor/3.4.2/disruptor-3.4.2.jar = 1585926331000
+/Library/Maven/repository/com/google/guava/guava/29.0-jre/guava-29.0-jre.jar = 1596266313000
+/Library/Maven/repository/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar = 1571010182000
+/Library/Maven/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar = 1571010182000
+/Library/Maven/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar = 1551245741000
+/Library/Maven/repository/org/checkerframework/checker-qual/2.11.1/checker-qual-2.11.1.jar = 1596260635000
+/Library/Maven/repository/com/google/errorprone/error_prone_annotations/2.3.4/error_prone_annotations-2.3.4.jar = 1580530102000
+/Library/Maven/repository/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.jar = 1581431965000
+/Library/Maven/repository/com/esotericsoftware/kryo/4.0.2/kryo-4.0.2.jar = 1565187697000
+/Library/Maven/repository/com/esotericsoftware/reflectasm/1.11.3/reflectasm-1.11.3.jar = 1565187697000
+/Library/Maven/repository/org/ow2/asm/asm/5.0.4/asm-5.0.4.jar = 1551031780000
+/Library/Maven/repository/com/esotericsoftware/minlog/1.3.0/minlog-1.3.0.jar = 1565187697000
+/Library/Maven/repository/org/objenesis/objenesis/2.5.1/objenesis-2.5.1.jar = 1565187697000
+/Library/Maven/repository/de/javakaffee/kryo-serializers/0.42/kryo-serializers-0.42.jar = 1593168850000
+/Library/Maven/repository/org/apiguardian/apiguardian-api/1.1.1/apiguardian-api-1.1.1.jar = 1615092451000
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/src/main/java = 1618636288000
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/generated-sources/annotations = 1618931513000
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/apidocs/constant-values.html = 1618931515000
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/apidocs/overview-tree.html = 1618931515000
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/apidocs/index.html = 1618931515000
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/apidocs/overview-frame.html = 1618931515000
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/apidocs/allclasses-noframe.html = 1618931515000
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/apidocs/serialized-form.html = 1618931515000
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/apidocs/index-all.html = 1618931515000
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/apidocs/deprecated-list.html = 1618931515000
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/apidocs/script.js = 1618931515000
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/apidocs/stylesheet.css = 1618931515000
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/apidocs/overview-summary.html = 1618931515000
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/apidocs/help-doc.html = 1618931515000
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/apidocs/allclasses-frame.html = 1618931515000
+/Users/wangqi/Documents/sliew/milky-all/milky-serialize/milky-serialize-kryo/target/apidocs/package-list = 1618931515000
