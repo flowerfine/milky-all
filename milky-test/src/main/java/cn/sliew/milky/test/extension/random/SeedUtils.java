@@ -18,9 +18,9 @@ public final class SeedUtils {
             chr = Character.toLowerCase(chr);
             result = result << 4;
             if (chr >= '0' && chr <= '9')
-                result |= (chr - '0');
+                result |= (chr - '0'); //NOPMD
             else if (chr >= 'a' && chr <= 'f')
-                result |= (chr - 'a' + 10);
+                result |= (chr - 'a' + 10); //NOPMD
             else
                 throw new IllegalArgumentException("Expected hexadecimal seed: " + seed);
         }

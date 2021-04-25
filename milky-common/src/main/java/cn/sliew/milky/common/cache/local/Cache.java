@@ -274,12 +274,10 @@ public class Cache<K, V> {
             try (ReleasableLock ignored = writeLock.acquire()) {
                 future = map.get(key);
                 try {
-                    if (future != null) {
-                        if (future.isDone()) {
-                            Entry<K, V> entry = future.get();
-                            if (Objects.equals(value, entry.value)) {
-                                removed = map.remove(key, future);
-                            }
+                    if (future != null && future.isDone()) {
+                        Entry<K, V> entry = future.get();
+                        if (Objects.equals(value, entry.value)) {
+                            removed = map.remove(key, future);
                         }
                     }
                 } catch (ExecutionException | InterruptedException e) {
@@ -457,7 +455,7 @@ public class Cache<K, V> {
         boolean replaced = false;
         try (ReleasableLock ignored = lruLock.acquire()) {
             if (tuple.v2() != null && tuple.v2().state == State.EXISTING) {
-                if (unlink(tuple.v2())) {
+                if (unlink(tuple.v2())) { //NOPMD
                     replaced = true;
                 }
             }
@@ -476,7 +474,7 @@ public class Cache<K, V> {
                 delete(entry, RemovalNotification.RemovalReason.INVALIDATED);
             }
         } catch (ExecutionException e) {
-            // ok
+            throw new IllegalStateException(e);
         } catch (InterruptedException e) {
             throw new IllegalStateException(e);
         }
@@ -762,6 +760,7 @@ public class Cache<K, V> {
         return maximumWeight != -1 && weight > maximumWeight;
     }
 
+    @SuppressWarnings("PMD")
     private boolean isExpired(Entry<K, V> entry, long now) {
         return (entriesExpireAfterAccess && now - entry.accessTime > expireAfterAccessNanos) ||
                 (entriesExpireAfterWrite && now - entry.writeTime > expireAfterWriteNanos);

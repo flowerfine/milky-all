@@ -135,6 +135,7 @@ public class CodepointSetGenerator extends StringGenerator {
         return concat;
     }
 
+    @SuppressWarnings("PMD")
     private boolean isSurrogate(char chr) {
         return (chr >= 0xd800 && chr <= 0xdfff);
     }
