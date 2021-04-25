@@ -10,21 +10,21 @@ import static cn.sliew.milky.common.check.Ensures.notBlank;
 /**
  * The default implementation of the {@link PropertySourceIterable} interface.
  */
-public class MutablePropertySource implements PropertySourceIterable {
+public class MutablePropertySources implements PropertySourceIterable {
 
     private final List<PropertySource<?>> propertySourceList = new CopyOnWriteArrayList<>();
 
     /**
-     * Create a new {@link MutablePropertySource} object.
+     * Create a new {@link MutablePropertySources} object.
      */
-    public MutablePropertySource() {
+    public MutablePropertySources() {
     }
 
     /**
      * Create a new {@code MutablePropertySources} from the given propertySources
      * object, preserving the original order of contained {@code PropertySource} objects.
      */
-    public MutablePropertySource(PropertySourceIterable propertySources) {
+    public MutablePropertySources(PropertySourceIterable propertySources) {
         this();
         propertySources.forEach(this::addLast);
     }

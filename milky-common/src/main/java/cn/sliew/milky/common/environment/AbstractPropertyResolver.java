@@ -1,10 +1,22 @@
 package cn.sliew.milky.common.environment;
 
+import cn.sliew.milky.log.Logger;
+import cn.sliew.milky.log.LoggerFactory;
+
+import java.util.Optional;
 import java.util.function.Function;
 
 import static cn.sliew.milky.common.check.Ensures.notBlank;
 
 public abstract class AbstractPropertyResolver implements PropertyResolver {
+
+    protected final Logger log = LoggerFactory.getLogger(getClass());
+
+    private Optional<PropertyPlaceholderHelper> nonStrictHelper;
+
+    private Optional<PropertyPlaceholderHelper> strictHelper;
+
+    private boolean ignoreUnresolvableNestedPlaceholders = false;
 
     private String placeholderPrefix = "${";
 
@@ -37,25 +49,40 @@ public abstract class AbstractPropertyResolver implements PropertyResolver {
         return getProperty(key, mappingFunction).orElseThrow(() -> new IllegalStateException("Required key '" + key + "' not found"));
     }
 
-    /**
-     * todo
-     * @param text the String to resolve
-     * @return
-     */
     @Override
     public String resolvePlaceholders(String text) {
-        return null;
+        if (!this.nonStrictHelper.isPresent()) {
+            this.nonStrictHelper = Optional.of(createPlaceholderHelper(true));
+        }
+        return doResolvePlaceholders(text, this.nonStrictHelper.get());
+    }
+
+    @Override
+    public String resolveRequiredPlaceholders(String text) throws IllegalArgumentException {
+        if (!this.strictHelper.isPresent()) {
+            this.strictHelper = Optional.of(createPlaceholderHelper(false));
+        }
+        return doResolvePlaceholders(text, this.nonStrictHelper.get());
     }
 
     /**
-     * todo
-     * @param text
-     * @return
-     * @throws IllegalArgumentException
+     * Resolve placeholders within the given string.
      */
-    @Override
-    public String resolveRequiredPlaceholders(String text) throws IllegalArgumentException {
-        return null;
+    protected String resolveNestedPlaceholders(String value) {
+        if (value.isEmpty()) {
+            return value;
+        }
+        return (this.ignoreUnresolvableNestedPlaceholders ?
+                resolvePlaceholders(value) : resolveRequiredPlaceholders(value));
+    }
+
+    private PropertyPlaceholderHelper createPlaceholderHelper(boolean ignoreUnresolvablePlaceholders) {
+        return new PropertyPlaceholderHelper(this.placeholderPrefix, this.placeholderSuffix,
+                this.valueSeparator, ignoreUnresolvablePlaceholders);
+    }
+
+    private String doResolvePlaceholders(String text, PropertyPlaceholderHelper helper) {
+        return helper.replacePlaceholders(text, this::getPropertyAsRawString);
     }
 
     @Override
@@ -72,4 +99,14 @@ public abstract class AbstractPropertyResolver implements PropertyResolver {
     public void setValueSeparator(String valueSeparator) {
         this.placeholderSuffix = notBlank(valueSeparator, () -> "'valueSeparator' must not be blank");
     }
+
+    /**
+     * Retrieve the specified property as a raw String,
+     * i.e. without resolution of nested placeholders.
+     *
+     * @param key the property name to resolve
+     * @return the property value or {@code Optional.empty()} if none found
+     */
+    protected abstract Optional<String> getPropertyAsRawString(String key);
+
 }
