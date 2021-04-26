@@ -1,9 +1,0 @@
-cn/sliew/milky/cache/AbstractCacheFactory.class
-cn/sliew/milky/cache/CacheOptions.class
-cn/sliew/milky/cache/CacheFactory.class
-cn/sliew/milky/cache/Cache.class
-cn/sliew/milky/cache/CacheOptions$WriteMode.class
-cn/sliew/milky/cache/support/NullValue.class
-cn/sliew/milky/cache/CacheLoader.class
-cn/sliew/milky/cache/support/NullKey.class
-cn/sliew/milky/cache/CacheWriter.class

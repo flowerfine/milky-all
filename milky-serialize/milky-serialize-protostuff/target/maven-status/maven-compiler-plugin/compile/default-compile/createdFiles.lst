@@ -1,8 +1,0 @@
-cn/sliew/milky/serialize/protostuff/ProtostuffDataOutputView.class
-cn/sliew/milky/serialize/protostuff/ProtostuffDataInputView.class
-cn/sliew/milky/serialize/protostuff/utils/ProtostuffUtils.class
-cn/sliew/milky/serialize/protostuff/delegate/SqlDateDelegate.class
-cn/sliew/milky/serialize/protostuff/delegate/TimeDelegate.class
-cn/sliew/milky/serialize/protostuff/delegate/TimestampDelegate.class
-cn/sliew/milky/serialize/protostuff/utils/WrapperUtils.class
-cn/sliew/milky/serialize/protostuff/Wrapper.class
