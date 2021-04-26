@@ -1,5 +1,7 @@
 package cn.sliew.milky.common.primitives;
 
+import static cn.sliew.milky.common.primitives.Strings.hasText;
+
 /**
  * Static utility methods pertaining to {@code boolean} primitives.
  */
@@ -92,18 +94,5 @@ public final class Booleans {
             return parseBoolean(value);
         }
         return defaultValue;
-    }
-
-    private static boolean hasText(CharSequence str) {
-        if (str == null || str.length() == 0) {
-            return false;
-        }
-        int strLen = str.length();
-        for (int i = 0; i < strLen; i++) {
-            if (!Character.isWhitespace(str.charAt(i))) {
-                return true;
-            }
-        }
-        return false;
     }
 }
