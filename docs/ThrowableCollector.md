@@ -183,7 +183,7 @@ throwableCollector.execute(() -> doSomething());
 throwableCollector.getThrowable().ifPresent(throwable -> handleException(throwable));
 ```
 
-##特例模式的运用
+## 特例模式的运用
 
 但是，这里还有一个瑕疵，异常的存在破坏了函数式的纯洁性，**函数返回的异常破坏了结果的类型一致性**。
 
