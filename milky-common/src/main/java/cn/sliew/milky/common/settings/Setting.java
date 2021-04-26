@@ -1,21 +1,18 @@
 package cn.sliew.milky.common.settings;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 import java.util.*;
 import java.util.function.Function;
 
+/**
+ * todo remove property
+ */
 public class Setting<T> {
-
-    private static final EnumSet<Property> EMPTY_PROPERTIES = EnumSet.noneOf(Property.class);
 
     private final Key key;
     protected final Function<Settings, String> defaultValue;
-    @Nullable
-    private final Setting<T> fallbackSetting;
+    private final Optional<Setting<T>> fallbackSetting;
     private final Function<String, T> parser;
     private final Validator<T> validator;
-    private final EnumSet<Property> properties;
 
     /**
      * LineLength.
@@ -25,31 +22,18 @@ public class Setting<T> {
      * @param fallbackSetting fallback setting
      * @param parser          value parser
      * @param validator       value validator
-     * @param properties      properties
      */
     public Setting(Key key,
                    Function<Settings, String> defaultValue,
-                   @Nullable Setting<T> fallbackSetting,
+                   Setting<T> fallbackSetting,
                    Function<String, T> parser,
-                   Validator<T> validator,
-                   Property... properties) {
+                   Validator<T> validator) {
+
         this.key = key;
         this.defaultValue = defaultValue;
-        this.fallbackSetting = fallbackSetting;
+        this.fallbackSetting = Optional.ofNullable(fallbackSetting);
         this.parser = parser;
         this.validator = validator;
-        if (properties == null) {
-            throw new IllegalArgumentException("properties cannot be null for setting [" + key + "]");
-        }
-        if (properties.length == 0) {
-            this.properties = EMPTY_PROPERTIES;
-        } else {
-            final EnumSet<Property> propertiesAsSet = EnumSet.copyOf(Arrays.asList(properties));
-            if (propertiesAsSet.contains(Property.Dynamic) && propertiesAsSet.contains(Property.Final)) {
-                throw new IllegalArgumentException("final setting [" + key + "] cannot be dynamic");
-            }
-            this.properties = propertiesAsSet;
-        }
     }
 
     /**
@@ -122,29 +106,6 @@ public class Setting<T> {
     }
 
     /**
-     * Returns the setting properties.
-     *
-     * @see Property
-     */
-    public EnumSet<Property> getProperties() {
-        return properties;
-    }
-
-    /**
-     * Returns <code>true</code> if this setting is dynamically updateable, otherwise <code>false</code>.
-     */
-    public final boolean isDynamic() {
-        return properties.contains(Property.Dynamic);
-    }
-
-    /**
-     * Returns <code>true</code> if this setting is final, otherwise <code>false</code>.
-     */
-    public final boolean isFinal() {
-        return properties.contains(Property.Final);
-    }
-
-    /**
      * Returns the default value for this setting.
      *
      * @param settings a settings object for settings that has a default value depending on another setting if available
@@ -170,11 +131,11 @@ public class Setting<T> {
      *
      * @param settings the settings
      * @return true if the setting including fallback settings is present in
-     *      the given settings instance, otherwise false
+     * the given settings instance, otherwise false
      */
     public boolean existsOrFallbackExists(final Settings settings) {
         return settings.keySet().contains(getKey())
-                || (fallbackSetting != null && fallbackSetting.existsOrFallbackExists(settings));
+                || (fallbackSetting.isPresent() && fallbackSetting.get().existsOrFallbackExists(settings));
     }
 
 
