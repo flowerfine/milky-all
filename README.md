@@ -41,19 +41,7 @@ mvn clean deploy -Poss-release -N versions:update-child-modules
 
 在开发中，异常不可避免，异常处理就需要细心处理。
 
-回头看下代码整洁之道里面对异常的处理。异常的处理外移，内部不要吞异常。整洁代码之道中建议开发中先写`try-catch-finally`。异常的处理与函数式编程结合。在函数式编程中如果添加了大量的`try-catch-finally`，lambda也直接失去了函数表达式的简洁性，不再是一个**小函数**，开始变得复杂。
-
-另外主动抛出的异常也会破坏函数的纯洁性，函数式编程的优势便是结果的一致性，异常会破坏结果的类型一致，返回类型会包括异常类型。
-
-因此需要一种函数式的异常处理组件来维护函数式编程的纯洁性。
-
-https://blog.knoldus.com/functional-error-handling-in-scala/
-
-scala提供了`Option`表示有结果和null值，`Try` 结果有`Success`和`Failure`，`Either`。其中Option只能返回结果值或null值，异常的情况下只能有null来返回，但是有些业务null值可能也是一个正常的业务返回结果。Try会返回异常，但是仍然要去处理异常，以函数式的方式添加异常处理的代码。Either做到了捕获异常对象，作为返回结果的一部分。
-
-scala语言直接提供了语言级的支持，而java的函数式编程库vavr提供了类似的实现。而这个小组件简单地提供了异常的捕获功能。
-
-https://docs.vavr.io/#_try
+`milky` 提供了 `ThrowableCollector` 组件让异常捕获处理如丝般顺滑。可参阅[详情](https://github.com/kalencaya/milky-all/blob/master/docs/ThrowableCollector.md)。
 
 ## 版本管理
 
