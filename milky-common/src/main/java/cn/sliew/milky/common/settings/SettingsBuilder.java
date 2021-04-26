@@ -38,7 +38,7 @@ public class SettingsBuilder {
      * Sets a null value for the given setting key.
      */
     public SettingsBuilder putNull(String key) {
-        return put(key, (String) null);
+        return put(key, null);
     }
 
     /**
