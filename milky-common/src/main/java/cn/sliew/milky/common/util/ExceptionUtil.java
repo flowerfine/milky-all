@@ -40,7 +40,7 @@ public final class ExceptionUtil {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T extends Throwable> void throwAs(Throwable t) throws T {
+    public static <T extends Throwable> void throwAs(Throwable t) throws T {
         throw (T) t;
     }
 

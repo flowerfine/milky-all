@@ -1,5 +1,6 @@
 package cn.sliew.milky.common.constant;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -30,28 +31,36 @@ public abstract class AbstractConstant<T extends AbstractConstant<T>> implements
     }
 
     @Override
-    public final String name() {
-        return name;
-    }
-
-    @Override
     public final int id() {
         return id;
     }
 
     @Override
-    public final String toString() {
-        return name();
+    public final String name() {
+        return name;
     }
 
     @Override
-    public final int hashCode() {
-        return super.hashCode();
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AbstractConstant<?> that = (AbstractConstant<?>) o;
+        return id == that.id &&
+                Objects.equals(name, that.name);
     }
 
     @Override
-    public final boolean equals(Object obj) {
-        return super.equals(obj);
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Constant{id=%s, name=%s}", id, name);
     }
 
     @Override
