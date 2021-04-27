@@ -27,6 +27,15 @@ public void doSomething() throws Exception;
 
 我一般推崇的是尽量在上层代码中做异常的最终处理，多数情况下都是继续往外抛异常而不处理。但是 `try-catch` 语句中不能直接抛出被捕获的异常，需要包一层新的异常，而这会造成上层代码在收到异常时异常层级过多，日志体验极差。
 
+```java
+try {
+    // do something may throw exception.
+} catch (Exception e) {
+    // have to use new exception class wrapper catched exception
+    throw new RuntimeException(e);
+}
+```
+
 这里介绍一个小技巧，轻松抛出 `catch` 语句抛出的异常。
 
 ```java
