@@ -7,12 +7,17 @@ public abstract class Key extends AbstractConstant {
     /**
      * Creates a new instance.
      *
-     * @param id   id
-     * @param name name
+     * @param key key
      */
-    protected Key(int id, String name) {
-        super(id, name);
+    protected Key(String key) {
+        super(0, key);
     }
 
     abstract boolean match(String key);
+
+    @Override
+    public final String toString() {
+        return String.format("Key{name=%s}", name());
+    }
+
 }
