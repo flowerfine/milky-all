@@ -17,6 +17,33 @@ try {
 
 对于函数调用者而言，总是使用 `try-catch-finally` 可以保证写出健壮的代码，如果再加上良好的异常处理层次就可以保证代码的可读性。
 
+## 如何优雅地处理受检查异常。
+
+`java` 中异常体系受诟病的一点就是**受检查异常**。它强制在类的继承体系和客户端代码中处理异常，破坏封装。
+
+```java
+public void doSomething() throws Exception;
+```
+
+我一般推崇的是尽量在上层代码中做异常的最终处理，多数情况下都是继续往外抛异常而不处理。但是 `try-catch` 语句中不能直接抛出被捕获的异常，需要包一层新的异常，而这会造成上层代码在收到异常时异常层级过多，日志体验极差。
+
+这里介绍一个小技巧，轻松抛出 `catch` 语句抛出的异常。
+
+```java
+public static <T extends Throwable> void throwAs(Throwable t) throws T {
+    throw (T) t;
+}
+
+// example
+try {
+    // do something may throw exception.
+} catch (Exception e) {
+    throwAs(e);
+    // may need add return statement, but never invoked.
+    return null;
+}
+```
+
 ## Lambda中的异常处理
 
 在 `java 1.8` 中一个重大的特性是引入了函数式编程，函数式编程在多种语言中被证明能够极大增加代码的生产力。但是`java`的函数式编程少了重要的特性：如何在lambda中处理受检查的异常？
