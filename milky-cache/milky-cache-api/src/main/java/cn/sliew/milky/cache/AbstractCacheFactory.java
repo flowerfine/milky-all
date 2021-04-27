@@ -3,13 +3,13 @@ package cn.sliew.milky.cache;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class AbstractCacheFactory implements CacheFactory {
+public abstract class AbstractCacheFactory<C extends Cache> implements CacheFactory {
 
-    protected final Map<CacheOptions, Cache> map = new ConcurrentHashMap<>(16);
+    protected final Map<CacheOptions, C> map = new ConcurrentHashMap<>(16);
 
     @Override
-    public <K, V> Cache<K, V> getCache(CacheOptions options) {
-        Cache<K, V> cache = map.get(options.getName());
+    public C getCache(CacheOptions options) {
+        C cache = map.get(options.getName());
         if (cache == null) {
             synchronized (map) {
                 cache = map.get(options);
@@ -22,5 +22,5 @@ public abstract class AbstractCacheFactory implements CacheFactory {
         return cache;
     }
 
-    protected abstract Cache newCache(CacheOptions options);
+    protected abstract C newCache(CacheOptions options);
 }
