@@ -29,43 +29,4 @@ public abstract class AbstractPageDTO<T> extends AbstractResultDTO {
      */
     private Collection<T> details;
 
-    public long getTotal() {
-        return total;
-    }
-
-    public void setTotal(long total) {
-        this.total = total;
-    }
-
-    public long getPage() {
-        return page;
-    }
-
-    public void setPage(long page) {
-        this.page = page;
-    }
-
-    public long getSize() {
-        return size;
-    }
-
-    public void setSize(long size) {
-        this.size = size;
-    }
-
-    public long getMax() {
-        return max;
-    }
-
-    public void setMax(long max) {
-        this.max = max;
-    }
-
-    public Collection<T> getDetails() {
-        return details;
-    }
-
-    public void setDetails(Collection<T> details) {
-        this.details = details;
-    }
 }

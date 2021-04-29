@@ -35,4 +35,9 @@ public abstract class AbstractPageParam extends AbstractParam {
     public void setSize(long size) {
         this.size = size;
     }
+
+    public long getFrom() {
+        return (getPage() - 1) * getSize();
+    }
+
 }
