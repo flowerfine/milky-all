@@ -2,6 +2,7 @@ package cn.sliew.milky.common.filter;
 
 import cn.sliew.milky.log.Logger;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -12,7 +13,9 @@ public class DefaultFilterChain<Request, Response> implements ActionFilterChain<
     private final Logger logger;
 
     public DefaultFilterChain(List<ActionFilter<Request, Response>> filters, Logger logger) {
-        this.filters = (ActionFilter<Request, Response>[]) filters.stream().toArray();
+        this.filters = (ActionFilter<Request, Response>[]) filters.stream()
+                .sorted(Comparator.comparing(ActionFilter::order))
+                .toArray();
         this.logger = logger;
     }
 
