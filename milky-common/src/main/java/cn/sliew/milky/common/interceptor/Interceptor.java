@@ -9,8 +9,6 @@ import java.io.Serializable;
  * <p>
  * This is useful to provide logging, fallback, exception, transform or substitute values.
  * <p>
- * fixme If multiple interceptors are registered with the same priority, then their execution order
- *  may be non deterministic.
  *
  * @see ActionFilter#order()
  */

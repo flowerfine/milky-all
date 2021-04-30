@@ -1,5 +1,8 @@
 package cn.sliew.milky.common.interceptor;
 
+/**
+ * Interceptor will be registered by linked node chain and interception will be applied orderly.
+ */
 public class DefaultInterceptorContext<Request, Response> implements InterceptorContext<Request, Response> {
 
     private static final long serialVersionUID = -8969967347689639974L;
