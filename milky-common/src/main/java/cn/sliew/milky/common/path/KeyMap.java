@@ -29,6 +29,7 @@ public final class KeyMap<V> extends HashMap<String, KeyMap<V>> {
     }
 
     public KeyMap() {
+        super();
     }
 
     public KeyMap<V> get(final String key, int offs, int len) {
