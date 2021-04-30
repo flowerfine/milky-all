@@ -1,23 +1,16 @@
 package cn.sliew.milky.common.settings;
 
-import cn.sliew.milky.common.constant.AbstractConstant;
-
-public abstract class Key extends AbstractConstant {
+/**
+ * setting key interface.
+ */
+public interface Key {
 
     /**
-     * Creates a new instance.
+     * matches provided name with Key.
      *
-     * @param key key
+     * @param key string key name.
+     * @return true matched, false otherwise.
      */
-    protected Key(String key) {
-        super(0, key);
-    }
-
-    abstract boolean match(String key);
-
-    @Override
-    public final String toString() {
-        return String.format("Key{name=%s}", name());
-    }
+    boolean match(String key);
 
 }

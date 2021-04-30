@@ -13,9 +13,9 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class PathTrieTest extends MilkyTestCase {
+class PathTrieTest extends MilkyTestCase {
 
-    public static final PathTrie.Decoder NO_DECODER = value -> value;
+    static final PathTrie.Decoder NO_DECODER = value -> value;
 
     @Test
     void testPath() {

@@ -6,13 +6,17 @@ import static cn.sliew.milky.common.check.Ensures.checkArgument;
 
 public final class GroupKey extends SimpleKey {
 
-    public GroupKey(int id, String key) {
-        super(id, key);
+    public GroupKey(String key) {
+        super(key);
         checkArgument(key.endsWith(".") == false, () -> "key must end with a '.'");
+        if (key.endsWith(".") == false) {
+            throw new IllegalArgumentException("key must end with a '.'");
+        }
     }
 
     @Override
     public boolean match(String toTest) {
-        return Regex.simpleMatch(name() + "*", toTest);
+        return Regex.simpleMatch(key + "*", toTest);
     }
+    
 }

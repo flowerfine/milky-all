@@ -1,14 +1,36 @@
 package cn.sliew.milky.common.settings;
 
-public class SimpleKey extends Key {
+import java.util.Objects;
+
+public class SimpleKey implements Key {
+
+    protected final String key;
 
     public SimpleKey(String key) {
-        super(key);
+        this.key = key;
     }
 
     @Override
-    boolean match(String key) {
-        return name().equals(key);
+    public boolean match(String key) {
+        return this.key.equals(key);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SimpleKey simpleKey = (SimpleKey) o;
+        return Objects.equals(key, simpleKey.key);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key);
+    }
+
+    @Override
+    public String toString() {
+        return key;
     }
 
 }
