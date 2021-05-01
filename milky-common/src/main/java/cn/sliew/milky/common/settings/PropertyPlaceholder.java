@@ -57,6 +57,7 @@ class PropertyPlaceholder {
         int startIndex = strVal.indexOf(this.placeholderPrefix);
         while (startIndex != -1) {
             int endIndex = findPlaceholderEndIndex(buf, startIndex);
+            // 没有做转义支持
             if (endIndex != -1) {
                 String placeholder = buf.substring(startIndex + this.placeholderPrefix.length(), endIndex);
                 if (!visitedPlaceholders.add(placeholder)) {

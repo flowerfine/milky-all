@@ -13,6 +13,10 @@ public class Strings {
         throw new AssertionError("No instances intended");
     }
 
+    public static String empty() {
+        return "";
+    }
+
     public static void spaceify(int spaces, String from, StringBuilder to) throws Exception {
         try (BufferedReader reader = new BufferedReader(new StringReader(from))) {
             String line;
