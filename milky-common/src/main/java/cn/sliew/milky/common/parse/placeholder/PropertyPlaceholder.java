@@ -1,4 +1,4 @@
-package cn.sliew.milky.common.parse.generic;
+package cn.sliew.milky.common.parse.placeholder;
 
 import cn.sliew.milky.common.primitives.Strings;
 import cn.sliew.milky.log.Logger;
