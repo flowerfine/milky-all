@@ -69,6 +69,10 @@ spring的placeholder。
 
 es的PropertyPlaceholder
 
+
+
+是否支持转义。即当定义了 `open` 和 `close` 之后，是否支持 `open` 和 `close` 的转义，类似的还有分隔符啥的。
+
 ## 对象size
 
 com.carrotsearch.randomizedtesting.rules.RamUsageEstimator
