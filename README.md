@@ -63,19 +63,13 @@ mvn clean deploy -Poss-release -N versions:update-child-modules
 
 ## 占位符组件
 
-参考mybatis的`#{}`和`${}`的占位符解析。
+作为一种常见的功能，支持属性值的引用是一种简单而作用重大的功能。`milky` 提供了 [`PropertyPlaceholder`](https://github.com/kalencaya/milky-all/blob/master/docs/PropertyPlaceholder.md) 组件提供开箱即用的占位符功能。
 
-spring的placeholder。
-
-es的PropertyPlaceholder
-
-
-
-是否支持转义。即当定义了 `open` 和 `close` 之后，是否支持 `open` 和 `close` 的转义，类似的还有分隔符啥的。
-
-
-
-如何处理循环引用
+* 指定占位符格式。开发者可以自由使用 `${}`、`{}` 等格式，只需要指定前缀和后缀即可。
+* 循环引用。占位符支持嵌套，可以实现 `a` 引用 `b`，`b` 引用 `c`，从而 `a = b = c = c_value`。
+* 失败处理。可以通过参数与继承接口控制解析失败的处理。
+* 默认值支持。失败处理的另一种思路是提供默认值支持，让使用者参与进失败处理。
+* 转义支持。如果属性值中也存在 `${}`，而又不想触发循环引用的功能，可以使用` \\` 对 `${}` 进行转义。 
 
 ## 对象size
 
