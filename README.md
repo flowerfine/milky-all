@@ -41,7 +41,7 @@ mvn clean deploy -Poss-release -N versions:update-child-modules
 
 在开发中，异常不可避免，异常处理就需要细心处理。
 
-`milky` 提供了 `ThrowableCollector` 组件让异常捕获处理如丝般顺滑。可参阅[详情](https://github.com/kalencaya/milky-all/blob/master/docs/ThrowableCollector.md)。
+`milky` 提供了 [`ThrowableCollector`](https://github.com/kalencaya/milky-all/blob/master/docs/ThrowableCollector.md) 组件让异常捕获处理如丝般顺滑。
 
 ## 版本管理
 
