@@ -1,5 +1,6 @@
 package cn.sliew.milky.common.environment;
 
+import cn.sliew.milky.common.parse.placeholder.PropertyPlaceholder;
 import cn.sliew.milky.log.Logger;
 import cn.sliew.milky.log.LoggerFactory;
 
@@ -12,9 +13,9 @@ public abstract class AbstractPropertyResolver implements PropertyResolver {
 
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    private Optional<PropertyPlaceholderHelper> nonStrictHelper;
+    private Optional<PropertyPlaceholder> nonStrictHelper;
 
-    private Optional<PropertyPlaceholderHelper> strictHelper;
+    private Optional<PropertyPlaceholder> strictHelper;
 
     private boolean ignoreUnresolvableNestedPlaceholders = false;
 
@@ -76,13 +77,28 @@ public abstract class AbstractPropertyResolver implements PropertyResolver {
                 resolvePlaceholders(value) : resolveRequiredPlaceholders(value));
     }
 
-    private PropertyPlaceholderHelper createPlaceholderHelper(boolean ignoreUnresolvablePlaceholders) {
-        return new PropertyPlaceholderHelper(this.placeholderPrefix, this.placeholderSuffix,
+    private PropertyPlaceholder createPlaceholderHelper(boolean ignoreUnresolvablePlaceholders) {
+        return new PropertyPlaceholder(log, this.placeholderPrefix, this.placeholderSuffix,
                 this.valueSeparator, ignoreUnresolvablePlaceholders);
     }
 
-    private String doResolvePlaceholders(String text, PropertyPlaceholderHelper helper) {
-        return helper.replacePlaceholders(text, this::getPropertyAsRawString);
+    private String doResolvePlaceholders(String text, PropertyPlaceholder helper) {
+        return helper.replacePlaceholders(text, new PropertyPlaceholder.PlaceholderResolver() {
+            @Override
+            public Optional<String> resolvePlaceholder(String placeholderName) {
+                return getPropertyAsRawString(placeholderName);
+            }
+
+            @Override
+            public boolean shouldIgnoreMissing(String placeholderName) {
+                return true;
+            }
+
+            @Override
+            public boolean shouldRemoveMissingPlaceholder(String placeholderName) {
+                return false;
+            }
+        });
     }
 
     @Override

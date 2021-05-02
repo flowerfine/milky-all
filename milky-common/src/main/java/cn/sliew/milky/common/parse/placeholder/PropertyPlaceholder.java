@@ -216,7 +216,7 @@ public class PropertyPlaceholder {
      *
      * @see PropertyPlaceholder
      */
-    interface PlaceholderResolver {
+    public interface PlaceholderResolver {
 
         /**
          * Resolves the supplied placeholder name into the replacement value.
