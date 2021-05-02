@@ -154,6 +154,51 @@ class PropertyPlaceholderTest extends MilkyTestCase {
         assertEquals("bar${foo}", propertyPlaceholder.replacePlaceholders("bar${foo}", placeholderResolver));
     }
 
+    @Test
+    void testBackslashEscape() {
+        PropertyPlaceholder propertyPlaceholder = new PropertyPlaceholder(log, "${", "}", ":", false);
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("foo1", "bar1");
+        map.put("foo2", "bar2");
+        map.put("foo3}", "bar3");
+        PropertyPlaceholder.PlaceholderResolver placeholderResolver = new SimplePlaceholderResolver(map, false, true);
+        assertEquals("${foo1}", propertyPlaceholder.replacePlaceholders("\\${foo1}", placeholderResolver));
+        assertEquals("a ${foo1}b", propertyPlaceholder.replacePlaceholders("a ${foo1\\}b", placeholderResolver));
+        assertEquals("bar1${foo2}", propertyPlaceholder.replacePlaceholders("${foo1}\\${foo2}", placeholderResolver));
+        assertEquals("a bar3 b bar2 c", propertyPlaceholder.replacePlaceholders("a ${foo3\\}} b ${foo2} c", placeholderResolver));
+    }
+
+    @Test
+    void testBackslashEscapeRecursive() {
+        PropertyPlaceholder propertyPlaceholder = new PropertyPlaceholder(log, "${", "}", ":", false);
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("foo", "\\${foo1}");
+        map.put("foo1", "${foo2}");
+        map.put("foo2", "bar");
+
+        PropertyPlaceholder.PlaceholderResolver placeholderResolver = new SimplePlaceholderResolver(map, false, true);
+        assertEquals("${foo1}", propertyPlaceholder.replacePlaceholders("${foo}", placeholderResolver));
+        assertEquals("a${foo1}b", propertyPlaceholder.replacePlaceholders("a${foo}b", placeholderResolver));
+
+        map.put("foo3", "${foo4\\}");
+        map.put("foo4", "${foo5}");
+        map.put("foo5", "bar");
+        assertEquals("${foo4}", propertyPlaceholder.replacePlaceholders("${foo3}", placeholderResolver));
+        assertEquals("a${foo4}b", propertyPlaceholder.replacePlaceholders("a${foo3}b", placeholderResolver));
+
+        map.put("foo6", "${foo7}");
+        map.put("foo7", "\\${foo8}");
+        map.put("foo8", "bar");
+        assertEquals("${foo8}", propertyPlaceholder.replacePlaceholders("${foo6}", placeholderResolver));
+        assertEquals("a${foo8}b", propertyPlaceholder.replacePlaceholders("a${foo6}b", placeholderResolver));
+
+        map.put("foo9", "${foo10}");
+        map.put("foo10", "${foo11\\}");
+        map.put("foo11", "bar");
+        assertEquals("${foo11}", propertyPlaceholder.replacePlaceholders("${foo9}", placeholderResolver));
+        assertEquals("a${foo11}b", propertyPlaceholder.replacePlaceholders("a${foo9}b", placeholderResolver));
+    }
+
     private class SimplePlaceholderResolver implements PropertyPlaceholder.PlaceholderResolver {
         private Map<String, String> map;
         private boolean shouldIgnoreMissing;

@@ -117,9 +117,19 @@ public class PropertyPlaceholder {
             return value;
         }
 
+        int offset = 0;
         StringBuilder result = new StringBuilder(value);
         while (startIndex != -1) {
-            int endIndex = findPlaceholderEndIndex(result, startIndex);
+            if (startIndex > 0 && result.charAt(startIndex - 1) == '\\') {
+                // this placeholderPrefix is escaped by backslash, remove the backslash and continue.
+                result.deleteCharAt(startIndex - 1);
+                offset = startIndex + placeholderPrefix.length();
+                startIndex = result.indexOf(this.placeholderPrefix, offset);
+                continue;
+            } else {
+                offset = startIndex + placeholderPrefix.length();
+            }
+            int endIndex = findPlaceholderEndIndex(result, offset);
             if (endIndex != -1) {
                 String placeholder = result.substring(startIndex + this.placeholderPrefix.length(), endIndex);
                 String originalPlaceholder = placeholder;
@@ -175,22 +185,27 @@ public class PropertyPlaceholder {
         return result.toString();
     }
 
-    private int findPlaceholderEndIndex(CharSequence buf, int startIndex) {
-        int index = startIndex + this.placeholderPrefix.length();
+    private int findPlaceholderEndIndex(StringBuilder buf, int offset) {
         int withinNestedPlaceholder = 0;
-        while (index < buf.length()) {
-            if (Strings.substringMatch(buf, index, this.placeholderSuffix)) {
+        while (offset < buf.length()) {
+            if (Strings.substringMatch(buf, offset, this.placeholderSuffix)) {
+                if (offset > 0 && buf.charAt(offset - 1) == '\\') {
+                    // this placeholderSuffix is escaped by backslash, remove the backslash and continue.
+                    buf.deleteCharAt(offset - 1);
+                    offset = offset - 1 + this.placeholderSuffix.length();
+                    continue;
+                }
                 if (withinNestedPlaceholder > 0) {
                     withinNestedPlaceholder--;
-                    index = index + this.placeholderSuffix.length();
+                    offset = offset + this.placeholderSuffix.length();
                 } else {
-                    return index;
+                    return offset;
                 }
-            } else if (Strings.substringMatch(buf, index, this.placeholderPrefix)) {
+            } else if (Strings.substringMatch(buf, offset, this.placeholderPrefix)) {
                 withinNestedPlaceholder++;
-                index = index + this.placeholderPrefix.length();
+                offset = offset + this.placeholderPrefix.length();
             } else {
-                index++;
+                offset++;
             }
         }
         return -1;
