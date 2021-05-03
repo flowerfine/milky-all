@@ -2,7 +2,7 @@ package cn.sliew.milky.common.util;
 
 import java.util.Arrays;
 
-import static cn.sliew.milky.common.util.ThrowableUtil.rethrowIfUnrecoverable;
+import static cn.sliew.milky.common.exception.ThrowableUtil.rethrowIfUnrecoverable;
 
 public final class StringUtils {
 
