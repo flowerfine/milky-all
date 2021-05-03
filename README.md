@@ -43,6 +43,28 @@ mvn clean deploy -Poss-release -N versions:update-child-modules
 
 `milky` 提供了 [`ThrowableCollector`](https://github.com/kalencaya/milky-all/blob/master/docs/ThrowableCollector.md) 组件让异常捕获处理如丝般顺滑。
 
+## 异常重抛
+
+客户端在调用API时，不得不处理讨厌的受检查异常，如下：
+
+```java
+try {
+    // do something may throw exception.
+} catch (Exception e) {
+    throw e; // compile failure.
+}
+```
+
+很多时候，开发者并不想在当前位置对异常进行处理，而是将异常处理的工作委托给更上层的代码，但是又不想受API影响，在方法上跟着声明受检查的异常（这也是 `java` 中受检查异常被吐槽的点之一，它破坏了封装）。这个时候只想简单地抛出异常，可以使用 `Rethrower` 组件实现这个功能。
+
+## 异常堆栈格式化
+
+在 `java` 开发环境中，日志系统如 `log4j2`、`logback` 等框架可以轻松地实现输出日志堆栈信息到日志文件中，供问题排查。
+
+但是输出到日志文件中的异常信息只能供有权限能够访问到日志数据的开发者使用。很多时候开发者想提高用户自助问题排查的能力，比如为用户提供 `debug` 信息，将异常信息作为结果的一部分返回给用户。
+
+`ThrowableTraceFormatter` 提供了将 `Throwable` 堆栈格式化为字符串的能力，方便开发者处理异常信息。
+
 ## 版本管理
 
 `SemVersion`遵从语义化版本管理。链接：https://semver.org/。
