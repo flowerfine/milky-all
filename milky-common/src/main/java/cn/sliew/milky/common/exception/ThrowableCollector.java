@@ -1,7 +1,5 @@
 package cn.sliew.milky.common.exception;
 
-import cn.sliew.milky.common.util.ThrowableUtil;
-
 import java.util.Optional;
 
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
@@ -44,7 +42,7 @@ public class ThrowableCollector<T> {
         try {
             return Optional.ofNullable(executable.execute());
         } catch (Throwable t) {
-            ThrowableUtil.rethrowIfUnrecoverable(t);
+            Rethrower.rethrowIfUnrecoverable(t);
             add(t);
             return Optional.empty();
         }
