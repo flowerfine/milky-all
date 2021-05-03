@@ -11,6 +11,7 @@ mvn clean deploy -Poss-release -N versions:update-child-modules
 
 * 单位组件。如时间、byte、内存等。
 * 遍历组件。树形遍历，图形遍历
+* 异常组件。[异常采集器](#任务异常采集器)，异常重抛，异常堆栈格式化。
 
 
 
