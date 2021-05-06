@@ -1,14 +1,23 @@
-package cn.sliew.milky.common.util;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
+package cn.sliew.milky.common.exception;
 
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
 
-public final class ExceptionUtil {
+/**
+ * Rethrowing checked exceptions as unchecked ones. Eh, it is sometimes useful...
+ */
+public final class Rethrower {
 
-    private ExceptionUtil() {
-        throw new IllegalStateException("can't do this!");
+    /**
+     * Rethrow the supplied {@link Throwable exception} if it is
+     * <em>unrecoverable</em>.
+     *
+     * <p>If the supplied {@code exception} is not <em>unrecoverable</em>, this
+     * method does nothing.
+     */
+    public static void rethrowIfUnrecoverable(Throwable exception) {
+        if (exception instanceof OutOfMemoryError) {
+            throwAsUncheckedException(exception);
+        }
     }
 
     /**
@@ -33,26 +42,22 @@ public final class ExceptionUtil {
      */
     public static RuntimeException throwAsUncheckedException(Throwable t) {
         checkNotNull(t, () -> "Throwable must not be null");
-        throwAs(t);
 
+        throwAs(t);
         // Appeasing the compiler: the following line will never be executed.
         return null;
     }
 
+    /**
+     * Rethrows <code>t</code> (identical object).
+     */
     @SuppressWarnings("unchecked")
     public static <T extends Throwable> void throwAs(Throwable t) throws T {
         throw (T) t;
     }
 
-    /**
-     * Read the stacktrace of the supplied {@link Throwable} into a String.
-     */
-    public static String readStackTrace(Throwable throwable) {
-        checkNotNull(throwable, () -> "Throwable must not be null");
-        StringWriter stringWriter = new StringWriter();
-        try (PrintWriter printWriter = new PrintWriter(stringWriter)) {
-            throwable.printStackTrace(printWriter);
-        }
-        return stringWriter.toString();
+    private Rethrower() {
+        throw new IllegalStateException("no instance");
     }
 }
+

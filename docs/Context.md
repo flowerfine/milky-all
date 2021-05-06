@@ -6,3 +6,6 @@
 
 而context对象作为数据传输的载体，常见的是一个类Map的实现或者Stack实现。在应用map的时候一般是用来作为数据传递，使用key/value比较方便。在使用stack的场景有调用栈的处理，如进行一些profile或者explain。
 
+
+
+在 `IOC` 中又提供了一种新的方式，注入。如 `spring` 的 `ApplicationContextAware` 接口，类似的还有 `EnvironmentCapabale` 。

@@ -1,6 +1,9 @@
 package cn.sliew.milky.common.settings;
 
+import cn.sliew.milky.common.parse.placeholder.PropertyPlaceholder;
 import cn.sliew.milky.common.primitives.Strings;
+import cn.sliew.milky.log.Logger;
+import cn.sliew.milky.log.LoggerFactory;
 
 import java.util.*;
 import java.util.function.Function;
@@ -10,6 +13,8 @@ import java.util.function.Function;
  * settings implementation. Use {@link Settings#builder()} in order to construct it.
  */
 public class SettingsBuilder {
+
+    private static final Logger log = LoggerFactory.getLogger(SettingsBuilder.class);
 
     public static final Settings EMPTY_SETTINGS = new SettingsBuilder().build();
 
@@ -184,15 +189,15 @@ public class SettingsBuilder {
 
     // visible for testing
     SettingsBuilder replacePropertyPlaceholders(Function<String, String> getenv) {
-        PropertyPlaceholder propertyPlaceholder = new PropertyPlaceholder("${", "}", false);
+        PropertyPlaceholder propertyPlaceholder = new PropertyPlaceholder(log, "${", "}", ":", false);
         PropertyPlaceholder.PlaceholderResolver placeholderResolver = new PropertyPlaceholder.PlaceholderResolver() {
             @Override
-            public String resolvePlaceholder(String placeholderName) {
+            public Optional<String> resolvePlaceholder(String placeholderName) {
                 final String value = getenv.apply(placeholderName);
                 if (value != null) {
-                    return value;
+                    return Optional.of(value);
                 }
-                return Settings.toString(map.get(placeholderName));
+                return Optional.ofNullable(Settings.toString(map.get(placeholderName)));
             }
 
             @Override

@@ -1,6 +1,6 @@
 package cn.sliew.milky.common.chain;
 
-import cn.sliew.milky.common.exception.ThrowableUtil;
+import cn.sliew.milky.common.exception.ThrowableTraceFormater;
 import cn.sliew.milky.log.Logger;
 import cn.sliew.milky.log.LoggerFactory;
 
@@ -87,7 +87,7 @@ public abstract class AbstractPipelineProcess<K, V> implements PipelineProcess<K
             if (logger.isDebugEnabled()) {
                 logger.debug("An exception {} was thrown by a user handler's exceptionCaught() " +
                                 "method while handling the following exception:",
-                        ThrowableUtil.stackTraceToString(error), cause);
+                        ThrowableTraceFormater.readStackTrace(error), cause);
             } else if (logger.isWarnEnabled()) {
                 logger.warn("An exception '{}' [enable DEBUG level for full stacktrace] " +
                         "was thrown by a user handler's exceptionCaught() " +

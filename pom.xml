@@ -67,6 +67,7 @@
         <module>milky-event</module>
         <module>milky-thread</module>
         <module>milky-reflection</module>
+        <module>milky-config</module>
     </modules>
 
     <properties>
