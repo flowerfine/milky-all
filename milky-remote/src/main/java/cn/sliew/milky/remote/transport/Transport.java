@@ -4,7 +4,7 @@ import java.net.InetSocketAddress;
 
 public interface Transport {
 
-    TcpChannel connnect(Node node, ChannelListener listener);
+    TcpChannel connnect(Node node, ChannelHandler listener);
 
-    TcpServerChannel bind(InetSocketAddress address, ChannelListener listener);
+    TcpServerChannel bind(InetSocketAddress address, ChannelHandler listener);
 }

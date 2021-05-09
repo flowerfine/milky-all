@@ -12,7 +12,7 @@ public abstract class TcpTransport implements Transport {
     private final ReadWriteLock closeLock = new ReentrantReadWriteLock();
 
     @Override
-    public TcpChannel connnect(Node node, ChannelListener listener) {
+    public TcpChannel connnect(Node node, ChannelHandler listener) {
         try {
             TcpChannel channel = connect(node, listener);
             channel.registerListener(listener);
@@ -25,7 +25,7 @@ public abstract class TcpTransport implements Transport {
     }
 
     @Override
-    public TcpServerChannel bind(InetSocketAddress address, ChannelListener listener) {
+    public TcpServerChannel bind(InetSocketAddress address, ChannelHandler listener) {
         closeLock.writeLock().lock();
         try {
             TcpServerChannel channel = doBind(address, listener);
@@ -46,7 +46,7 @@ public abstract class TcpTransport implements Transport {
      * @return the pending connection
      * @throws IOException if an I/O exception occurs while opening the channel
      */
-    protected abstract TcpChannel connect(Node node, ChannelListener listener) throws IOException;
+    protected abstract TcpChannel connect(Node node, ChannelHandler listener) throws IOException;
 
-    protected abstract TcpServerChannel doBind(InetSocketAddress address, ChannelListener listener) throws IOException;
+    protected abstract TcpServerChannel doBind(InetSocketAddress address, ChannelHandler listener) throws IOException;
 }

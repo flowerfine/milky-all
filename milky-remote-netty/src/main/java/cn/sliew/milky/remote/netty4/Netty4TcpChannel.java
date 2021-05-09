@@ -5,7 +5,7 @@ import cn.sliew.milky.log.Logger;
 import cn.sliew.milky.log.LoggerFactory;
 import cn.sliew.milky.remote.transport.AbstractChannel;
 import cn.sliew.milky.remote.transport.ActionListener;
-import cn.sliew.milky.remote.transport.ChannelListener;
+import cn.sliew.milky.remote.transport.ChannelHandler;
 import cn.sliew.milky.remote.transport.TcpChannel;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -78,7 +78,7 @@ public class Netty4TcpChannel extends AbstractChannel implements TcpChannel {
     }
 
     @Override
-    public void registerListener(ChannelListener<TcpChannel> listener) {
+    public void registerListener(ChannelHandler<TcpChannel> listener) {
         connectContext.addListener((avoid, exception) -> {
             if (exception != null) {
                 listener.caught(this, exception);

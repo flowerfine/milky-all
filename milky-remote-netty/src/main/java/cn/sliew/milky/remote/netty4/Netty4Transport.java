@@ -22,6 +22,7 @@ import cn.sliew.milky.common.collect.SetOnce;
 import cn.sliew.milky.log.Logger;
 import cn.sliew.milky.log.LoggerFactory;
 import cn.sliew.milky.remote.transport.*;
+import cn.sliew.milky.remote.transport.ChannelHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
@@ -49,7 +50,7 @@ public class Netty4Transport extends TcpTransport {
 
     private static final Logger logger = LoggerFactory.getLogger(Netty4Transport.class);
 
-    static final AttributeKey<ChannelListener> CHANNEL_LISTENER_KEY = AttributeKey.newInstance("milky-remote-channel-listener");
+    static final AttributeKey<ChannelHandler> CHANNEL_LISTENER_KEY = AttributeKey.newInstance("milky-remote-channel-listener");
     static final AttributeKey<Netty4TcpChannel> TCP_CHANNEL_KEY = AttributeKey.newInstance("milky-remote-tcp-channel");
     static final AttributeKey<SetOnce<Netty4TcpServerChannel>> TCP_SERVER_CHANNEL_KEY = AttributeKey.newInstance("milky-remote-tcp-server-channel");
 
@@ -110,7 +111,7 @@ public class Netty4Transport extends TcpTransport {
     }
 
     @Override
-    protected TcpChannel connect(Node node, ChannelListener listener) throws IOException {
+    protected TcpChannel connect(Node node, ChannelHandler listener) throws IOException {
         InetSocketAddress address = InetSocketAddress.createUnresolved(node.getHostAddress(), node.getPort());
         Bootstrap bootstrapWithHandler = clientBootstrap.clone();
         bootstrapWithHandler.handler(new ClientChannelInitializer());
@@ -129,7 +130,7 @@ public class Netty4Transport extends TcpTransport {
     }
 
     @Override
-    protected Netty4TcpServerChannel doBind(InetSocketAddress address, ChannelListener listener) throws IOException {
+    protected Netty4TcpServerChannel doBind(InetSocketAddress address, ChannelHandler listener) throws IOException {
         serverBootstrap.childAttr(CHANNEL_LISTENER_KEY, listener);
         Channel channel = serverBootstrap.bind(address).syncUninterruptibly().channel();
         Netty4TcpServerChannel tcpServerChannel = new Netty4TcpServerChannel(channel);
@@ -162,7 +163,7 @@ public class Netty4Transport extends TcpTransport {
     }
 
 
-    @ChannelHandler.Sharable
+    @io.netty.channel.ChannelHandler.Sharable
     private class ServerChannelExceptionHandler extends ChannelInboundHandlerAdapter {
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
@@ -175,7 +176,7 @@ public class Netty4Transport extends TcpTransport {
         }
     }
 
-    @ChannelHandler.Sharable
+    @io.netty.channel.ChannelHandler.Sharable
     public class NettyByteBufSizer extends MessageToMessageDecoder<ByteBuf> {
 
         @Override
