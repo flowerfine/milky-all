@@ -1,10 +1,10 @@
 package cn.sliew.milky.remote.netty4.example;
 
-import cn.sliew.milky.remote.transport.ChannelListener;
+import cn.sliew.milky.remote.transport.ChannelHandler;
 import cn.sliew.milky.remote.transport.TcpChannel;
 import io.netty.buffer.ByteBuf;
 
-public class Netty4ChannelHandler implements ChannelListener<TcpChannel> {
+public class Netty4ChannelHandler implements ChannelHandler<TcpChannel> {
 
     @Override
     public void connected(TcpChannel channel) {

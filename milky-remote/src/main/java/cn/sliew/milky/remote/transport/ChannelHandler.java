@@ -1,6 +1,12 @@
 package cn.sliew.milky.remote.transport;
 
-public interface ChannelListener<T extends TcpChannel> {
+/**
+ * todo 分别对应着 netty最主要的几个事件
+ *
+ * fixme 应该称作 ChannelHandler，而不是 listener。
+ * @param <T>
+ */
+public interface ChannelHandler<T extends TcpChannel> {
 
     /**
      * on channel connected.

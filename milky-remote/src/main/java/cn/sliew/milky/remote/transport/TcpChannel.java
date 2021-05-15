@@ -10,6 +10,8 @@ import java.net.InetSocketAddress;
  * 同时需要由TcpChannel子类实现listener的监听器方法. 监听连接和断连事件
  * <p>
  * 交给netty进行实现了
+ *
+ * Component which is capable of I/O operations such as read, write, connect, and bind.
  */
 public interface TcpChannel extends Channel {
 
@@ -44,5 +46,5 @@ public interface TcpChannel extends Channel {
      * 注册监听器，处理连接，断连接，发送消息，接受消息和异常信息等事件
      * todo remove it
      */
-    void registerListener(ChannelListener<TcpChannel> listener);
+    void registerListener(ChannelHandler<TcpChannel> listener);
 }

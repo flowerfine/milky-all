@@ -1,6 +1,6 @@
 package cn.sliew.milky.remote.netty4;
 
-import cn.sliew.milky.remote.transport.ChannelListener;
+import cn.sliew.milky.remote.transport.ChannelHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 
@@ -25,14 +25,14 @@ final class Netty4MessageChannelHandler extends ChannelDuplexHandler {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         Netty4TcpChannel channel = ctx.channel().attr(Netty4Transport.TCP_CHANNEL_KEY).get();
-        ChannelListener channelListener = ctx.channel().attr(Netty4Transport.CHANNEL_LISTENER_KEY).get();
+        ChannelHandler channelListener = ctx.channel().attr(Netty4Transport.CHANNEL_LISTENER_KEY).get();
         channelListener.received(channel, msg);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         Netty4TcpChannel tcpChannel = ctx.channel().attr(Netty4Transport.TCP_CHANNEL_KEY).get();
-        ChannelListener channelListener = ctx.channel().attr(Netty4Transport.CHANNEL_LISTENER_KEY).get();
+        ChannelHandler channelListener = ctx.channel().attr(Netty4Transport.CHANNEL_LISTENER_KEY).get();
         if (cause instanceof Error) {
             channelListener.caught(tcpChannel, new Exception(cause));
         } else {
@@ -46,7 +46,7 @@ final class Netty4MessageChannelHandler extends ChannelDuplexHandler {
         boolean queued = queuedWrites.offer(new WriteOperation((ByteBuf) msg, promise));
         Netty4TcpChannel tcpChannel = ctx.channel().attr(Netty4Transport.TCP_CHANNEL_KEY).get();
         promise.addListener(future -> {
-            ChannelListener channelListener = ctx.channel().attr(Netty4Transport.CHANNEL_LISTENER_KEY).get();
+            ChannelHandler channelListener = ctx.channel().attr(Netty4Transport.CHANNEL_LISTENER_KEY).get();
             if (future.isSuccess()) {
                 channelListener.sent(tcpChannel, msg);
             } else {
@@ -81,7 +81,7 @@ final class Netty4MessageChannelHandler extends ChannelDuplexHandler {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         doFlush(ctx);
         Netty4TcpChannel tcpChannel = ctx.channel().attr(Netty4Transport.TCP_CHANNEL_KEY).get();
-        ChannelListener channelListener = ctx.channel().attr(Netty4Transport.CHANNEL_LISTENER_KEY).get();
+        ChannelHandler channelListener = ctx.channel().attr(Netty4Transport.CHANNEL_LISTENER_KEY).get();
         channelListener.disconnected(tcpChannel);
         super.channelInactive(ctx);
     }
@@ -89,7 +89,7 @@ final class Netty4MessageChannelHandler extends ChannelDuplexHandler {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         Netty4TcpChannel tcpChannel = ctx.channel().attr(Netty4Transport.TCP_CHANNEL_KEY).get();
-        ChannelListener channelListener = ctx.channel().attr(Netty4Transport.CHANNEL_LISTENER_KEY).get();
+        ChannelHandler channelListener = ctx.channel().attr(Netty4Transport.CHANNEL_LISTENER_KEY).get();
         channelListener.connected(tcpChannel);
         super.channelActive(ctx);
     }
