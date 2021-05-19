@@ -272,4 +272,8 @@ public interface DataOutputView extends DataOutput, Serializable {
     }
 
     byte[] getBuffer();
+
+    void flush() throws IOException;
+
+    void close() throws IOException;
 }
