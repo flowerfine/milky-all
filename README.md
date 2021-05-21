@@ -12,12 +12,13 @@ mvn clean deploy -Poss-release -N versions:update-child-modules
 * 单位组件。如时间、byte、内存等。
 * 遍历组件。树形遍历，图形遍历
 * [异常组件](#异常组件)。异常采集器，异常重抛，异常堆栈格式化。
+* [生命周期](#生命周期)。管理组件生命周期，生命周期事件监听器。
 
 
 
 ## 生命周期
 
-优秀的 java 框架使用生命周期接口管理框架内组件的生命周期，确保组件正确地初始化、创建和结束。生命周期组件提供接口 `LifiCycle`，它有6个状态，分别表示：
+优秀的 java 框架使用生命周期接口管理框架内组件的生命周期，确保组件正确地初始化、创建和结束。生命周期组件提供接口 [`LifiCycle`](https://github.com/kalencaya/milky-all/blob/master/docs/LifeCycle.md)，它有6个状态，分别表示：
 
 * `INITIALIZING`。正在初始化，还没有完成初始化。
 * `INITIALIZED`。初始化完毕，还没有开始。
