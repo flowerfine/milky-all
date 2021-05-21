@@ -17,7 +17,7 @@ mvn clean deploy -Poss-release -N versions:update-child-modules
 
 ## 生命周期
 
-优秀的java框架都提供了生命周期接口，管理框架内组件的生命周期，确保组件正确地初始化、创建和结束。生命周期组件提供接口 `LifiCycle`，它有6个状态，分别表示：
+优秀的 java 框架使用生命周期接口管理框架内组件的生命周期，确保组件正确地初始化、创建和结束。生命周期组件提供接口 `LifiCycle`，它有6个状态，分别表示：
 
 * `INITIALIZING`。正在初始化，还没有完成初始化。
 * `INITIALIZED`。初始化完毕，还没有开始。
@@ -25,6 +25,16 @@ mvn clean deploy -Poss-release -N versions:update-child-modules
 * `STARTED`。已经开始，可以正常使用。
 * `STOPPING`。正在结束，还没有完成结束。
 * `STOPPED`。已经结束，可以正常关闭。
+
+同时还提供了工具方法查询生命周期状态，判断是否可以调用生命周期事件，添加生命周期事件监听器等。
+
+生命周期组件对于内部状态转换默认是如下规则，可以根据组件需要，覆盖相应的方法，改变生命周期行为。
+
+* null -> INITIALIZED。INITIALIZING 是中间状态，组件从创建到初始化。只允许初始化一次。
+* INITIALIZED -> STARTED。STARTING 是中间状态，组件初始化后执行启动。
+* INITIALIZED -> STOPEED。STOPPING 是中间状态，组件初始化后跳过启动直接停止。
+* STARTED -> STOPED。STOPPING 是中间状态，组件启动后执行停止。
+* STOPED -> STARTED。STARTING 是中间状态，组件停止后执行启动。
 
 ## 线程池组件
 
