@@ -15,7 +15,6 @@ public class ByteValue implements Comparable<ByteValue> {
         this(bytes, ByteUnit.BYTES);
     }
 
-
     public ByteValue(long size, ByteUnit unit) {
         this.size = size;
         this.unit = unit;

@@ -154,6 +154,24 @@ public class TimeValue implements Comparable<TimeValue> {
      */
     @Override
     public String toString() {
+        return toHumanReadableString(1);
+    }
+
+    /**
+     * Returns a {@link String} representation of the current {@link TimeValue}.
+     *
+     * Note that this method might produce fractional time values (ex 1.6m) which cannot be
+     * parsed by method like {@link TimeValue#parse(String, String, String)}. The number of
+     * fractional decimals (up to 10 maximum) are truncated to the number of fraction pieces
+     * specified.
+     *
+     * Also note that the maximum string value that will be generated is
+     * {@code 106751.9d} due to the way that values are internally converted
+     * to nanoseconds (106751.9 days is Long.MAX_VALUE nanoseconds)
+     *
+     * @param fractionPieces the number of decimal places to include
+     */
+    public String toHumanReadableString(int fractionPieces) {
         if (duration < 0) {
             return Long.toString(duration);
         }
@@ -182,25 +200,68 @@ public class TimeValue implements Comparable<TimeValue> {
             value = microsFrac();
             suffix = "micros";
         }
-        return formatDecimal(value) + suffix;
+        // Limit fraction pieces to a min of 0 and maximum of 10
+        return formatDecimal(value, Math.min(10, Math.max(0, fractionPieces))) + suffix;
     }
 
-    private static String formatDecimal(double value) {
+    private static String formatDecimal(double value, int fractionPieces) {
         String p = String.valueOf(value);
+        int totalLength = p.length();
         int ix = p.indexOf('.') + 1;
         int ex = p.indexOf('E');
-        char fraction = p.charAt(ix);
-        if (fraction == '0') {
+        // Location where the fractional values end
+        int fractionEnd = ex == -1 ? Math.min(ix + fractionPieces, totalLength) : ex;
+
+        // Determine the value of the fraction, so if it were .000 the
+        // actual long value is 0, in which case, it can be elided.
+        long fractionValue;
+        try {
+            fractionValue = Long.parseLong(p.substring(ix, fractionEnd));
+        } catch (NumberFormatException e) {
+            fractionValue = 0;
+        }
+
+        if (fractionValue == 0 || fractionPieces <= 0) {
+            // Either the part of the fraction we were asked to report is
+            // zero, or the user requested 0 fraction pieces, so return
+            // only the integral value
             if (ex != -1) {
                 return p.substring(0, ix - 1) + p.substring(ex);
             } else {
                 return p.substring(0, ix - 1);
             }
         } else {
+            // Build up an array of fraction characters, without going past
+            // the end of the string. This keeps track of trailing '0' chars
+            // that should be truncated from the end to avoid getting a
+            // string like "1.3000d" (returning "1.3d" instead) when the
+            // value is 1.30000009
+            char[] fractions = new char[fractionPieces];
+            int fracCount = 0;
+            int truncateCount = 0;
+            for (int i = 0; i < fractionPieces; i++) {
+                int position = ix + i;
+                if (position >= fractionEnd) {
+                    // No more pieces, the fraction has ended
+                    break;
+                }
+                char fraction = p.charAt(position);
+                if (fraction == '0') {
+                    truncateCount++;
+                } else {
+                    truncateCount = 0;
+                }
+                fractions[i] = fraction;
+                fracCount++;
+            }
+
+            // Generate the fraction string from the char array, truncating any trailing zeros
+            String fractionStr = new String(fractions, 0, fracCount - truncateCount);
+
             if (ex != -1) {
-                return p.substring(0, ix) + fraction + p.substring(ex);
+                return p.substring(0, ix) + fractionStr + p.substring(ex);
             } else {
-                return p.substring(0, ix) + fraction;
+                return p.substring(0, ix) + fractionStr;
             }
         }
     }
@@ -229,14 +290,12 @@ public class TimeValue implements Comparable<TimeValue> {
         }
     }
 
-    public static TimeValue parseTimeValue(String sValue, String settingName) {
-        Objects.requireNonNull(settingName);
+    public static TimeValue parseTimeValue(String sValue) {
         Objects.requireNonNull(sValue);
-        return parseTimeValue(sValue, null, settingName);
+        return parseTimeValue(sValue, null);
     }
 
-    public static TimeValue parseTimeValue(String sValue, TimeValue defaultValue, String settingName) {
-        settingName = Objects.requireNonNull(settingName);
+    public static TimeValue parseTimeValue(String sValue, TimeValue defaultValue) {
         if (sValue == null) {
             return defaultValue;
         }
@@ -262,7 +321,7 @@ public class TimeValue implements Comparable<TimeValue> {
             return TimeValue.ZERO;
         } else {
             // Missing units:
-            throw new IllegalArgumentException("failed to parse setting [" + settingName + "] with value [" + sValue +
+            throw new IllegalArgumentException("failed to parse value [" + sValue +
                     "] as a time value: unit is missing or unrecognized");
         }
     }

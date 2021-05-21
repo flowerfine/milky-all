@@ -15,9 +15,12 @@ import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.opentest4j.AssertionFailedError;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
@@ -83,6 +86,60 @@ public class MilkyTestCase extends RandomizedTestCase {
                 nettyLoggedLeaks.clear();
             }
         }
+    }
+
+    /**
+     * A runnable that can throw any checked exception.
+     */
+    @FunctionalInterface
+    public interface ThrowingRunnable {
+        void run() throws Throwable;
+    }
+
+    /**
+     * Checks a specific exception class is thrown by the given runnable, and returns it.
+     */
+    public static <T extends Throwable> T expectThrows(Class<T> expectedType, ThrowingRunnable runnable) {
+        return expectThrows(expectedType, "Expected exception " + expectedType.getSimpleName() + " but no exception was thrown", runnable);
+    }
+
+    /**
+     * Checks a specific exception class is thrown by the given runnable, and returns it.
+     */
+    public static <T extends Throwable> T expectThrows(Class<T> expectedType, String noExceptionMessage, ThrowingRunnable runnable) {
+        final Throwable thrown = _expectThrows(Collections.singletonList(expectedType), runnable);
+        if (expectedType.isInstance(thrown)) {
+            return expectedType.cast(thrown);
+        }
+        if (null == thrown) {
+            throw new AssertionFailedError(noExceptionMessage);
+        }
+        AssertionFailedError assertion = new AssertionFailedError("Unexpected exception type, expected " + expectedType.getSimpleName() + " but got " + thrown);
+        assertion.initCause(thrown);
+        throw assertion;
+    }
+
+    /**
+     * Helper method for {@link #expectThrows} that takes care of propagating
+     * any {@link AssertionError} instances thrown if and only if they
+     * are super classes of the <code>expectedTypes</code>.  Otherwise simply returns any {@link Throwable}
+     * thrown, regardless of type, or null if the <code>runnable</code> completed w/o error.
+     */
+    private static Throwable _expectThrows(List<? extends Class<?>> expectedTypes, ThrowingRunnable runnable) {
+
+        try {
+            runnable.run();
+        } catch (AssertionError ae) {
+            for (Class<?> expectedType : expectedTypes) {
+                if (expectedType.isInstance(ae)) { // user is expecting this type explicitly
+                    return ae;
+                }
+            }
+            throw ae;
+        } catch (Throwable e) {
+            return e;
+        }
+        return null;
     }
 
 }

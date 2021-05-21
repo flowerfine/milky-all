@@ -4,6 +4,8 @@ import cn.sliew.milky.test.extension.random.generators.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 @ExtendWith(RandomizedExtension.class)
 public class RandomizedTestCase {
@@ -136,20 +138,9 @@ public class RandomizedTestCase {
     //
     // Delegates to RandomNumbers.
     //
-    /**
-     * A random integer from 0..max (inclusive).
-     */
-    @Deprecated
-    public static int randomInt(int max) {
-        return RandomNumbers.randomIntBetween(getRandom(), 0, max);
-    }
-
-    /**
-     * A random long from 0..max (inclusive).
-     */
-    @Deprecated
-    public static long randomLong(long max) {
-        return RandomNumbers.randomLongBetween(getRandom(), 0, max);
+    public static long randomNonNegativeLong() {
+        long randomLong = randomLong();
+        return randomLong == Long.MIN_VALUE ? 0 : Math.abs(randomLong);
     }
 
     /**
@@ -216,7 +207,7 @@ public class RandomizedTestCase {
      * {@link #isNightly()} mode).
      */
     public static boolean rarely() {
-        return randomInt(100) >= 90;
+        return randomIntBetween(0, 100) >= 90;
     }
 
     /**
@@ -269,6 +260,24 @@ public class RandomizedTestCase {
 
     public static double randomFrom(double[] array) {
         return RandomPicks.randomFrom(getRandom(), array);
+    }
+
+    /**
+     * helper to get a random value in a certain range that's different from the input
+     */
+    public static <T> T randomValueOtherThan(T input, Supplier<T> randomSupplier) {
+        return randomValueOtherThanMany(v -> Objects.equals(input, v), randomSupplier);
+    }
+
+    /**
+     * helper to get a random value in a certain range that's different from the input
+     */
+    public static <T> T randomValueOtherThanMany(Predicate<T> input, Supplier<T> randomSupplier) {
+        T randomValue = null;
+        do {
+            randomValue = randomSupplier.get();
+        } while (input.test(randomValue));
+        return randomValue;
     }
 
     //
@@ -448,6 +457,24 @@ public class RandomizedTestCase {
     public static String randomRealisticUnicodeOfCodepointLength(int codePoints) {
         return RandomStrings.randomRealisticUnicodeOfCodepointLength(getRandom(),
                 codePoints);
+    }
+
+    private static final String[] TIME_SUFFIXES = new String[]{"d", "h", "ms", "s", "m", "micros", "nanos"};
+
+    public static String randomTimeValue(int lower, int upper, String... suffixes) {
+        return randomIntBetween(lower, upper) + randomFrom(suffixes);
+    }
+
+    public static String randomTimeValue(int lower, int upper) {
+        return randomTimeValue(lower, upper, TIME_SUFFIXES);
+    }
+
+    public static String randomTimeValue() {
+        return randomTimeValue(0, 1000);
+    }
+
+    public static String randomPositiveTimeValue() {
+        return randomTimeValue(1, 1000);
     }
 
     //
