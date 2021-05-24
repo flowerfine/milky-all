@@ -1,8 +1,10 @@
 package cn.sliew.milky.thread;
 
+import cn.sliew.milky.common.collect.ConcurrentReferenceHashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Map;
 import java.util.concurrent.*;
 
 public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
@@ -17,6 +19,11 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
     private volatile ShutdownListener listener;
 
     private final Object monitor = new Object();
+
+    // Runnable decorator to user-level FutureTask, if different
+    private final Map<Runnable, Object> decoratedTaskMap =
+            new ConcurrentReferenceHashMap<>(16, ConcurrentReferenceHashMap.ReferenceType.WEAK);
+
 
     /**
      * Name used in error reporting.
@@ -57,6 +64,7 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
     @Override
     public void execute(Runnable command) {
         try {
+            // todo task decorator
             super.execute(command);
         } catch (RejectedExecutionException ex) {
             if (command instanceof RunnableWrapper) {
@@ -145,6 +153,11 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
     protected void cancelRemainingTask(Runnable task) {
         if (task instanceof Future) {
             ((Future<?>) task).cancel(true);
+        }
+        // Cancel associated user-level Future handle as well
+        Object original = this.decoratedTaskMap.get(task);
+        if (original instanceof Future) {
+            ((Future<?>) original).cancel(true);
         }
     }
 

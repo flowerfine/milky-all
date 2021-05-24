@@ -16,6 +16,7 @@ class ThreadPoolExecutorBuilder {
         private BlockingDeque<Runnable> workQueue;
         private long keepAliveTime;
         private TimeUnit unit;
+        private boolean allowCoreThreadTimeOut = true;
         private RejectedExecutionHandler reject = new ThreadPoolExecutor.AbortPolicy();
         private ThreadFactory threadFactory;
         private boolean waitForTasksToCompleteOnShutdown = false;
@@ -50,6 +51,11 @@ class ThreadPoolExecutorBuilder {
         Builder keepAliveTime(long keepAliveTime, TimeUnit unit) {
             this.keepAliveTime = keepAliveTime;
             this.unit = unit;
+            return this;
+        }
+
+        Builder allowCoreThreadTimeOut(boolean allowCoreThreadTimeOut) {
+            this.allowCoreThreadTimeOut = allowCoreThreadTimeOut;
             return this;
         }
 
