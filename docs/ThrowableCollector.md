@@ -53,6 +53,20 @@ try {
 }
 ```
 
+有趣的是 `log4j` 提供的日志接口中也有相关的支持：
+
+```java
+// Logger.class
+<T extends Throwable> T throwing(T t);
+
+// example
+try {
+    // do something may throw exception.
+} catch (Exception e) {
+    throw logger.throwing(e);
+}
+```
+
 ## Lambda中的异常处理
 
 在 `java 1.8` 中一个重大的特性是引入了函数式编程，函数式编程在多种语言中被证明能够极大增加代码的生产力。但是`java`的函数式编程少了重要的特性：如何在lambda中处理受检查的异常？
