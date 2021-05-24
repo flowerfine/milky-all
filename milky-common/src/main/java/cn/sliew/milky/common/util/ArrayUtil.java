@@ -8,7 +8,8 @@ public class ArrayUtil {
     public static final int MAX_ARRAY_LENGTH = Integer.MAX_VALUE - RamUsageEstimator.NUM_BYTES_ARRAY_HEADER;
 
     private ArrayUtil() {
-    } // no instance
+        throw new IllegalStateException("no instance");
+    }
 
     /**
      * Returns an array size &gt;= minTargetSize, generally
