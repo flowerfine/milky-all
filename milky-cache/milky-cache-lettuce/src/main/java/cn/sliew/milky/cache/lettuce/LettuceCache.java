@@ -13,6 +13,9 @@ import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.cluster.RedisClusterClient;
 import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
+import io.lettuce.core.metrics.MicrometerCommandLatencyRecorder;
+import io.lettuce.core.metrics.MicrometerOptions;
+import io.lettuce.core.resource.ClientResources;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.netty.util.HashedWheelTimer;
 import io.netty.util.Timeout;
@@ -52,21 +55,14 @@ public class LettuceCache<K, V> implements Cache<K, V> {
      */
     private final HashedWheelTimer timer;
 
-    private final StatefulRedisConnection connection;
-    private final StatefulRedisClusterConnection clusterConnection;
+    private StatefulRedisConnection connection;
+    private StatefulRedisClusterConnection clusterConnection;
 
     private final LettuceCacheOptions<K, V> options;
 
     public LettuceCache(LettuceCacheOptions<K, V> options) {
         this.options = checkNotNull(options, () -> "options can't be null");
-        List<RedisURI> clusterRedisURIS = options.getClusterRedisURIS();
-        if (clusterRedisURIS == null || clusterRedisURIS.isEmpty()) {
-            this.connection = null;
-            this.clusterConnection = RedisClusterClient.create(clusterRedisURIS).connect(ProtostuffCodec.INSTANCE);
-        } else {
-            this.connection = RedisClient.create(options.getRedisURI()).connect(ProtostuffCodec.INSTANCE);
-            this.clusterConnection = null;
-        }
+        connect(ClientResources.create());
         this.timer = new HashedWheelTimer(1, TimeUnit.SECONDS, 64);
         this.timer.newTimeout(new ExpireTimeTask(timer, this, connection, clusterConnection), 1L, TimeUnit.SECONDS);
         this.timer.start();
@@ -270,7 +266,11 @@ public class LettuceCache<K, V> implements Cache<K, V> {
      */
     @Override
     public void stats(MeterRegistry registry) {
-
+        MicrometerOptions options = MicrometerOptions.create();
+        ClientResources resources = ClientResources.builder()
+                .commandLatencyRecorder(new MicrometerCommandLatencyRecorder(registry, options))
+                .build();
+        connect(resources);
     }
 
     @Override
@@ -292,6 +292,15 @@ public class LettuceCache<K, V> implements Cache<K, V> {
             this.clusterConnection.close();
         } else {
             this.connection.close();
+        }
+    }
+
+    private void connect(ClientResources resources) {
+        List<RedisURI> clusterRedisURIS = options.getClusterRedisURIS();
+        if (clusterRedisURIS != null && !clusterRedisURIS.isEmpty()) {
+            this.clusterConnection = RedisClusterClient.create(resources, clusterRedisURIS).connect(ProtostuffCodec.INSTANCE);
+        } else {
+            this.connection = RedisClient.create(resources, options.getRedisURI()).connect(ProtostuffCodec.INSTANCE);
         }
     }
 
