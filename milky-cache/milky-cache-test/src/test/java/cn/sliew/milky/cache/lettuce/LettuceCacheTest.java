@@ -12,9 +12,9 @@ public class LettuceCacheTest extends AbstractCacheTest {
         LettuceCacheOptions options = new LettuceCacheOptions();
         options.name("LettuceCacheTest");
         RedisURI redisURI = RedisURI.builder()
-                .withHost("dev-cluster-common.redis.rds.aliyuncs.com")
+                .withHost("localhost")
                 .withPort(6379)
-                .withPassword("clustDerdeFvr4ed9isM")
+                .withPassword("123")
                 .withDatabase(0)
                 .withTimeout(Duration.ofSeconds(1L))
                 .build();
