@@ -6,7 +6,12 @@ import cn.sliew.milky.cache.model.Person;
 import cn.sliew.milky.cache.model.PersonInfo;
 import cn.sliew.milky.cache.model.Phone;
 import cn.sliew.milky.test.MilkyTestCase;
+import io.micrometer.core.instrument.Meter;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -19,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class AbstractCacheTest extends MilkyTestCase {
 
+    private MeterRegistry registry;
     protected Cache cache;
     private Person key = new Person();
     private PersonInfo value;
@@ -43,9 +49,21 @@ public abstract class AbstractCacheTest extends MilkyTestCase {
         value.setHomepageUrl("www.capcom.com");
     }
 
+    @BeforeEach
+    private void beforeEach() {
+        registry = new SimpleMeterRegistry();
+        cache.stats(registry);
+    }
+
     @AfterEach
-    private void afterAll() {
+    private void afterEach() {
         cache.clear();
+        registry.forEachMeter(meter -> {
+            System.out.println(meter.getId());
+            meter.measure().forEach(measurement -> {
+                System.out.println("    " + measurement.toString());
+            });
+        });
     }
 
     @Test
