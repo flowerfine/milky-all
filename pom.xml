@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.sliew</groupId>
     <artifactId>milky-all</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <name>milky-all</name>
     <url>https://github.com/kalencaya/milky-all</url>
@@ -76,7 +76,6 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.test.skip>true</maven.test.skip>
-        <maven.deploy.skip>true</maven.deploy.skip>
         <surefire.version>3.0.0-M5</surefire.version>
     </properties>
 
