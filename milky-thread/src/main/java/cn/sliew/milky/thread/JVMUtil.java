@@ -3,7 +3,8 @@ package cn.sliew.milky.thread;
 import java.io.OutputStream;
 import java.lang.management.*;
 
-public class JVMUtil {
+class JVMUtil {
+
     public static void jstack(OutputStream stream) throws Exception {
         ThreadMXBean threadMxBean = ManagementFactory.getThreadMXBean();
         for (ThreadInfo threadInfo : threadMxBean.dumpAllThreads(true, true)) {
@@ -79,5 +80,9 @@ public class JVMUtil {
         }
         sb.append('\n');
         return sb.toString();
+    }
+
+    private JVMUtil() {
+        throw new IllegalStateException("no instance");
     }
 }

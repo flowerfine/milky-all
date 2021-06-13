@@ -263,6 +263,34 @@ public class RandomizedTestCase {
     }
 
     /**
+     * Returns size random values
+     */
+    public static <T> List<T> randomSubsetOf(int size, T... values) {
+        List<T> list = Arrays.asList(values);
+        return randomSubsetOf(size, list);
+    }
+
+    /**
+     * Returns a random subset of values (including a potential empty list, or the full original list)
+     */
+    public static <T> List<T> randomSubsetOf(Collection<T> collection) {
+        return randomSubsetOf(randomIntBetween(0, collection.size()), collection);
+    }
+
+    /**
+     * Returns size random values
+     */
+    public static <T> List<T> randomSubsetOf(int size, Collection<T> collection) {
+        if (size > collection.size()) {
+            throw new IllegalArgumentException("Can\'t pick " + size + " random objects from a collection of " +
+                    collection.size() + " objects");
+        }
+        List<T> tempList = new ArrayList<>(collection);
+        Collections.shuffle(tempList, getRandom());
+        return tempList.subList(0, size);
+    }
+
+    /**
      * helper to get a random value in a certain range that's different from the input
      */
     public static <T> T randomValueOtherThan(T input, Supplier<T> randomSupplier) {

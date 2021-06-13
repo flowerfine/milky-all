@@ -1,13 +1,30 @@
 package cn.sliew.milky.thread;
 
+import cn.sliew.milky.common.collect.ConcurrentReferenceHashMap;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Map;
 import java.util.concurrent.*;
 
 public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
+
+    private static final Logger log = LogManager.getLogger(MilkyThreadPoolExecutor.class);
+
+    private boolean waitForTasksToCompleteOnShutdown = false;
+
+    private int awaitTerminationSeconds = 0;
 
     private final ThreadContext threadContext;
     private volatile ShutdownListener listener;
 
     private final Object monitor = new Object();
+
+    // Runnable decorator to user-level FutureTask, if different
+    private final Map<Runnable, Object> decoratedTaskMap =
+            new ConcurrentReferenceHashMap<>(16, ConcurrentReferenceHashMap.ReferenceType.WEAK);
+
+
     /**
      * Name used in error reporting.
      */
@@ -47,6 +64,7 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
     @Override
     public void execute(Runnable command) {
         try {
+            // todo task decorator
             super.execute(command);
         } catch (RejectedExecutionException ex) {
             if (command instanceof RunnableWrapper) {
@@ -109,6 +127,59 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
      */
     protected void appendThreadPoolExecutorDetails(final StringBuilder sb) {
 
+    }
+
+    @Override
+    public void shutdown() {
+        if (log.isInfoEnabled()) {
+            log.info(String.format("Shutting down ExecutorService %s", this.name));
+        }
+        if (this.waitForTasksToCompleteOnShutdown) {
+            super.shutdown();
+        } else {
+            for (Runnable remainingTask : super.shutdownNow()) {
+                cancelRemainingTask(remainingTask);
+            }
+        }
+        awaitTerminationIfNecessary();
+    }
+
+    /**
+     * Cancel the given remaining task which never commended execution,
+     * as returned from {@link ExecutorService#shutdownNow()}.
+     *
+     * @param task the task to cancel (typically a {@link RunnableFuture})
+     */
+    protected void cancelRemainingTask(Runnable task) {
+        if (task instanceof Future) {
+            ((Future<?>) task).cancel(true);
+        }
+        // Cancel associated user-level Future handle as well
+        Object original = this.decoratedTaskMap.get(task);
+        if (original instanceof Future) {
+            ((Future<?>) original).cancel(true);
+        }
+    }
+
+    /**
+     * Wait for the executor to terminate, according to the value of the
+     * {@code awaitTerminationSeconds} property.
+     */
+    private void awaitTerminationIfNecessary() {
+        if (this.awaitTerminationSeconds > 0) {
+            try {
+                if (!awaitTermination(this.awaitTerminationSeconds, TimeUnit.SECONDS)) {
+                    if (log.isWarnEnabled()) {
+                        log.warn(String.format("Timed out while waiting for executor %s to terminate", this.name));
+                    }
+                }
+            } catch (InterruptedException ex) {
+                if (log.isWarnEnabled()) {
+                    log.warn(String.format("Interrupted while waiting for executor %s to terminate", this.name));
+                }
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 
 

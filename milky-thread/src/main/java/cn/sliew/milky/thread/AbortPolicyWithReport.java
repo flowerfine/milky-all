@@ -1,7 +1,7 @@
 package cn.sliew.milky.thread;
 
-import cn.sliew.milky.log.Logger;
-import cn.sliew.milky.log.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,13 +11,14 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 当发生线程池打满的情况时，另起一个线程dump线程池以便排查线上问题。
- * 支持强制执行策略。当线程池队列满了的时候会一直等待入队。没有采用 {@code CallerRunsPolicy}
+ * fixme: 提供关闭 dump 线程池开关，dump 线程池是一个 debug 功能，在生产环境应该关闭 debug 类功能。
+ * 当发生线程池打满的情况时，另起一个线程 dump 线程池以便排查线上问题。
+ * 支持强制执行策略。如果使用的不是固定大小的工作队列，当线程池队列满了的时候会一直等待入队。没有采用 {@code CallerRunsPolicy}
  * 策略的原因是线程池会阻塞主线程执行任务，不太合适。
  */
 public class AbortPolicyWithReport extends ThreadPoolExecutor.AbortPolicy implements XRejectedExecutionHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(AbortPolicyWithReport.class);
+    private static final Logger log = LogManager.getLogger(AbortPolicyWithReport.class);
 
     private final AtomicInteger rejected = new AtomicInteger();
 

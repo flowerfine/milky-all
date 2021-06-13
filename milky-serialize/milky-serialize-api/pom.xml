@@ -12,10 +12,6 @@
     <artifactId>milky-serialize-api</artifactId>
     <name>${project.artifactId}</name>
 
-    <properties>
-        <maven.deploy.skip>true</maven.deploy.skip>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>cn.sliew</groupId>
