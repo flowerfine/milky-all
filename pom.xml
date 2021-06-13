@@ -57,7 +57,6 @@
         <module>milky-common</module>
         <module>milky-concurrent</module>
         <module>milky-remote</module>
-        <module>milky-remote-netty</module>
         <module>milky-test</module>
         <module>milky-cache</module>
         <module>milky-resource</module>
