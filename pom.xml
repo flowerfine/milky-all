@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.sliew</groupId>
     <artifactId>milky-all</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>milky-all</name>
     <url>https://github.com/kalencaya/milky-all</url>
@@ -56,8 +56,6 @@
         <module>milky</module>
         <module>milky-common</module>
         <module>milky-concurrent</module>
-        <module>milky-remote</module>
-        <module>milky-remote-netty</module>
         <module>milky-test</module>
         <module>milky-cache</module>
         <module>milky-resource</module>

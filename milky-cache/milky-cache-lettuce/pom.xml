@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.sliew</groupId>
         <artifactId>milky-cache</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>milky-cache-lettuce</artifactId>
@@ -20,6 +20,7 @@
         <dependency>
             <groupId>cn.sliew</groupId>
             <artifactId>milky-cache-api</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.sliew</groupId>
