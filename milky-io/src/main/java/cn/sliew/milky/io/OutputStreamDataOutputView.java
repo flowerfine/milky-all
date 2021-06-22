@@ -9,7 +9,7 @@ public class OutputStreamDataOutputView implements DataOutputView {
 
     public OutputStreamDataOutputView(OutputStream out) {
         if (out == null) {
-            throw new IllegalArgumentException("out null");
+            throw new IllegalArgumentException("'out' null");
         }
         this.out = out;
     }
@@ -24,9 +24,14 @@ public class OutputStreamDataOutputView implements DataOutputView {
         out.write(b, off, len);
     }
 
+    private static final ThreadLocal<byte[]> scratch = ThreadLocal.withInitial(() -> new byte[1024]);
+
+    /**
+     * fixme buffer recycler
+     */
     @Override
     public byte[] getBuffer() {
-        return new byte[0];
+        return scratch.get();
     }
 
     @Override
@@ -41,7 +46,7 @@ public class OutputStreamDataOutputView implements DataOutputView {
 
     @Override
     public void writeBytes(String s) throws IOException {
-
+        
     }
 
     @Override

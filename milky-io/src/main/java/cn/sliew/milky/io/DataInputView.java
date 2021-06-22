@@ -1,11 +1,12 @@
 package cn.sliew.milky.io;
 
+import java.io.Closeable;
 import java.io.DataInput;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Locale;
 
-public interface DataInputView extends DataInput, Serializable {
+public interface DataInputView extends DataInput, Closeable, Serializable {
 
     void readBytes(byte[] b) throws IOException;
 

@@ -1,10 +1,8 @@
 package cn.sliew.milky.io;
 
-import java.io.DataOutput;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 
-public interface DataOutputView extends DataOutput, Serializable {
+public interface DataOutputView extends DataOutput, Closeable, Flushable, Serializable {
 
     void writeBytes(byte[] b) throws IOException;
 
