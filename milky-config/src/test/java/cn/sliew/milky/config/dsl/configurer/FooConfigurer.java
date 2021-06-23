@@ -1,10 +1,11 @@
 package cn.sliew.milky.config.dsl.configurer;
 
-import cn.sliew.milky.config.dsl.builder.CompositeBuilder;
+import cn.sliew.milky.config.dsl.Composite;
+import cn.sliew.milky.config.dsl.ConfigurableBuilder;
 
 import static cn.sliew.milky.common.check.Ensures.notBlank;
 
-public class FooConfigurer<H extends CompositeBuilder<H>> extends AbstractCompositeConfigurer<FooConfigurer<H>, H> {
+public class FooConfigurer<H extends ConfigurableBuilder<Composite, H>> extends AbstractCompositeConfigurer<FooConfigurer<H>, H> {
 
     private String foo;
 

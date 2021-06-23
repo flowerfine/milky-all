@@ -6,7 +6,7 @@ import cn.sliew.milky.config.dsl.configurer.FooConfigurer;
 import cn.sliew.milky.config.dsl.configurer.SubBarConfigurer;
 
 public class CompositeConfig extends AbstractConfiguredBuilder<Composite, CompositeConfig>
-        implements Builder<Composite>, CompositeBuilder<CompositeConfig> {
+        implements Builder<Composite> {
 
     @Override
     protected Composite performBuild() throws Exception {

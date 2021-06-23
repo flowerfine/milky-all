@@ -3,7 +3,9 @@ package cn.sliew.milky.config.dsl;
 import cn.sliew.milky.log.Logger;
 import cn.sliew.milky.log.LoggerFactory;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
 import static cn.sliew.milky.common.check.Ensures.checkState;
@@ -19,7 +21,8 @@ import static cn.sliew.milky.common.check.Ensures.checkState;
  * @param <O> The object that this builder returns
  * @param <B> The type of this builder (that is returned by the base class)
  */
-public abstract class AbstractConfiguredBuilder<O, B extends Builder<O>> extends AbstractBuilder<O> {
+public abstract class AbstractConfiguredBuilder<O, B extends ConfigurableBuilder<O, B>> extends AbstractBuilder<O>
+        implements ConfigurableBuilder<O, B> {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractConfiguredBuilder.class);
 
