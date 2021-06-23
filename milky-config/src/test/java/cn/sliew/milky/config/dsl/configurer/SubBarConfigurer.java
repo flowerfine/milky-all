@@ -17,6 +17,6 @@ public class SubBarConfigurer <H extends CompositeBuilder<H>> extends AbstractCo
 
     @Override
     public void configure(H composite) throws Exception {
-        System.out.println("FooConfigurer configure composite with " + subBar);
+        System.out.println("SubBarConfigurer configure composite with " + subBar);
     }
 }
