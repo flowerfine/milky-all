@@ -23,7 +23,10 @@ public abstract class AbstractConfiguredBuilder<O, B extends Builder<O>> extends
 
     private static final Logger log = LoggerFactory.getLogger(AbstractConfiguredBuilder.class);
 
-    private final Map<Class<? extends Configurer<O, B>>, Configurer<O, B>> configurers = new HashMap<>();
+    /**
+     * 使用 {@link LinkedHashMap} 的原因是为了保证配置顺序与执行顺序一致。
+     */
+    private final Map<Class<? extends Configurer<O, B>>, Configurer<O, B>> configurers = new LinkedHashMap<>();
 
     private BuildState buildState = BuildState.UNBUILT;
 
