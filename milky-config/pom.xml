@@ -23,8 +23,11 @@
             <groupId>cn.sliew</groupId>
             <artifactId>milky-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.sliew</groupId>
+            <artifactId>milky-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-
-
 
 </project>
