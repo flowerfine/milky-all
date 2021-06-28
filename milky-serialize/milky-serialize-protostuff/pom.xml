@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.sliew</groupId>
         <artifactId>milky-serialize</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>milky-serialize-protostuff</artifactId>
@@ -20,6 +20,7 @@
         <dependency>
             <groupId>cn.sliew</groupId>
             <artifactId>milky-serialize-api</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>io.protostuff</groupId>
