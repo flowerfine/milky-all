@@ -2,25 +2,24 @@ package cn.sliew.milky.cache.lettuce;
 
 import cn.sliew.milky.cache.Cache;
 import cn.sliew.milky.cache.CacheLoader;
+import cn.sliew.milky.common.exception.Rethrower;
 import cn.sliew.milky.log.Logger;
 import cn.sliew.milky.log.LoggerFactory;
 import io.lettuce.core.Limit;
 import io.lettuce.core.Range;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
-import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.cluster.RedisClusterClient;
-import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
-import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
 import io.lettuce.core.metrics.MicrometerCommandLatencyRecorder;
 import io.lettuce.core.metrics.MicrometerOptions;
 import io.lettuce.core.resource.ClientResources;
+import io.lettuce.core.support.BoundedPoolConfig;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.netty.util.HashedWheelTimer;
 import io.netty.util.Timeout;
 import io.netty.util.TimerTask;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -51,23 +50,22 @@ public class LettuceCache<K, V> implements Cache<K, V> {
     private static final Logger log = LoggerFactory.getLogger(LettuceCache.class);
 
     /**
-     * 一个小时间轮，用来定时处理sortset和hash中的过期对象。
+     * 时间轮，用来定时处理sortset和hash中的过期对象。
      */
     private final HashedWheelTimer timer;
 
-    private StatefulRedisConnection connection;
-    private StatefulRedisClusterConnection clusterConnection;
+    private DefaultLettuceConnectionFactory connectionFactory;
 
     private final LettuceCacheOptions<K, V> options;
 
     public LettuceCache(LettuceCacheOptions<K, V> options) {
         this.options = checkNotNull(options, () -> "options can't be null");
         connect(ClientResources.create());
+
         this.timer = new HashedWheelTimer(1, TimeUnit.SECONDS, 64);
-        this.timer.newTimeout(new ExpireTimeTask(timer, this, connection, clusterConnection), 1L, TimeUnit.SECONDS);
+        this.timer.newTimeout(new ExpireTimeTask(), 1L, TimeUnit.SECONDS);
         this.timer.start();
     }
-
 
     @Override
     public String name() {
@@ -84,78 +82,56 @@ public class LettuceCache<K, V> implements Cache<K, V> {
 
     @Override
     public V get(K key) {
-        ValueWrapper<V> valueWrapper;
-        if (isCluster()) {
-            RedisAdvancedClusterCommands commands = this.clusterConnection.sync();
-            valueWrapper = (ValueWrapper<V>) commands.hget(hashKey(), key);
-        } else {
-            RedisCommands commands = connection.sync();
-            valueWrapper = (ValueWrapper<V>) commands.hget(hashKey(), key);
-        }
-        if (valueWrapper == null) {
+        try (LettuceConnectionFactory.LettuceConnection connection = connectionFactory.getConnection()) {
+            LettuceCommandsWrapper commandsWrapper = connection.sync();
+            ValueWrapper<V> valueWrapper = (ValueWrapper<V>) commandsWrapper.hget(hashKey(), key);
+            if (valueWrapper == null) {
+                return null;
+            }
+            if (valueWrapper.getExpireAt() <= System.nanoTime()) {
+                remove(key);
+                return null;
+            }
+            return valueWrapper.getValue();
+        } catch (IOException e) {
+            Rethrower.throwAs(e);
+            // should never reach here
             return null;
         }
-        if (valueWrapper.getExpireAt() <= System.nanoTime()) {
-            remove(key);
-            return null;
-        }
-        return valueWrapper.getValue();
     }
 
     @Override
     public boolean containsKey(K key) {
-        if (isCluster()) {
-            RedisAdvancedClusterCommands commands = this.clusterConnection.sync();
-            if (commands.hexists(hashKey(), key)) {
-                ValueWrapper<V> valueWrapper = (ValueWrapper<V>) commands.hget(hashKey(), key);
+        try (LettuceConnectionFactory.LettuceConnection connection = connectionFactory.getConnection()) {
+            final LettuceCommandsWrapper commandsWrapper = connection.sync();
+            if (commandsWrapper.hexists(hashKey(), key)) {
+                ValueWrapper<V> valueWrapper = (ValueWrapper<V>) commandsWrapper.hget(hashKey(), key);
                 if (valueWrapper.getExpireAt() <= System.nanoTime()) {
                     remove(key);
                     return false;
                 }
                 return valueWrapper.getValue() != null;
             }
-        } else {
-            RedisCommands commands = connection.sync();
-            if (commands.hexists(hashKey(), key)) {
-                ValueWrapper<V> valueWrapper = (ValueWrapper<V>) commands.hget(hashKey(), key);
-                if (valueWrapper.getExpireAt() <= System.nanoTime()) {
-                    remove(key);
-                    return false;
-                }
-                return valueWrapper.getValue() != null;
-            }
+            return false;
+        } catch (IOException e) {
+            Rethrower.throwAs(e);
+            // should never reach here
+            return false;
         }
-        return false;
     }
 
     @Override
     public V computeIfAbsent(K key, CacheLoader<K, V> loader, Duration expire) {
         V value = get(key);
-        if (isCluster()) {
-            if (value == null) {
-                synchronized (clusterConnection) {
-                    value = get(key);
-                    if (value == null) {
-                        try {
-                            value = loader.load(key);
-                            put(key, value, expire);
-                        } catch (Exception e) {
-                            log.error(e.getMessage(), e);
-                        }
-                    }
-                }
-            }
-        } else {
-            if (value == null) {
-                synchronized (connection) {
-                    value = get(key);
-                    if (value == null) {
-                        try {
-                            value = loader.load(key);
-                            put(key, value, expire);
-                        } catch (Exception e) {
-                            log.error(e.getMessage(), e);
-                        }
+        if (value == null) {
+            synchronized (connectionFactory) {
+                value = get(key);
+                if (value == null) {
+                    try {
+                        value = loader.load(key);
+                        put(key, value, expire);
+                    } catch (Exception e) {
+                        log.error(e.getMessage(), e);
                     }
                 }
             }
@@ -165,69 +141,59 @@ public class LettuceCache<K, V> implements Cache<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (isCluster()) {
-            RedisAdvancedClusterCommands commands = this.clusterConnection.sync();
-            commands.zadd(sortsetKey(), Long.MAX_VALUE, value);
-            commands.hset(hashKey(), key, new ValueWrapper<>(value, Long.MAX_VALUE));
-        } else {
-            RedisCommands commands = connection.sync();
-            commands.zadd(sortsetKey(), Long.MAX_VALUE, value);
-            commands.hset(hashKey(), key, new ValueWrapper<>(value, Long.MAX_VALUE));
+        try (LettuceConnectionFactory.LettuceConnection connection = connectionFactory.getConnection()) {
+            final LettuceCommandsWrapper commandsWrapper = connection.sync();
+            commandsWrapper.zadd(sortsetKey(), Long.MAX_VALUE, value);
+            commandsWrapper.hset(hashKey(), key, new ValueWrapper<>(value, Long.MAX_VALUE));
+        } catch (IOException e) {
+            Rethrower.throwAs(e);
         }
-
     }
 
     @Override
     public void put(K key, V value, Duration expire) {
-        if (isCluster()) {
-            RedisAdvancedClusterCommands commands = this.clusterConnection.sync();
+        try (LettuceConnectionFactory.LettuceConnection connection = connectionFactory.getConnection()) {
+            final LettuceCommandsWrapper commandsWrapper = connection.sync();
             long expireAt = expire.toNanos() + System.nanoTime();
-            commands.zadd(sortsetKey(), expireAt, value);
-            commands.hset(hashKey(), key, new ValueWrapper<>(value, expireAt));
-        } else {
-            RedisCommands commands = connection.sync();
-            long expireAt = expire.toNanos() + System.nanoTime();
-            commands.zadd(sortsetKey(), expireAt, value);
-            commands.hset(hashKey(), key, new ValueWrapper<>(value, expireAt));
+            commandsWrapper.zadd(sortsetKey(), expireAt, value);
+            commandsWrapper.hset(hashKey(), key, new ValueWrapper<>(value, expireAt));
+        } catch (IOException e) {
+            Rethrower.throwAs(e);
         }
     }
 
     @Override
     public void remove(K key) {
-        if (isCluster()) {
-            RedisAdvancedClusterCommands commands = this.clusterConnection.sync();
-            commands.hdel(hashKey(), key);
-            commands.zrem(sortsetKey(), key);
-        } else {
-            RedisCommands commands = connection.sync();
-            commands.hdel(hashKey(), key);
-            commands.zrem(sortsetKey(), key);
+        try (LettuceConnectionFactory.LettuceConnection connection = connectionFactory.getConnection()) {
+            final LettuceCommandsWrapper commandsWrapper = connection.sync();
+            commandsWrapper.hdel(hashKey(), key);
+            commandsWrapper.zrem(sortsetKey(), key);
+        } catch (IOException e) {
+            Rethrower.throwAs(e);
         }
     }
 
     @Override
     public void removeAll(Iterable<K> keys) {
-        if (isCluster()) {
-            RedisAdvancedClusterCommands commands = this.clusterConnection.sync();
+        try (LettuceConnectionFactory.LettuceConnection connection = connectionFactory.getConnection()) {
+            final LettuceCommandsWrapper commandsWrapper = connection.sync();
             Object[] array = StreamSupport.stream(keys.spliterator(), false).toArray();
-            commands.hdel(hashKey(), array);
-            commands.zrem(sortsetKey(), array);
-        } else {
-            RedisCommands commands = connection.sync();
-            Object[] array = StreamSupport.stream(keys.spliterator(), false).toArray();
-            commands.hdel(hashKey(), array);
-            commands.zrem(sortsetKey(), array);
+            commandsWrapper.hdel(hashKey(), array);
+            commandsWrapper.zrem(sortsetKey(), array);
+        } catch (IOException e) {
+            Rethrower.throwAs(e);
         }
     }
 
     @Override
     public long size() {
-        if (isCluster()) {
-            RedisAdvancedClusterCommands commands = this.clusterConnection.sync();
-            return commands.zcard(sortsetKey());
-        } else {
-            RedisCommands commands = connection.sync();
-            return commands.zcard(sortsetKey());
+        try (LettuceConnectionFactory.LettuceConnection connection = connectionFactory.getConnection()) {
+            final LettuceCommandsWrapper commandsWrapper = connection.sync();
+            return commandsWrapper.zcard(sortsetKey());
+        } catch (IOException e) {
+            Rethrower.throwAs(e);
+            // should never reach here
+            return 0L;
         }
     }
 
@@ -247,12 +213,13 @@ public class LettuceCache<K, V> implements Cache<K, V> {
      */
     @Override
     public Iterator<K> keyIterator() {
-        if (isCluster()) {
-            RedisAdvancedClusterCommands commands = this.clusterConnection.sync();
-            return (Iterator<K>) commands.hkeys(hashKey()).iterator();
-        } else {
-            RedisCommands commands = connection.sync();
-            return (Iterator<K>) commands.hkeys(hashKey()).iterator();
+        try (LettuceConnectionFactory.LettuceConnection connection = connectionFactory.getConnection()) {
+            final LettuceCommandsWrapper commandsWrapper = connection.sync();
+            return (Iterator<K>) commandsWrapper.hkeys(hashKey()).iterator();
+        } catch (IOException e) {
+            Rethrower.throwAs(e);
+            // should never reach here
+            return null;
         }
     }
 
@@ -275,96 +242,53 @@ public class LettuceCache<K, V> implements Cache<K, V> {
 
     @Override
     public void clear() {
-        if (isCluster()) {
-            RedisAdvancedClusterCommands commands = this.clusterConnection.sync();
-            commands.del(hashKey());
-            commands.del(sortsetKey());
-        } else {
-            RedisCommands commands = connection.sync();
-            commands.del(hashKey());
-            commands.del(sortsetKey());
+        try (LettuceConnectionFactory.LettuceConnection connection = connectionFactory.getConnection()) {
+            final LettuceCommandsWrapper commandsWrapper = connection.sync();
+            commandsWrapper.del(hashKey());
+            commandsWrapper.del(sortsetKey());
+        } catch (IOException e) {
+            Rethrower.throwAs(e);
         }
     }
 
     @Override
     public void destroy() {
-        if (isCluster()) {
-            this.clusterConnection.close();
-        } else {
-            this.connection.close();
-        }
+
     }
 
     private void connect(ClientResources resources) {
         List<RedisURI> clusterRedisURIS = options.getClusterRedisURIS();
         if (clusterRedisURIS != null && !clusterRedisURIS.isEmpty()) {
-            this.clusterConnection = RedisClusterClient.create(resources, clusterRedisURIS).connect(ProtostuffCodec.INSTANCE);
+            RedisClusterClient clusterClient = RedisClusterClient.create(resources, clusterRedisURIS);
+            this.connectionFactory = new DefaultLettuceConnectionFactory(clusterClient, BoundedPoolConfig.create());
         } else {
-            this.connection = RedisClient.create(resources, options.getRedisURI()).connect(ProtostuffCodec.INSTANCE);
+            this.connectionFactory = new DefaultLettuceConnectionFactory(RedisClient.create(resources, options.getRedisURI()), BoundedPoolConfig.create());
         }
     }
 
-    private boolean isCluster() {
-        return this.clusterConnection != null;
-    }
-
-    public static class ExpireTimeTask implements TimerTask {
-
-        private final HashedWheelTimer timer;
-        private final LettuceCache cache;
-        private final StatefulRedisConnection connection;
-        private final StatefulRedisClusterConnection clusterConnection;
-
-        public ExpireTimeTask(HashedWheelTimer timer,
-                              LettuceCache cache,
-                              StatefulRedisConnection connection,
-                              StatefulRedisClusterConnection clusterConnection) {
-            this.timer = timer;
-            this.cache = cache;
-            this.connection = connection;
-            this.clusterConnection = clusterConnection;
-        }
+    private class ExpireTimeTask implements TimerTask {
 
         @Override
         public void run(Timeout timeout) throws Exception {
-            if (clusterConnection != null) {
-                RedisAdvancedClusterCommands commands = clusterConnection.sync();
-                if (commands.exists(cache.sortsetKey()) == 0L) {
-                    cache.clear();
-                }
-                List keys = commands.zrangebyscore(cache.sortsetKey(), Range.create(0, System.nanoTime()), Limit.from(100L));
-                if (keys != null && keys.size() > 0) {
-                    cache.removeAll(keys);
-                }
-                LocalDateTime tomorrow = LocalDateTime.now().withNano(0).withSecond(0).withMinute(0).withHour(3).plusDays(1L);
-                Instant instant = tomorrow.atZone(ZoneOffset.systemDefault()).toInstant();
-
-                if (commands.ttl(cache.hashKey()) == -1) {
-                    commands.expireat(cache.hashKey(), Date.from(instant));
-                }
-                if (commands.ttl(cache.sortsetKey()) == -1) {
-                    commands.expireat(cache.sortsetKey(), Date.from(instant));
-                }
-            } else {
-                RedisCommands commands = connection.sync();
-                if (commands.exists(cache.sortsetKey()) == 0L) {
-                    cache.clear();
-                }
-                List keys = commands.zrangebyscore(cache.sortsetKey(), Range.create(0, System.nanoTime()), Limit.from(100L));
-                if (keys != null && keys.size() > 0) {
-                    cache.removeAll(keys);
-                }
-                LocalDateTime tomorrow = LocalDateTime.now().withNano(0).withSecond(0).withMinute(0).withHour(3).plusDays(1L);
-                Instant instant = tomorrow.atZone(ZoneOffset.systemDefault()).toInstant();
-
-                if (commands.ttl(cache.hashKey()) == -1) {
-                    commands.expireat(cache.hashKey(), Date.from(instant));
-                }
-                if (commands.ttl(cache.sortsetKey()) == -1) {
-                    commands.expireat(cache.sortsetKey(), Date.from(instant));
-                }
+            LettuceConnectionFactory.LettuceConnection connection = connectionFactory.getConnection();
+            LettuceCommandsWrapper commandsWrapper = connection.sync();
+            if (commandsWrapper.exists(sortsetKey()) == 0L) {
+                clear();
             }
-            this.timer.newTimeout(this, 1L, TimeUnit.SECONDS);
+            List keys = commandsWrapper.zrangebyscore(sortsetKey(), Range.create(0, System.nanoTime()), Limit.from(100L));
+            if (keys != null && keys.size() > 0) {
+                removeAll(keys);
+            }
+            LocalDateTime tomorrow = LocalDateTime.now().withNano(0).withSecond(0).withMinute(0).withHour(3).plusDays(1L);
+            Instant instant = tomorrow.atZone(ZoneOffset.systemDefault()).toInstant();
+
+            if (commandsWrapper.ttl(hashKey()) == -1) {
+                commandsWrapper.expireat(hashKey(), Date.from(instant));
+            }
+            if (commandsWrapper.ttl(sortsetKey()) == -1) {
+                commandsWrapper.expireat(sortsetKey(), Date.from(instant));
+            }
+            timer.newTimeout(this, 1L, TimeUnit.SECONDS);
         }
     }
 

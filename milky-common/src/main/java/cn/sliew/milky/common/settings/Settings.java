@@ -2,7 +2,6 @@ package cn.sliew.milky.common.settings;
 
 import cn.sliew.milky.common.collect.SetOnce;
 import cn.sliew.milky.common.primitives.*;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -271,7 +270,6 @@ public final class Settings {
         return Collections.unmodifiableMap(groups);
     }
 
-    @Nullable
     static String toString(Object o) {
         return Objects.toString(o, null);
     }

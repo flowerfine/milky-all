@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.sliew</groupId>
         <artifactId>milky-all</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>milky-cache</artifactId>
@@ -20,11 +20,14 @@
         <module>milky-cache-test</module>
     </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>cn.sliew</groupId>
-            <artifactId>milky-concurrent</artifactId>
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.sliew</groupId>
+                <artifactId>milky-cache-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

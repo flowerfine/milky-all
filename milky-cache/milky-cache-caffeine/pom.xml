@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.sliew</groupId>
         <artifactId>milky-cache</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>milky-cache-caffeine</artifactId>
@@ -14,14 +14,12 @@
 
     <properties>
         <caffeine.version>2.9.0</caffeine.version>
-        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>cn.sliew</groupId>
             <artifactId>milky-cache-api</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
@@ -29,7 +27,12 @@
             <artifactId>caffeine</artifactId>
             <version>${caffeine.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-core</artifactId>
+            <version>1.6.2</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
-
 
 </project>

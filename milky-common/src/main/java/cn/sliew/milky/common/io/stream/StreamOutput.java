@@ -1,7 +1,6 @@
 package cn.sliew.milky.common.io.stream;
 
 import cn.sliew.milky.common.util.BitUtil;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -132,7 +131,7 @@ public abstract class StreamOutput extends OutputStream {
     /**
      * Writes an optional {@link Integer}.
      */
-    public void writeOptionalInt(@Nullable Integer integer) throws IOException {
+    public void writeOptionalInt(Integer integer) throws IOException {
         if (integer == null) {
             writeBoolean(false);
         } else {
@@ -172,7 +171,7 @@ public abstract class StreamOutput extends OutputStream {
         writeBytes(buffer, 0, index);
     }
 
-    public void writeOptionalVInt(@Nullable Integer integer) throws IOException {
+    public void writeOptionalVInt(Integer integer) throws IOException {
         if (integer == null) {
             writeBoolean(false);
         } else {
@@ -197,7 +196,7 @@ public abstract class StreamOutput extends OutputStream {
         writeBytes(buffer, 0, 8);
     }
 
-    public void writeOptionalLong(@Nullable Long l) throws IOException {
+    public void writeOptionalLong(Long l) throws IOException {
         if (l == null) {
             writeBoolean(false);
         } else {
@@ -218,7 +217,7 @@ public abstract class StreamOutput extends OutputStream {
         writeVLongNoCheck(i);
     }
 
-    public void writeOptionalVLong(@Nullable Long l) throws IOException {
+    public void writeOptionalVLong(Long l) throws IOException {
         if (l == null) {
             writeBoolean(false);
         } else {
@@ -266,7 +265,7 @@ public abstract class StreamOutput extends OutputStream {
         writeInt(Float.floatToIntBits(v));
     }
 
-    public void writeOptionalFloat(@Nullable Float floatValue) throws IOException {
+    public void writeOptionalFloat(Float floatValue) throws IOException {
         if (floatValue == null) {
             writeBoolean(false);
         } else {
@@ -279,7 +278,7 @@ public abstract class StreamOutput extends OutputStream {
         writeLong(Double.doubleToLongBits(v));
     }
 
-    public void writeOptionalDouble(@Nullable Double v) throws IOException {
+    public void writeOptionalDouble(Double v) throws IOException {
         if (v == null) {
             writeBoolean(false);
         } else {
@@ -292,7 +291,7 @@ public abstract class StreamOutput extends OutputStream {
         writeByte(b ? ONE : ZERO);
     }
 
-    public void writeOptionalBoolean(@Nullable Boolean b) throws IOException {
+    public void writeOptionalBoolean(Boolean b) throws IOException {
         if (b == null) {
             writeByte(TWO);
         } else {
@@ -316,7 +315,7 @@ public abstract class StreamOutput extends OutputStream {
      * If want to keep stream out map and stream in map have the same stream order when stream,
      * can use {@code writeMapWithConsistentOrder}
      */
-    public void writeGenericValue(@Nullable Object value) throws IOException {
+    public void writeGenericValue(Object value) throws IOException {
         if (value == null) {
             writeByte((byte) -1);
             return;

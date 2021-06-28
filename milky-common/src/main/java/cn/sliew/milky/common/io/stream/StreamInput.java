@@ -1,7 +1,6 @@
 package cn.sliew.milky.common.io.stream;
 
 import cn.sliew.milky.common.util.BitUtil;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -108,7 +107,6 @@ public abstract class StreamInput extends InputStream {
         return i | ((b & 0x7F) << 28);
     }
 
-    @Nullable
     public Integer readOptionalVInt() throws IOException {
         if (readBoolean()) {
             return readVInt();
@@ -123,7 +121,6 @@ public abstract class StreamInput extends InputStream {
         return (((long) readInt()) << 32) | (readInt() & 0xFFFFFFFFL);
     }
 
-    @Nullable
     public Long readOptionalLong() throws IOException {
         if (readBoolean()) {
             return readLong();
@@ -189,7 +186,6 @@ public abstract class StreamInput extends InputStream {
         return i;
     }
 
-    @Nullable
     public Long readOptionalVLong() throws IOException {
         if (readBoolean()) {
             return readVLong();
@@ -215,7 +211,6 @@ public abstract class StreamInput extends InputStream {
         return Float.intBitsToFloat(readInt());
     }
 
-    @Nullable
     public Float readOptionalFloat() throws IOException {
         if (readBoolean()) {
             return readFloat();
@@ -227,7 +222,6 @@ public abstract class StreamInput extends InputStream {
         return Double.longBitsToDouble(readLong());
     }
 
-    @Nullable
     public final Double readOptionalDouble() throws IOException {
         if (readBoolean()) {
             return readDouble();
@@ -253,7 +247,6 @@ public abstract class StreamInput extends InputStream {
         }
     }
 
-    @Nullable
     public final Boolean readOptionalBoolean() throws IOException {
         final byte value = readByte();
         if (value == 2) {
@@ -267,7 +260,6 @@ public abstract class StreamInput extends InputStream {
      * Reads a value of unspecified type. If a collection is read then the collection will be mutable if it contains any entry but might
      * be immutable if it is empty.
      */
-    @Nullable
     public Object readGenericValue() throws IOException {
         byte type = readByte();
         switch (type) {
