@@ -58,12 +58,12 @@ public abstract class AbstractCacheTest extends MilkyTestCase {
     @AfterEach
     private void afterEach() {
         cache.clear();
-        registry.forEachMeter(meter -> {
-            System.out.println(meter.getId());
-            meter.measure().forEach(measurement -> {
-                System.out.println("    " + measurement.toString());
-            });
-        });
+//        registry.forEachMeter(meter -> {
+//            System.out.println(meter.getId());
+//            meter.measure().forEach(measurement -> {
+//                System.out.println("    " + measurement.toString());
+//            });
+//        });
     }
 
     @Test
@@ -92,7 +92,7 @@ public abstract class AbstractCacheTest extends MilkyTestCase {
 
     @Test
     public void testGetWithLoader() {
-        Object result = cache.computeIfAbsent(key, (key1) -> value, Duration.ofMillis(1000L));
+        Object result = cache.computeIfAbsent(key, (key1) -> value, Duration.ofMillis(5000L));
         assertEquals(value, result);
         assertEquals(value, cache.get(key));
     }
