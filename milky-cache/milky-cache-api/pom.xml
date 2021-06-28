@@ -21,6 +21,7 @@
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>
             <version>1.6.2</version>
+            <scope>optional</scope>
         </dependency>
     </dependencies>
 
