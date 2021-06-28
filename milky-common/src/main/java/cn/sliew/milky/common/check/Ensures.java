@@ -1,7 +1,6 @@
 package cn.sliew.milky.common.check;
 
 import cn.sliew.milky.common.util.StringUtils;
-import com.google.common.base.Verify;
 
 import java.util.Collection;
 import java.util.function.Supplier;
