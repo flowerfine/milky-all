@@ -5,24 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.sliew</groupId>
-        <artifactId>milky-all</artifactId>
+        <artifactId>milky-event</artifactId>
         <version>1.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>milky-event</artifactId>
-    <packaging>pom</packaging>
-    <name>${project.artifactId}</name>
+    <artifactId>milky-event-simple</artifactId>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
-        <reactor.version>3.4.4</reactor.version>
     </properties>
-
-    <modules>
-        <module>milky-event-api</module>
-        <module>milky-event-test</module>
-        <module>milky-event-reactor</module>
-        <module>milky-event-simple</module>
-    </modules>
 
 </project>
