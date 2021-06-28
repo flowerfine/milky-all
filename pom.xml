@@ -67,6 +67,7 @@
         <module>milky-reflection</module>
         <module>milky-config</module>
         <module>milky-io</module>
+        <module>milky-dsl</module>
     </modules>
 
     <properties>

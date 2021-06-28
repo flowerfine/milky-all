@@ -1,9 +1,10 @@
-package cn.sliew.milky.config.dsl.builder;
+package cn.sliew.milky.dsl.builder;
 
-import cn.sliew.milky.config.dsl.*;
-import cn.sliew.milky.config.dsl.configurer.BarConfigurer;
-import cn.sliew.milky.config.dsl.configurer.FooConfigurer;
-import cn.sliew.milky.config.dsl.configurer.SubBarConfigurer;
+
+import cn.sliew.milky.dsl.*;
+import cn.sliew.milky.dsl.configurer.BarConfigurer;
+import cn.sliew.milky.dsl.configurer.FooConfigurer;
+import cn.sliew.milky.dsl.configurer.SubBarConfigurer;
 
 public class CompositeConfig extends AbstractConfiguredBuilder<Composite, CompositeConfig>
         implements Builder<Composite> {

@@ -1,4 +1,4 @@
-package cn.sliew.milky.config.dsl;
+package cn.sliew.milky.dsl;
 
 public interface ConfigurableBuilder<O, H extends ConfigurableBuilder<O, H>> extends Builder<O> {
 

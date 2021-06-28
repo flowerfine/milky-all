@@ -1,6 +1,6 @@
-package cn.sliew.milky.config.dsl;
+package cn.sliew.milky.dsl;
 
-import cn.sliew.milky.config.dsl.builder.CompositeConfig;
+import cn.sliew.milky.dsl.builder.CompositeConfig;
 import cn.sliew.milky.test.MilkyTestCase;
 import org.junit.jupiter.api.Test;
 

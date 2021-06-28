@@ -1,7 +1,7 @@
-package cn.sliew.milky.config.dsl.configurer;
+package cn.sliew.milky.dsl.configurer;
 
-import cn.sliew.milky.config.dsl.Composite;
-import cn.sliew.milky.config.dsl.ConfigurableBuilder;
+import cn.sliew.milky.dsl.Composite;
+import cn.sliew.milky.dsl.ConfigurableBuilder;
 
 import static cn.sliew.milky.common.check.Ensures.notBlank;
 

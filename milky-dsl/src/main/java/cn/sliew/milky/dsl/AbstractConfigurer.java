@@ -1,4 +1,4 @@
-package cn.sliew.milky.config.dsl;
+package cn.sliew.milky.dsl;
 
 import static cn.sliew.milky.common.check.Ensures.checkState;
 

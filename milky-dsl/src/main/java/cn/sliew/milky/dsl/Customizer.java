@@ -1,4 +1,4 @@
-package cn.sliew.milky.config.dsl;
+package cn.sliew.milky.dsl;
 
 /**
  * Callback interface that accepts a single input argument and returns no result.

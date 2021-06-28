@@ -1,4 +1,4 @@
-package cn.sliew.milky.config.dsl;
+package cn.sliew.milky.dsl;
 
 /**
  * Allows for configuring a {@link Builder}. All {@link Configurer} first

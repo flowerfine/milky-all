@@ -1,4 +1,4 @@
-package cn.sliew.milky.config.dsl;
+package cn.sliew.milky.dsl;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
