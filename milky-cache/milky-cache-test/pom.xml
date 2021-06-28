@@ -19,11 +19,6 @@
     <dependencies>
         <dependency>
             <groupId>cn.sliew</groupId>
-            <artifactId>milky-cache-api</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.sliew</groupId>
             <artifactId>milky-cache-caffeine</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
@@ -39,11 +34,17 @@
         </dependency>
 
         <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-core</artifactId>
+            <version>1.6.2</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
             <groupId>cn.sliew</groupId>
             <artifactId>milky-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 
 </project>

@@ -20,13 +20,18 @@
         <dependency>
             <groupId>cn.sliew</groupId>
             <artifactId>milky-cache-api</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
             <version>${caffeine.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-core</artifactId>
+            <version>1.6.2</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

@@ -19,4 +19,15 @@
         <module>milky-cache-caffeine</module>
         <module>milky-cache-test</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.sliew</groupId>
+                <artifactId>milky-cache-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 </project>
