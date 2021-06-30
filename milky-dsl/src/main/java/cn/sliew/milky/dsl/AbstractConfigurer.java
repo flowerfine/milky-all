@@ -16,7 +16,6 @@ public abstract class AbstractConfigurer<O, B extends Builder<O>> implements Con
 
     private B builder;
 
-
     @Override
     public void init(B builder) throws Exception {
 

@@ -19,6 +19,12 @@
             <artifactId>milky-common</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>3.4.2</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>cn.sliew</groupId>
             <artifactId>milky-test</artifactId>
             <scope>test</scope>

@@ -1,14 +1,14 @@
 package cn.sliew.milky.dsl;
 
-import cn.sliew.milky.dsl.builder.CompositeConfig;
+import cn.sliew.milky.dsl.builder.CompositeBuilder;
 import cn.sliew.milky.test.MilkyTestCase;
 import org.junit.jupiter.api.Test;
 
-class CompositeConfigTest extends MilkyTestCase {
+class CompositeBuilderTest extends MilkyTestCase {
 
     @Test
     void testCompositeConfig() throws Exception {
-        CompositeConfig config = new CompositeConfig();
+        CompositeBuilder config = new CompositeBuilder();
         config.foo()
                 .foo("foo property")
                 .and()
@@ -17,17 +17,19 @@ class CompositeConfigTest extends MilkyTestCase {
                 .and()
               .subBar();
 
-        config.getOrBuild();
+        final Composite composite = config.getOrBuild();
+        System.out.println(composite);
     }
 
     @Test
     void testLambdaCompositeConfig() throws Exception {
-        CompositeConfig config = new CompositeConfig();
+        CompositeBuilder config = new CompositeBuilder();
         config.foo(fooConfigurer -> fooConfigurer.foo("foo property"))
                 .subBar(Customizer.withDefaults())
                 .bar(barConfigurer -> barConfigurer.bar("bar property"));
 //                .subBar(Customizer.withDefaults());
 
-        config.getOrBuild();
+        final Composite composite = config.getOrBuild();
+        System.out.println(composite);
     }
 }
