@@ -13,11 +13,11 @@ mvn clean deploy -Poss-release -N versions:update-child-modules
 * 遍历组件。树形遍历，图形遍历
 * [异常组件](#异常组件)。异常采集器，异常重抛，异常堆栈格式化。
 * [生命周期](#生命周期)。管理组件生命周期，生命周期事件监听器。
-* [配置 DSL](#配置 DSL)。提供优雅的配置使用体验。
+* [配置 DSL](#配置DSL)。提供优雅的配置使用体验。
 
 
 
-## 配置 DSL
+## 配置DSL
 
 精心设计的 [配置 DSL](https://github.com/kalencaya/milky-all/blob/master/docs/DSL.md) 语言提供了良好封装性，隐藏实现细节，对外只暴露需要在应用编写或修改代码的所需工作量，为框架或库的使用提供良好的开发体验。
 
