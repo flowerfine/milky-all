@@ -51,7 +51,7 @@ public class LettuceCommandsWrapper<K, V> implements RedisKeyCommands<K, V>, Red
         if (isClusterAware()) {
             return this.clusterConnection.sync();
         } else {
-            return this.clusterConnection.sync();
+            return this.connection.sync();
         }
     }
 
