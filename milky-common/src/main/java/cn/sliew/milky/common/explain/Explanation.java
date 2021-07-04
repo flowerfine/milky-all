@@ -1,5 +1,9 @@
 package cn.sliew.milky.common.explain;
 
+import cn.sliew.milky.common.exception.ThrowableTraceFormater;
+import cn.sliew.milky.common.exception.ThrowableUtil;
+import cn.sliew.milky.common.util.StringUtils;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +19,8 @@ public class Explanation {
 
     private String name;                                                 // node name
     private String description;                                          // what it represents
+    private long cost;                                                   // what it costs
+    private Throwable cause;                                             // what exception it causes
     private List<Explanation> details = new LinkedList<>();              // sub-explanations
 
     public Explanation() {
@@ -37,8 +43,21 @@ public class Explanation {
         return name;
     }
 
-    public void setName(String name) {
+    public Explanation name(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * The time cost.
+     */
+    public long cost() {
+        return cost;
+    }
+
+    public Explanation cost(long cost) {
+        this.cost = cost;
+        return this;
     }
 
     /**
@@ -48,9 +67,21 @@ public class Explanation {
         return description;
     }
 
-
-    public void setDescription(String description) {
+    public Explanation description(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * The throwable reason, maybe null.
+     */
+    public Throwable cause() {
+        return cause;
+    }
+
+    public Explanation cause(Throwable cause) {
+        this.cause = cause;
+        return this;
     }
 
     /**
@@ -66,7 +97,24 @@ public class Explanation {
     }
 
     private String summary() {
-        return String.format("%s: %s", name(), description());
+        StringBuilder sb = new StringBuilder();
+        sb.append(name());
+        if (StringUtils.isNotBlank(description())) {
+            sb.append(": ");
+            sb.append(description());
+        }
+        if (cause() != null) {
+            sb.append(" (exception: ");
+            sb.append(cause());
+            sb.append(")");
+        }
+        if (cost() > 0) {
+            sb.append(" -- ");
+            sb.append(cost());
+            sb.append("ms");
+        }
+
+        return sb.toString();
     }
 
     /**
