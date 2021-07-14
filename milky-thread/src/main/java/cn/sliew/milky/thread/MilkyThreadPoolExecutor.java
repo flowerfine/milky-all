@@ -11,9 +11,14 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
 
     private static final Logger log = LogManager.getLogger(MilkyThreadPoolExecutor.class);
 
+    /**
+     * Name used in error reporting.
+     */
+    private final String name;
+
     private boolean waitForTasksToCompleteOnShutdown = false;
 
-    private int awaitTerminationSeconds = 0;
+    private int awaitTerminationMillis = 0;
 
     private final ThreadContext threadContext;
     private volatile ShutdownListener listener;
@@ -24,16 +29,51 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
     private final Map<Runnable, Object> decoratedTaskMap =
             new ConcurrentReferenceHashMap<>(16, ConcurrentReferenceHashMap.ReferenceType.WEAK);
 
-
-    /**
-     * Name used in error reporting.
-     */
-    private final String name;
-
     final String getName() {
         return name;
     }
 
+    /**
+     * Set whether to wait for scheduled tasks to complete on shutdown,
+     * not interrupting running tasks and executing all tasks in the queue.
+     * <p>Default is "false", shutting down immediately through interrupting
+     * ongoing tasks and clearing the queue. Switch this flag to "true" if you
+     * prefer fully completed tasks at the expense of a longer shutdown phase.
+     * <p>Note that Spring's container shutdown continues while ongoing tasks
+     * are being completed. If you want this executor to block and wait for the
+     * termination of tasks before the rest of the container continues to shut
+     * down - e.g. in order to keep up other resources that your tasks may need -,
+     * set the {@link #setAwaitTerminationSeconds "awaitTerminationSeconds"}
+     * property instead of or in addition to this property.
+     */
+    public void setWaitForTasksToCompleteOnShutdown(boolean waitForJobsToCompleteOnShutdown) {
+        this.waitForTasksToCompleteOnShutdown = waitForJobsToCompleteOnShutdown;
+    }
+
+    /**
+     * Set the maximum number of seconds that this executor is supposed to block
+     * on shutdown in order to wait for remaining tasks to complete their execution
+     * before the rest of the container continues to shut down. This is particularly
+     * useful if your remaining tasks are likely to need access to other resources
+     * that are also managed by the container.
+     * <p>By default, this executor won't wait for the termination of tasks at all.
+     * It will either shut down immediately, interrupting ongoing tasks and clearing
+     * the remaining task queue - or, if the
+     * {@link #setWaitForTasksToCompleteOnShutdown "waitForTasksToCompleteOnShutdown"}
+     * flag has been set to {@code true}, it will continue to fully execute all
+     * ongoing tasks as well as all remaining tasks in the queue, in parallel to
+     * the rest of the container shutting down.
+     * <p>In either case, if you specify an await-termination period using this property,
+     * this executor will wait for the given time (max) for the termination of tasks.
+     * As a rule of thumb, specify a significantly higher timeout here if you set
+     * "waitForTasksToCompleteOnShutdown" to {@code true} at the same time,
+     * since all remaining tasks in the queue will still get executed - in contrast
+     * to the default shutdown behavior where it's just about waiting for currently
+     * executing tasks that aren't reacting to thread interruption.
+     */
+    public void setAwaitTerminationMillis(long awaitTerminationMillis) {
+        this.awaitTerminationMillis = awaitTerminationMillis;
+    }
 
     public MilkyThreadPoolExecutor(String name, ThreadContext threadContext, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
         this(name, threadContext, corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, new DaemonThreadFactory(name + "-pool-", true, Thread.currentThread().getThreadGroup()), new AbortPolicyWithReport(name));

@@ -48,10 +48,10 @@ class DaemonThreadFactory implements ThreadFactory {
     /**
      * Return the thread name to use for a newly created {@link Thread}.
      * <p>The default implementation returns the specified thread name prefix
-     * with an increasing thread count appended: e.g. "SimpleAsyncTaskExecutor[T#0]".
+     * with an increasing thread count appended: e.g. "[SimpleAsyncTaskExecutorT#0]".
      */
     protected String nextThreadName() {
-        return String.format("%s[T#%s]", threadNamePrefix, this.threadCount.incrementAndGet());
+        return String.format("[%sT#%d]", threadNamePrefix, this.threadCount.incrementAndGet());
     }
 
     /**
