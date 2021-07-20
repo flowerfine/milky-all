@@ -54,7 +54,7 @@ Disruptor 系列
 
 ## 线程池组件
 
-
+为 `Runnable`、`Callable` 提供异常回调，对功能进行增强。
 
 ## ThreadLocal组件
 
