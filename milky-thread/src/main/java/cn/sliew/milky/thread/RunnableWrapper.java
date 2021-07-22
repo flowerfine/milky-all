@@ -1,5 +1,8 @@
 package cn.sliew.milky.thread;
 
+/**
+ * An extension to runnable.
+ */
 public interface RunnableWrapper extends Runnable {
 
     @Override
