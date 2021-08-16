@@ -33,6 +33,13 @@ public interface Registry<E, C> {
     Optional<E> replace(String name, E newEntry);
 
     /**
+     * Return named entry whether exists in the Registry.
+     *
+     * @param name the  name
+     */
+    boolean exist(String name);
+
+    /**
      * Get a configuration by name
      *
      * @param configName the configuration name

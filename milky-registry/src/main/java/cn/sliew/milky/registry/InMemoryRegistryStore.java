@@ -1,4 +1,6 @@
-package cn.sliew.milky.common.registry;
+package cn.sliew.milky.registry;
+
+import cn.sliew.milky.common.registry.RegistryStore;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -18,8 +20,7 @@ public class InMemoryRegistryStore<E> implements RegistryStore<E> {
     }
 
     @Override
-    public E computeIfAbsent(String key,
-                             Function<? super String, ? extends E> mappingFunction) {
+    public E computeIfAbsent(String key, Function<? super String, ? extends E> mappingFunction) {
         return entryMap.computeIfAbsent(key, mappingFunction);
     }
 

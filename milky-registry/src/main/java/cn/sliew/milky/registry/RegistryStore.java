@@ -6,8 +6,7 @@ import java.util.function.Function;
 
 public interface RegistryStore<E> {
 
-    E computeIfAbsent(String key,
-                      Function<? super String, ? extends E> mappingFunction);
+    E computeIfAbsent(String key, Function<? super String, ? extends E> mappingFunction);
 
     E putIfAbsent(String key, E value);
 

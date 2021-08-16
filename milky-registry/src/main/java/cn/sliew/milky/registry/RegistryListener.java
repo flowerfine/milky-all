@@ -7,7 +7,7 @@ public interface RegistryListener<E> {
 
     void onAdded(EntryAddedEvent<E> event);
 
-    void onRemoved();
+    void onRemoved(EntryRemovedEvent<E> event);
 
-    void onReplaced();
+    void onReplaced(EntryReplacedEvent<E> event);
 }
