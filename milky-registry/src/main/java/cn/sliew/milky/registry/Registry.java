@@ -5,6 +5,8 @@ import java.util.Optional;
 /**
  * registry to be used by registries for common functionality.
  *
+ * fixme 根据 config 生成 Entry 的功能，以便恢复 Entry.
+ *
  * @param <E> Registered Entry
  * @param <C> Registered Entry Config
  */
