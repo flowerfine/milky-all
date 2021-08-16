@@ -1,6 +1,9 @@
 package cn.sliew.milky.common.constant;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
@@ -69,6 +72,11 @@ public class DefaultAttributeMap implements AttributeMap {
     }
 
     private volatile DefaultAttribute[] attributes = EMPTY_ATTRIBUTES;
+
+    @Override
+    public <T> Collection<Attribute<T>> attrs() {
+        return Arrays.asList(attributes);
+    }
 
     @SuppressWarnings("unchecked")
     @Override

@@ -1,11 +1,18 @@
 package cn.sliew.milky.common.constant;
 
+import java.util.Collection;
+
 /**
  * Holds {@link Attribute}s which can be accessed via {@link AttributeKey}.
- *
+ * <p>
  * Implementations must be Thread-safe.
  */
 public interface AttributeMap {
+
+    /**
+     * Get all {@link Attribute}.
+     */
+    <T> Collection<Attribute<T>> attrs();
 
     /**
      * Get the {@link Attribute} for the given {@link AttributeKey}. This method will never return null, but may return
