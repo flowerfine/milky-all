@@ -23,10 +23,4 @@ public interface Componenet extends AttributeMap, TagSet, Serializable {
      * group
      */
     String group();
-
-    /**
-     * custom key/value attributes.
-     * todo AttributeMap get all attributes
-     */
-    Map<String, String> attributes();
 }

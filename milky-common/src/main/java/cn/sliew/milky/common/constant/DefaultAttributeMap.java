@@ -2,8 +2,6 @@ package cn.sliew.milky.common.constant;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
@@ -11,7 +9,8 @@ import static cn.sliew.milky.common.check.Ensures.checkNotNull;
 
 /**
  * Default {@link AttributeMap} implementation which not exibit any blocking behaviour on attribute lookup while using a
- * copy-on-write approach on the modify path.<br> Attributes lookup and remove exibit {@code O(logn)} time worst-case
+ * copy-on-write approach on the modify path.
+ * Attributes lookup and remove exibit {@code O(logn)} time worst-case
  * complexity, hence {@code attribute::set(null)} is to be preferred to {@code remove}.
  */
 public class DefaultAttributeMap implements AttributeMap {

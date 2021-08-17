@@ -1,13 +1,15 @@
 package cn.sliew.milky.common.constant;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * todo Tag
  */
 public interface TagSet {
 
-    Set<Tag> tags();
+    Collection<Tag> tags();
 
-    boolean hasTag(String tag);
+    void tag(Tag tag);
+
+    boolean hasTag(Tag tag);
 }
