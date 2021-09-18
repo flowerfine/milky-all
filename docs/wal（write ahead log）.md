@@ -16,3 +16,4 @@
 
 `checkpoint`。实现类为 `WriteAheadSnapshot`。
 
+`WriteAheadSnapshot` 可以创建捕获快照中的数据，创建 `checkpoint` 文件，执行数据恢复。
