@@ -69,6 +69,7 @@
         <module>milky-io</module>
         <module>milky-dsl</module>
         <module>milky-registry</module>
+        <module>milky-plugin</module>
     </modules>
 
     <properties>
