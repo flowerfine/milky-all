@@ -15,14 +15,11 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
      * Name used in error reporting.
      */
     private final String name;
-    private ExecutorService executor;
 
     private final ThreadContext threadContext;
     private volatile ShutdownListener listener;
 
     private final Object monitor = new Object();
-
-
 
     private RejectedExecutionHandler rejectedExecutionHandler = new ThreadPoolExecutor.AbortPolicy();
 
@@ -212,9 +209,9 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
      * {@code awaitTerminationSeconds} property.
      */
     private void awaitTerminationIfNecessary() {
-        if (this.awaitTerminationSeconds > 0) {
+        if (this.awaitTerminationMillis > 0) {
             try {
-                if (!awaitTermination(this.awaitTerminationSeconds, TimeUnit.SECONDS)) {
+                if (!awaitTermination(this.awaitTerminationMillis, TimeUnit.MILLISECONDS)) {
                     if (log.isWarnEnabled()) {
                         log.warn(String.format("Timed out while waiting for executor %s to terminate", this.name));
                     }

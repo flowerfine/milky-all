@@ -3,14 +3,13 @@ package cn.sliew.milky.thread;
 import cn.sliew.milky.common.unit.TimeValue;
 import cn.sliew.milky.common.unit.TimeValues;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.RejectedExecutionHandler;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 
 class ExecutorBuilder {
 
-    private MilkyThreadPoolExecutor taskExecutor;
+    private String name;
+    private ThreadContext threadContext;
+
     private int coreSize = 1;
     private int maxSize = ExecutorUtil.availableProcessors();
     private TimeValue keepAlive = TimeValues.timeValueSeconds(60L);
@@ -27,7 +26,17 @@ class ExecutorBuilder {
     private TaskDecorator taskDecorator;
 
     ExecutorBuilder() {
-        this.taskExecutor = new MilkyThreadPoolExecutor();
+
+    }
+
+    private ExecutorBuilder name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    private ExecutorBuilder threadContext(ThreadContext threadContext) {
+        this.threadContext = threadContext;
+        return this;
     }
 
     private ExecutorBuilder coreSize(int core) {
@@ -86,8 +95,11 @@ class ExecutorBuilder {
     }
 
     private MilkyThreadPoolExecutor build() {
-        taskExecutor.initialize();
-        return taskExecutor;
+        ThreadFactory threadFactory = buildThreadFacotry();
+        MilkyThreadPoolExecutor executor = new MilkyThreadPoolExecutor(
+                name, threadContext, coreSize, maxSize, keepAlive.getMillis(), TimeUnit.MILLISECONDS, queue,
+                threadFactory, rejectedPolicy);
+        return executor;
     }
 
     private ThreadFactory buildThreadFacotry() {
