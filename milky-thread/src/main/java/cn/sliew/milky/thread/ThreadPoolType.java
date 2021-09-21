@@ -14,10 +14,6 @@ public enum ThreadPoolType {
 
     private final String type;
 
-    public String getType() {
-        return type;
-    }
-
     ThreadPoolType(String type) {
         this.type = type;
     }
@@ -32,11 +28,16 @@ public enum ThreadPoolType {
         TYPE_MAP = Collections.unmodifiableMap(typeMap);
     }
 
-    public static ThreadPoolType fromType(String type) {
+    public static ThreadPoolType ofType(String type) {
         ThreadPoolType threadPoolType = TYPE_MAP.get(type);
         if (threadPoolType == null) {
             throw new IllegalArgumentException(String.format("no ThreadPoolType for %s", type));
         }
         return threadPoolType;
     }
+
+    public String getType() {
+        return type;
+    }
+
 }

@@ -15,15 +15,21 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
      * Name used in error reporting.
      */
     private final String name;
-
-    private boolean waitForTasksToCompleteOnShutdown = false;
-
-    private int awaitTerminationMillis = 0;
+    private ExecutorService executor;
 
     private final ThreadContext threadContext;
     private volatile ShutdownListener listener;
 
     private final Object monitor = new Object();
+
+
+
+    private RejectedExecutionHandler rejectedExecutionHandler = new ThreadPoolExecutor.AbortPolicy();
+
+    private ThreadFactory threadFactory;
+
+    private boolean waitForTasksToCompleteOnShutdown = false;
+    private long awaitTerminationMillis = 0L;
 
     // Runnable decorator to user-level FutureTask, if different
     private final Map<Runnable, Object> decoratedTaskMap =

@@ -11,28 +11,41 @@ import static cn.sliew.milky.common.check.Ensures.notBlank;
  */
 class DaemonThreadFactory implements ThreadFactory {
 
-    private final int threadPriority = Thread.NORM_PRIORITY;
-
     private final String threadNamePrefix;
+    private final int threadPriority;
     private final boolean daemon;
+
     private final ThreadGroup threadGroup;
 
     private final AtomicInteger threadCount = new AtomicInteger(0);
+
+    public DaemonThreadFactory() {
+        this(null);
+    }
 
     DaemonThreadFactory(String threadNamePrefix) {
         this(threadNamePrefix, true);
     }
 
-    DaemonThreadFactory(String threadNamePrefix, boolean daemon) {
-        this(threadNamePrefix, daemon, (System.getSecurityManager() != null) ? System.getSecurityManager().getThreadGroup() : Thread.currentThread().getThreadGroup());
+    public DaemonThreadFactory(String threadNamePrefix, int threadPriority) {
+        this(threadNamePrefix, threadPriority, true);
     }
 
-    DaemonThreadFactory(String threadNamePrefix, boolean daemon, ThreadGroup threadGroup) {
+    DaemonThreadFactory(String threadNamePrefix, boolean daemon) {
+        this(threadNamePrefix, Thread.NORM_PRIORITY, daemon);
+    }
+
+    public DaemonThreadFactory(String threadNamePrefix, int threadPriority, boolean daemon) {
+        this(threadNamePrefix, threadPriority, daemon, (System.getSecurityManager() != null) ? System.getSecurityManager().getThreadGroup() : Thread.currentThread().getThreadGroup());
+    }
+
+    public DaemonThreadFactory(String threadNamePrefix, int threadPriority, boolean daemon, ThreadGroup threadGroup) {
         if (threadNamePrefix == null || threadNamePrefix.isEmpty()) {
             this.threadNamePrefix = getDefaultThreadNamePrefix();
         } else {
             this.threadNamePrefix = threadNamePrefix;
         }
+        this.threadPriority = threadPriority;
         this.daemon = daemon;
         this.threadGroup = checkNotNull(threadGroup, () -> "threadGroup null");
     }

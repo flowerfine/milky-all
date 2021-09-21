@@ -9,15 +9,13 @@ public enum ThreadPoolConfigEnum {
     SAME("same", ThreadPoolType.DIRECT) {
 
         private MilkyThreadPoolExecutor executor;
+
         @Override
         public MilkyThreadPoolExecutor getInstance() {
             if (executor == null) {
                 this.executor = ThreadPoolExecutorBuilder.builder()
-
-
                         .build();
             }
-
             return executor;
         }
     },
@@ -43,7 +41,7 @@ public enum ThreadPoolConfigEnum {
         TYPE_MAP = Collections.unmodifiableMap(typeMap);
     }
 
-    public static ThreadPoolConfigEnum fromName(String name) {
+    public static ThreadPoolConfigEnum ofName(String name) {
         ThreadPoolConfigEnum threadPoolConfigEnum = TYPE_MAP.get(name);
         if (threadPoolConfigEnum == null) {
             throw new IllegalArgumentException(String.format("no ThreadPoolConfigEnum for %s", name));
@@ -60,6 +58,4 @@ public enum ThreadPoolConfigEnum {
     public static DaemonThreadFactory daemonThreadFactory(String threadNamePrefix) {
         return new DaemonThreadFactory(threadNamePrefix, true);
     }
-
-
 }
