@@ -79,7 +79,7 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
     }
 
     public MilkyThreadPoolExecutor(String name, ThreadContext threadContext, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
-        this(name, threadContext, corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, new DaemonThreadFactory(name + "-pool-", true, Thread.currentThread().getThreadGroup()), new AbortPolicyWithReport(name));
+        this(name, threadContext, corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, new DaemonThreadFactory(name + "-pool"), new AbortPolicyWithReport(name));
     }
 
     public MilkyThreadPoolExecutor(String name, ThreadContext threadContext, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory) {
@@ -87,10 +87,10 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
     }
 
     public MilkyThreadPoolExecutor(String name, ThreadContext threadContext, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, XRejectedExecutionHandler handler) {
-        this(name, threadContext, corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, new DaemonThreadFactory(name + "-pool-", true, Thread.currentThread().getThreadGroup()), handler);
+        this(name, threadContext, corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, new DaemonThreadFactory(name + "-pool"), handler);
     }
 
-    public MilkyThreadPoolExecutor(String name, ThreadContext threadContext, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, XRejectedExecutionHandler handler) {
+    public MilkyThreadPoolExecutor(String name, ThreadContext threadContext, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
         this.name = name;
         this.threadContext = threadContext;

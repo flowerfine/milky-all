@@ -74,8 +74,8 @@ class ExecutorBuilder {
         return this;
     }
 
-    private ExecutorBuilder rejectedExecutionHandler(RejectedExecutionHandler reject) {
-        this.taskExecutor.setRejectedExecutionHandler(reject);
+    private ExecutorBuilder rejectedPolicy(RejectedExecutionHandler rejectedPolicy) {
+        this.rejectedPolicy = rejectedPolicy;
         return this;
     }
 
