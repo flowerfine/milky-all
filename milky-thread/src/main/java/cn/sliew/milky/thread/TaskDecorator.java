@@ -3,6 +3,9 @@ package cn.sliew.milky.thread;
 /**
  * A callback interface for a decorator to be applied to any {@link Runnable}
  * about to be executed.
+ *
+ * <p>The primary use case is to set some execution context around the task's
+ * invocation, or to provide some monitoring/statistics for task execution.
  */
 @FunctionalInterface
 public interface TaskDecorator {

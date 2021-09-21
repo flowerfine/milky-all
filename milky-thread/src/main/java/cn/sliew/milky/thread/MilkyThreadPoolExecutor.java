@@ -15,7 +15,6 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
      * Name used in error reporting.
      */
     private final String name;
-
     private final ThreadContext threadContext;
     private volatile ShutdownListener listener;
 
@@ -27,6 +26,8 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
 
     private boolean waitForTasksToCompleteOnShutdown = false;
     private long awaitTerminationMillis = 0L;
+
+    private TaskDecorator taskDecorator;
 
     // Runnable decorator to user-level FutureTask, if different
     private final Map<Runnable, Object> decoratedTaskMap =
@@ -53,27 +54,6 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
         this.waitForTasksToCompleteOnShutdown = waitForJobsToCompleteOnShutdown;
     }
 
-    /**
-     * Set the maximum number of seconds that this executor is supposed to block
-     * on shutdown in order to wait for remaining tasks to complete their execution
-     * before the rest of the container continues to shut down. This is particularly
-     * useful if your remaining tasks are likely to need access to other resources
-     * that are also managed by the container.
-     * <p>By default, this executor won't wait for the termination of tasks at all.
-     * It will either shut down immediately, interrupting ongoing tasks and clearing
-     * the remaining task queue - or, if the
-     * {@link #setWaitForTasksToCompleteOnShutdown "waitForTasksToCompleteOnShutdown"}
-     * flag has been set to {@code true}, it will continue to fully execute all
-     * ongoing tasks as well as all remaining tasks in the queue, in parallel to
-     * the rest of the container shutting down.
-     * <p>In either case, if you specify an await-termination period using this property,
-     * this executor will wait for the given time (max) for the termination of tasks.
-     * As a rule of thumb, specify a significantly higher timeout here if you set
-     * "waitForTasksToCompleteOnShutdown" to {@code true} at the same time,
-     * since all remaining tasks in the queue will still get executed - in contrast
-     * to the default shutdown behavior where it's just about waiting for currently
-     * executing tasks that aren't reacting to thread interruption.
-     */
     public void setAwaitTerminationMillis(long awaitTerminationMillis) {
         this.awaitTerminationMillis = awaitTerminationMillis;
     }
@@ -107,8 +87,15 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
     @Override
     public void execute(Runnable command) {
         try {
-            // todo task decorator
-            super.execute(command);
+            if (taskDecorator != null) {
+                Runnable decorated = taskDecorator.decorate(command);
+                if (decorated != command) {
+                    decoratedTaskMap.put(decorated, command);
+                }
+                super.execute(decorated);
+            } else {
+                super.execute(command);
+            }
         } catch (RejectedExecutionException ex) {
             if (command instanceof RunnableWrapper) {
                 // If we are an custom runnable wrapper we can handle the rejection
@@ -224,7 +211,6 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
             }
         }
     }
-
 
     public interface ShutdownListener {
         void onTerminated();

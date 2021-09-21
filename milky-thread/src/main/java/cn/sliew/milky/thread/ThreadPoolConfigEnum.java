@@ -7,19 +7,19 @@ import java.util.Map;
 public enum ThreadPoolConfigEnum {
 
     SAME("same", ThreadPoolType.DIRECT) {
-
         private MilkyThreadPoolExecutor executor;
-
         @Override
         public MilkyThreadPoolExecutor getInstance() {
             if (executor == null) {
                 this.executor = ThreadPoolExecutorBuilder.builder()
+                        .name(getName())
+                        .coreSize(ExecutorUtil.availableProcessors())
+                        .maxSize(ExecutorUtil.twiceProcessors())
                         .build();
             }
             return executor;
         }
     },
-
 
     ;
 
@@ -51,11 +51,12 @@ public enum ThreadPoolConfigEnum {
 
     public abstract MilkyThreadPoolExecutor getInstance();
 
-    public static String threadNamePrefix(String name) {
-        return String.format("milky[%s]", name);
+
+    public String getName() {
+        return name;
     }
 
-    public static DaemonThreadFactory daemonThreadFactory(String threadNamePrefix) {
-        return new DaemonThreadFactory(threadNamePrefix, true);
+    public ThreadPoolType getType() {
+        return type;
     }
 }
