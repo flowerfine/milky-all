@@ -1,8 +1,6 @@
 package cn.sliew.milky.thread;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.*;
 
 import static cn.sliew.milky.common.check.Ensures.checkArgument;
 
@@ -61,13 +59,24 @@ class ExecutorUtil {
      * @see java.util.concurrent.LinkedBlockingQueue
      * @see java.util.concurrent.SynchronousQueue
      */
-    static BlockingQueue<Runnable> createQueue(int queueCapacity) {
-        checkArgument(queueCapacity > 0, () -> "");
-        if (queueCapacity > 0) {
-            return new LinkedBlockingQueue<>(queueCapacity);
-        }
-        else {
-            return new SynchronousQueue<>();
-        }
+    static BlockingQueue<Runnable> boundedQueue(int queueCapacity) {
+        checkArgument(queueCapacity > 0, () -> "queueCapacity must greater than 0");
+        return new LinkedBlockingQueue<>(queueCapacity);
+    }
+
+    static BlockingQueue<Runnable> unboundedQueue() {
+        return new LinkedTransferQueue<>();
+    }
+
+    static BlockingQueue<Runnable> zeroQueue() {
+        return new SynchronousQueue<>();
+    }
+
+    static BlockingQueue<Runnable> eagerQueue(ThreadPoolExecutor executor) {
+        return new ThreadEagerQueue<>(executor);
+    }
+
+    static BlockingQueue<Runnable> resizableQueue(BlockingQueue<Runnable> queue, int initialCapacity) {
+        return new ResizableBlockingQueue<>(queue, initialCapacity);
     }
 }
