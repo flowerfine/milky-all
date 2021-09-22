@@ -1,5 +1,11 @@
 package cn.sliew.milky.thread;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
+
+import static cn.sliew.milky.common.check.Ensures.checkArgument;
+
 class ExecutorUtil {
 
     private static int processors = Runtime.getRuntime().availableProcessors();
@@ -46,5 +52,22 @@ class ExecutorUtil {
         return processors * 2;
     }
 
-
+    /**
+     * Create the BlockingQueue to use for the ThreadPoolExecutor.
+     * <p>A LinkedBlockingQueue instance will be created for a positive
+     * capacity value; a SynchronousQueue else.
+     * @param queueCapacity the specified queue capacity
+     * @return the BlockingQueue instance
+     * @see java.util.concurrent.LinkedBlockingQueue
+     * @see java.util.concurrent.SynchronousQueue
+     */
+    static BlockingQueue<Runnable> createQueue(int queueCapacity) {
+        checkArgument(queueCapacity > 0, () -> "");
+        if (queueCapacity > 0) {
+            return new LinkedBlockingQueue<>(queueCapacity);
+        }
+        else {
+            return new SynchronousQueue<>();
+        }
+    }
 }
