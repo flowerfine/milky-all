@@ -1,6 +1,7 @@
 package cn.sliew.milky.thread;
 
 import cn.sliew.milky.common.collect.ConcurrentReferenceHashMap;
+import cn.sliew.milky.thread.rejected.policy.AbortPolicyWithReport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,7 +34,7 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
     private final Map<Runnable, Object> decoratedTaskMap =
             new ConcurrentReferenceHashMap<>(16, ConcurrentReferenceHashMap.ReferenceType.WEAK);
 
-    final String getName() {
+    public final String getName() {
         return name;
     }
 
@@ -70,7 +71,7 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
         this(name, threadContext, corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, new DaemonThreadFactory(name + "-pool"), handler);
     }
 
-    public MilkyThreadPoolExecutor(String name, ThreadContext threadContext, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler) {
+    public MilkyThreadPoolExecutor(String name, ThreadContext threadContext, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, XRejectedExecutionHandler handler) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
         this.name = name;
         this.threadContext = threadContext;

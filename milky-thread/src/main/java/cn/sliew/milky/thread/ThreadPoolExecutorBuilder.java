@@ -2,8 +2,13 @@ package cn.sliew.milky.thread;
 
 import cn.sliew.milky.common.unit.TimeValue;
 import cn.sliew.milky.common.unit.TimeValues;
+import cn.sliew.milky.thread.metrics.ThreadPoolExecutorMetrics;
+import cn.sliew.milky.thread.rejected.policy.AbortPolicyWithReport;
+import io.micrometer.core.instrument.MeterRegistry;
 
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 class ThreadPoolExecutorBuilder {
 
@@ -18,7 +23,7 @@ class ThreadPoolExecutorBuilder {
     private int maxSize = ExecutorUtil.availableProcessors();
     private TimeValue keepAlive = TimeValues.timeValueSeconds(60L);
     private BlockingQueue<Runnable> queue;
-    private RejectedExecutionHandler rejectedPolicy = new ThreadPoolExecutor.AbortPolicy();
+    private XRejectedExecutionHandler rejectedPolicy = new AbortPolicyWithReport("pool");
 
     private String threadNamePrefix;
     private int threadPriority = Thread.NORM_PRIORITY;
@@ -28,6 +33,8 @@ class ThreadPoolExecutorBuilder {
     private TimeValue awaitTermination = TimeValues.timeValueMillis(0L);
 
     private TaskDecorator taskDecorator;
+
+    private MeterRegistry meterRegistry;
 
     private ThreadPoolExecutorBuilder() {
 
@@ -78,7 +85,7 @@ class ThreadPoolExecutorBuilder {
         return this;
     }
 
-    ThreadPoolExecutorBuilder rejectedPolicy(RejectedExecutionHandler rejectedPolicy) {
+    ThreadPoolExecutorBuilder rejectedPolicy(XRejectedExecutionHandler rejectedPolicy) {
         this.rejectedPolicy = rejectedPolicy;
         return this;
     }
@@ -98,6 +105,11 @@ class ThreadPoolExecutorBuilder {
         return this;
     }
 
+    ThreadPoolExecutorBuilder meterRegistry(MeterRegistry meterRegistry) {
+        this.meterRegistry = meterRegistry;
+        return this;
+    }
+
     MilkyThreadPoolExecutor build() {
         ThreadFactory threadFactory = buildThreadFacotry();
         MilkyThreadPoolExecutor executor = new MilkyThreadPoolExecutor(
@@ -105,6 +117,9 @@ class ThreadPoolExecutorBuilder {
                 threadFactory, rejectedPolicy);
         executor.setWaitForTasksToCompleteOnShutdown(waitForTasksToCompleteOnShutdown);
         executor.setAwaitTerminationMillis(awaitTermination.millis());
+        if (this.meterRegistry != null) {
+            new ThreadPoolExecutorMetrics(executor).bindTo(meterRegistry);
+        }
         return executor;
     }
 
