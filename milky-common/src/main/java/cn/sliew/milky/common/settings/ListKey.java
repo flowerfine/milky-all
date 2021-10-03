@@ -5,8 +5,8 @@ import java.util.regex.Pattern;
 public final class ListKey extends SimpleKey {
     private final Pattern pattern;
 
-    public ListKey(String key) {
-        super(key);
+    public ListKey(String key, String description) {
+        super(key, description);
         this.pattern = Pattern.compile(Pattern.quote(key) + "(\\.\\d+)?");
     }
 

@@ -70,6 +70,7 @@
         <module>milky-dsl</module>
         <module>milky-registry</module>
         <module>milky-plugin</module>
+        <module>milky-property</module>
     </modules>
 
     <properties>

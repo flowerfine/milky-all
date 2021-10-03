@@ -5,9 +5,21 @@ import java.util.Objects;
 public class SimpleKey implements Key {
 
     protected final String key;
+    private final String description;
 
-    public SimpleKey(String key) {
+    public SimpleKey(String key, String description) {
         this.key = key;
+        this.description = description;
+    }
+
+    @Override
+    public String name() {
+        return key;
+    }
+
+    @Override
+    public String description() {
+        return description;
     }
 
     @Override

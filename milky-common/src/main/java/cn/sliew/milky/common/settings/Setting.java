@@ -13,11 +13,15 @@ import static cn.sliew.milky.common.check.Requires.require;
  */
 public class Setting<T> {
 
+    private static final EnumSet<Property> EMPTY_PROPERTIES = EnumSet.noneOf(Property.class);
+
     private final Key key;
     protected final Function<Settings, String> defaultValue;
     private final Optional<Setting<T>> fallbackSetting;
     private final Function<String, T> parser;
     private final Validator<T> validator;
+
+    private EnumSet<Property> properties = EMPTY_PROPERTIES;
 
     /**
      * LineLength.
@@ -60,6 +64,14 @@ public class Setting<T> {
     }
 
     /**
+     * Returns the setting properties
+     * @see Property
+     */
+    public EnumSet<Property> getProperties() {
+        return properties;
+    }
+
+    /**
      * Returns the settings value. If the setting is not present in
      * the given settings object the default value is returned instead.
      */
@@ -98,14 +110,6 @@ public class Setting<T> {
         return innerGetRaw(settings);
     }
 
-    /**
-     * The underlying implementation for {@link #getRaw(Settings)}.
-     * Setting specializations can override this as needed to convert the
-     * actual settings value to raw strings.
-     *
-     * @param settings the settings instance
-     * @return the raw string representation of the setting value
-     */
     String innerGetRaw(final Settings settings) {
         return settings.get(getKey(), defaultValue.apply(settings));
     }
@@ -127,7 +131,6 @@ public class Setting<T> {
     public String getDefaultRaw(Settings settings) {
         return defaultValue.apply(settings);
     }
-
 
     /**
      * Returns true if and only if this setting is present in the given settings instance.
@@ -172,40 +175,32 @@ public class Setting<T> {
         return false;
     }
 
-//
-//    final boolean isListSetting() {
-//        return this instanceof ListSetting;
-//    }
-
-    public SettingUpdater<T> newUpdater(Consumer<T> updater, Consumer<T> validator, Logger logger) {
-        return new Updater<>(this, updater, validator, logger);
+    boolean isListSetting() {
+        return false;
     }
 
-    private final static class Updater<T> implements SettingUpdater<T> {
+    public SettingUpdater<T> newUpdater(Consumer<T> updater, Consumer<T> validator, Logger logger) {
+        return new Updater( updater, validator, logger);
+    }
 
-        private final Setting<T> setting;
+    private final class Updater implements SettingUpdater<T> {
+
         private final Consumer<T> updater;
         private final Consumer<T> validator;
         private final Logger log;
 
-        public Updater(Setting<T> setting, Consumer<T> updater, Consumer<T> validator, Logger log) {
-            this.setting = setting;
+        public Updater(Consumer<T> updater, Consumer<T> validator, Logger log) {
             this.updater = updater;
             this.validator = validator;
             this.log = log;
         }
 
         @Override
-        public Setting<T> getSetting() {
-            return this.setting;
-        }
-
-        @Override
         public boolean hasChanged(Settings current, Settings previous) {
-            final String newValue = setting.getRaw(current);
-            final String value = setting.getRaw(previous);
+            final String newValue = getRaw(current);
+            final String value = getRaw(previous);
 
-            require(setting.isGroupSetting() == false, () -> "group settings must override this method");
+            require(isGroupSetting() == false, () -> "group settings must override this method");
             require(value != null, () -> "value was null but can't be unless default is null which is invalid");
 
             return value.equals(newValue) == false;
@@ -213,34 +208,28 @@ public class Setting<T> {
 
         @Override
         public T getValue(Settings current, Settings previous) {
-            final String newValue = setting.getRaw(current);
-            final String value = setting.getRaw(previous);
+            final String newValue = getRaw(current);
+            final String value = getRaw(previous);
             try {
-                T inst = setting.get(current);
+                T inst = get(current);
                 validator.accept(inst);
                 return inst;
             } catch (Exception | AssertionError e) {
                 throw new IllegalArgumentException(
-                        String.format("illegal value can't update [%s] from [%s] to [%s]", setting.getRawKey(), value, newValue),
+                        String.format("illegal value can't update [%s] from [%s] to [%s]", getRawKey(), value, newValue),
                         e);
             }
         }
 
         @Override
         public void apply(T value, Settings current, Settings previous) {
-            logSettingUpdate(current, previous);
+            log.info("updating [{}] from [{}] to [{}]", getRawKey(), getRaw(previous), getRaw(current));
             updater.accept(value);
-        }
-
-        private void logSettingUpdate(Settings current, Settings previous) {
-            if (log.isInfoEnabled()) {
-                log.info("updating [{}] from [{}] to [{}]", setting.getRawKey(), setting.getRaw(previous), setting.getRaw(current));
-            }
         }
 
         @Override
         public String toString() {
-            return String.format("Updater for: %s", this.setting.toString());
+            return String.format("Updater for: %s", Setting.this.toString());
         }
     }
 
