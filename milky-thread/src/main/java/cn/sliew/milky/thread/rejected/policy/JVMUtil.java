@@ -1,11 +1,11 @@
-package cn.sliew.milky.thread;
+package cn.sliew.milky.thread.rejected.policy;
 
 import java.io.OutputStream;
 import java.lang.management.*;
 
 class JVMUtil {
 
-    public static void jstack(OutputStream stream) throws Exception {
+    static void jstack(OutputStream stream) throws Exception {
         ThreadMXBean threadMxBean = ManagementFactory.getThreadMXBean();
         for (ThreadInfo threadInfo : threadMxBean.dumpAllThreads(true, true)) {
             stream.write(getThreadDumpString(threadInfo).getBytes());

@@ -270,6 +270,17 @@ public final class Settings {
         return Collections.unmodifiableMap(groups);
     }
 
+    /**
+     * Returns the settings as delimited string.
+     */
+    public String toDelimitedString(char delimiter) {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, Object> entry : settings.entrySet()) {
+            sb.append(entry.getKey()).append("=").append(entry.getValue()).append(delimiter);
+        }
+        return sb.toString();
+    }
+
     static String toString(Object o) {
         return Objects.toString(o, null);
     }

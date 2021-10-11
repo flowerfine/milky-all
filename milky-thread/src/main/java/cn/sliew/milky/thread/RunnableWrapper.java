@@ -1,5 +1,7 @@
 package cn.sliew.milky.thread;
 
+import java.util.concurrent.RejectedExecutionException;
+
 /**
  * An extension to runnable.
  */
@@ -9,6 +11,8 @@ public interface RunnableWrapper extends Runnable {
     default void run() {
         try {
             doRun();
+        } catch (RejectedExecutionException t) {
+            onRejection(t);
         } catch (Exception t) {
             onFailure(t);
         } finally {

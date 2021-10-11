@@ -10,8 +10,6 @@ package cn.sliew.milky.common.settings;
  */
 public interface SettingUpdater<T> {
 
-    Setting<T> getSetting();
-
     /**
      * Returns true if this updaters setting has changed with the current update.
      *
