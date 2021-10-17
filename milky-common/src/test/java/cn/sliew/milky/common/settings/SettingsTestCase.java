@@ -3,6 +3,10 @@ package cn.sliew.milky.common.settings;
 import cn.sliew.milky.test.MilkyTestCase;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
@@ -116,5 +120,23 @@ public class SettingsTestCase extends MilkyTestCase {
 //        assertThat(implicitEnvSettings.get("setting1"), equalTo(hostname));
 //    }
 
+    @Test
+    public void testSimpleUpdate() {
 
+    }
+
+    @Test
+    public void testListSetting() {
+
+    }
+
+    @Test
+    public void testGroupSetting() {
+
+    }
+
+    @Test
+    public void testAffixSetting() {
+
+    }
 }
