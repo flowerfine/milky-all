@@ -2,7 +2,6 @@ package cn.sliew.milky.common.settings;
 
 import cn.sliew.milky.log.Logger;
 
-import java.io.IOException;
 import java.util.function.Consumer;
 
 public class GroupSetting extends Setting<Settings> {
@@ -11,7 +10,8 @@ public class GroupSetting extends Setting<Settings> {
     private final Consumer<Settings> validator;
 
     public GroupSetting(GroupKey key, Consumer<Settings> validator) {
-        super(key, (s) -> "", null, (s) -> null, v -> {});
+        super(key, (s) -> "", null, (s) -> null, v -> {
+        });
         this.key = key;
         this.validator = validator;
     }
