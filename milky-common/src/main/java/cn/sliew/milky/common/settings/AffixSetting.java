@@ -1,22 +1,20 @@
 package cn.sliew.milky.common.settings;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class AffixSetting<T> extends Setting<T>  {
-
-    public AffixSetting(Key key, Function<Settings, String> defaultValue, Setting<T> fallbackSetting, Function<String, T> parser, Validator<T> validator) {
-        super(key, defaultValue, fallbackSetting, parser, validator);
-    }
+public class AffixSetting<T> extends Setting<T> {
 
     private final AffixKey key;
     private final BiFunction<String, String, Setting<T>> delegateFactory;
 
-    public AffixSetting(AffixKey key, Setting<T> delegate, BiFunction<String, String, Setting<T>> delegateFactory,) {
-        super(key, delegate.defaultValue, delegate.parser, delegate.properties.toArray(new Property[0]));
+    public AffixSetting(AffixKey key, Setting<T> delegate, BiFunction<String, String, Setting<T>> delegateFactory) {
+        super(key, delegate.defaultValue, delegate.fallbackSetting.orElse(null), delegate.parser, v -> {});
         this.key = key;
         this.delegateFactory = delegateFactory;
     }
@@ -38,7 +36,6 @@ public class AffixSetting<T> extends Setting<T>  {
                 " use #getConcreteSetting to obtain a concrete setting");
     }
 
-    @Override
     public Setting<T> getConcreteSetting(String key) {
         if (match(key)) {
             String namespace = this.key.getNamespace(key);
@@ -64,10 +61,6 @@ public class AffixSetting<T> extends Setting<T>  {
         return getConcreteSetting(namespace, fullKey);
     }
 
-    @Override
-    public void diff(Settings.Builder builder, Settings source, Settings defaultSettings) {
-        matchStream(defaultSettings).forEach((key) -> getConcreteSetting(key).diff(builder, source, defaultSettings));
-    }
 
     /**
      * Returns the namespace for a concrete setting. Ie. an affix setting with prefix: {@code search.} and suffix: {@code username}

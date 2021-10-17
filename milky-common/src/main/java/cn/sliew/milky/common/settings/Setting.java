@@ -17,8 +17,8 @@ public class Setting<T> {
 
     private final Key key;
     protected final Function<Settings, String> defaultValue;
-    private final Optional<Setting<T>> fallbackSetting;
-    private final Function<String, T> parser;
+    protected final Optional<Setting<T>> fallbackSetting;
+    protected final Function<String, T> parser;
     private final Validator<T> validator;
 
     private EnumSet<Property> properties = EMPTY_PROPERTIES;

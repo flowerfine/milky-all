@@ -1,11 +1,17 @@
 package cn.sliew.milky.common.settings;
 
+import cn.sliew.milky.common.primitives.Strings;
+
 import java.util.Objects;
 
 public class SimpleKey implements Key {
 
     protected final String key;
     private final String description;
+
+    public SimpleKey(String key) {
+        this(key, Strings.empty());
+    }
 
     public SimpleKey(String key, String description) {
         this.key = key;
