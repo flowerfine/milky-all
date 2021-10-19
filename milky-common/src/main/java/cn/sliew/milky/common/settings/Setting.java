@@ -10,6 +10,8 @@ import static cn.sliew.milky.common.check.Requires.require;
 
 /**
  * todo remove property
+ * todo list
+ * 1. property util method
  */
 public class Setting<T> {
 
