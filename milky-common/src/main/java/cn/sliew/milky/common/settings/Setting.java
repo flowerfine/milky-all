@@ -23,28 +23,65 @@ public class Setting<T> {
     protected final Function<String, T> parser;
     private final Validator<T> validator;
 
-    private EnumSet<Property> properties = EMPTY_PROPERTIES;
+    private EnumSet<Property> properties;
+
+    public Setting(String key, String defaultValue, Function<String, T> parser, Property... properties) {
+        this(key, s -> defaultValue, parser, properties);
+    }
+
+    public Setting(String key, String defaultValue, Function<String, T> parser, Validator<T> validator, Property... properties) {
+        this(new SimpleKey(key), s -> defaultValue, parser, validator, properties);
+    }
+
+    public Setting(String key, Setting<T> fallBackSetting, Function<String, T> parser, Property... properties) {
+        this(new SimpleKey(key), fallBackSetting, parser, properties);
+    }
+
+    public Setting(String key, Function<Settings, String> defaultValue, Function<String, T> parser, Property... properties) {
+        this(new SimpleKey(key), defaultValue, parser, properties);
+    }
+
+    public Setting(Key key, Function<Settings, String> defaultValue, Function<String, T> parser, Property... properties) {
+        this(key, defaultValue, parser, v -> {}, properties);
+    }
+
+    public Setting(Key key, Function<Settings, String> defaultValue, Function<String, T> parser, Validator<T> validator, Property... properties) {
+        this(key, defaultValue, null, parser, validator, properties);
+    }
+
+    public Setting(Key key, Setting<T> fallbackSetting, Function<String, T> parser, Property... properties) {
+        this(key, fallbackSetting::getRaw, fallbackSetting, parser, v -> {}, properties);
+    }
 
     /**
-     * LineLength.
+     * Creates a new Setting instance.
+     * <p>
+     * todo LineLength or Settings Source.
      *
      * @param key             key
      * @param defaultValue    default value
      * @param fallbackSetting fallback setting
      * @param parser          value parser
      * @param validator       value validator
+     * @param properties      properties for this setting
      */
     public Setting(Key key,
                    Function<Settings, String> defaultValue,
                    Setting<T> fallbackSetting,
                    Function<String, T> parser,
-                   Validator<T> validator) {
+                   Validator<T> validator,
+                   Property... properties) {
 
         this.key = key;
         this.defaultValue = defaultValue;
         this.fallbackSetting = Optional.ofNullable(fallbackSetting);
         this.parser = parser;
         this.validator = validator;
+        if (properties == null || properties.length == 0) {
+            this.properties = EMPTY_PROPERTIES;
+        } else {
+            this.properties = EnumSet.copyOf(Arrays.asList(properties));
+        }
     }
 
     /**
@@ -67,6 +104,7 @@ public class Setting<T> {
 
     /**
      * Returns the setting properties
+     *
      * @see Property
      */
     public EnumSet<Property> getProperties() {
@@ -182,7 +220,7 @@ public class Setting<T> {
     }
 
     public SettingUpdater<T> newUpdater(Consumer<T> updater, Consumer<T> validator, Logger logger) {
-        return new Updater( updater, validator, logger);
+        return new Updater(updater, validator, logger);
     }
 
     private final class Updater implements SettingUpdater<T> {
