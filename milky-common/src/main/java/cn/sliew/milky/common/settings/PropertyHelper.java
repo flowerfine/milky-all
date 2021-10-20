@@ -1,5 +1,7 @@
 package cn.sliew.milky.common.settings;
 
+import java.util.Arrays;
+
 public class PropertyHelper {
 
     private PropertyHelper() {
@@ -9,8 +11,24 @@ public class PropertyHelper {
     /**
      * Returns <code>true</code> if this setting is dynamically updateable, otherwise <code>false</code>
      */
-    public final boolean isDynamic(Setting setting) {
+    public static boolean isDynamic(Setting setting) {
         return setting.getProperties().contains(Property.Dynamic);
     }
+
+    /**
+     * Returns <code>true</code> if this setting is sensitive, otherwise <code>false</code>
+     */
+    public static boolean isSensitive(Setting setting) {
+        return setting.getProperties().contains(Property.Sensitive);
+    }
+
+    /**
+     * Returns <code>true</code> if this setting is sensitive, otherwise <code>false</code>
+     */
+    public static boolean isSensitive(Property... properties) {
+        return properties != null && Arrays.asList(properties).contains(Property.Sensitive);
+    }
+
+
 
 }
