@@ -1,7 +1,6 @@
 package cn.sliew.milky.common.settings;
 
-import cn.sliew.milky.common.primitives.Booleans;
-import cn.sliew.milky.common.primitives.Floats;
+import cn.sliew.milky.common.primitives.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,17 +42,11 @@ public class SettingHelper {
 
     public static Setting<Double> doubleSetting(String key, double defaultValue, double minValue, double maxValue, Property... properties) {
         return new Setting<>(key, (s) -> Double.toString(defaultValue), (s) -> {
-            final double d = Double.parseDouble(s);
-            if (d < minValue) {
-                String err = "Failed to parse value" + (isFiltered(properties) ? "" : " [" + s + "]") + " for setting [" + key +
-                        "] must be >= " + minValue;
-                throw new IllegalArgumentException(err);
-            }
-            if (d > maxValue) {
-                String err = "Failed to parse value" + (isFiltered(properties) ? "" : " [" + s + "]") + " for setting [" + key +
-                        "] must be <= " + maxValue;
-                throw new IllegalArgumentException(err);
-            }
+            final double d = Doubles.parseDouble(s);
+            checkArgument(d >= minValue, () -> "Failed to parse value" +
+                    (isSensitive(properties) ? "" : " [" + s + "]") + " for setting [" + key + "] must be >= " + minValue);
+            checkArgument(d <= maxValue, () -> "Failed to parse value" +
+                    (isSensitive(properties) ? "" : " [" + s + "]") + " for setting [" + key + "] must be <= " + maxValue);
             return d;
         }, properties);
     }
@@ -62,20 +55,20 @@ public class SettingHelper {
         return intSetting(key, defaultValue, Integer.MIN_VALUE, properties);
     }
 
+    public static Setting<Integer> intSetting(String key, int defaultValue, int minValue, Property... properties) {
+        return new Setting<>(key, (s) -> Integer.toString(defaultValue),
+                (s) -> parseInt(s, minValue, key, isSensitive(properties)), properties);
+    }
+
     public static Setting<Integer> intSetting(String key, int defaultValue, int minValue, int maxValue, Property... properties) {
         return new Setting<>(key, (s) -> Integer.toString(defaultValue),
                 (s) -> parseInt(s, minValue, maxValue, key, isSensitive(properties)), properties);
     }
 
-    public static Setting<Integer> intSetting(String key, int defaultValue, int minValue, Property... properties) {
-        return new Setting<>(key, (s) -> Integer.toString(defaultValue), (s) -> parseInt(s, minValue, key, isSensitive(properties)),
-                properties);
-    }
-
     public static Setting<Integer> intSetting(String key, int defaultValue, int minValue, Validator<Integer> validator,
                                               Property... properties) {
-        return new Setting<>(key, Integer.toString(defaultValue), (s) -> parseInt(s, minValue, key, isSensitive(properties)), validator,
-                properties);
+        return new Setting<>(key, Integer.toString(defaultValue),
+                (s) -> parseInt(s, minValue, key, isSensitive(properties)), validator, properties);
     }
 
     public static Setting<Integer> intSetting(String key, Setting<Integer> fallbackSetting, int minValue, Property... properties) {
@@ -89,17 +82,12 @@ public class SettingHelper {
 
     public static Setting<Integer> intSetting(String key, Setting<Integer> fallbackSetting, int minValue, Validator<Integer> validator,
                                               Property... properties) {
-        return new Setting<>(new SimpleKey(key), fallbackSetting, fallbackSetting::getRaw,
-                (s) -> parseInt(s, minValue, key, isSensitive(properties)),validator, properties);
-    }
-
-    public static Setting<Long> longSetting(String key, long defaultValue, long minValue, Property... properties) {
-        return new Setting<>(key, (s) -> Long.toString(defaultValue), (s) -> parseLong(s, minValue, key, isSensitive(properties)),
-                properties);
+        return new Setting<>(new SimpleKey(key), fallbackSetting::getRaw, fallbackSetting,
+                (s) -> parseInt(s, minValue, key, isSensitive(properties)), validator, properties);
     }
 
     public static int parseInt(String s, int minValue, String key) {
-        return parseInt(s, minValue, Integer.MAX_VALUE, key, false);
+        return parseInt(s, minValue, Integer.MAX_VALUE, key);
     }
 
     public static int parseInt(String s, int minValue, int maxValue, String key) {
@@ -111,51 +99,50 @@ public class SettingHelper {
     }
 
     public static int parseInt(String s, int minValue, int maxValue, String key, boolean sensitive) {
-        int value = Integer.parseInt(s);
-        if (value < minValue) {
-            String err = "Failed to parse value" + (sensitive ? "" : " [" + s + "]") + " for setting [" + key + "] must be >= " + minValue;
-            throw new IllegalArgumentException(err);
-        }
-        if (value > maxValue) {
-            String err = "Failed to parse value" + (sensitive ? "" : " [" + s + "]") + " for setting [" + key + "] must be <= " + maxValue;
-            throw new IllegalArgumentException(err);
-        }
+        int value = Integers.parseInteger(s);
+        checkArgument(value >= minValue, () -> "Failed to parse value" +
+                (sensitive ? "" : " [" + s + "]") + " for setting [" + key + "] must be >= " + minValue);
+        checkArgument(value <= maxValue, () -> "Failed to parse value" +
+                (sensitive ? "" : " [" + s + "]") + " for setting [" + key + "] must be <= " + maxValue);
         return value;
+    }
+
+    public static Setting<Long> longSetting(String key, long defaultValue, long minValue, Property... properties) {
+        return new Setting<>(key, (s) -> Long.toString(defaultValue), (s) -> parseLong(s, minValue, key, isSensitive(properties)),
+                properties);
     }
 
     public static long parseLong(String s, long minValue, String key) {
         return parseLong(s, minValue, key, false);
     }
 
-    static long parseLong(String s, long minValue, String key, boolean isFiltered) {
-        long value = Long.parseLong(s);
-        if (value < minValue) {
-            String err = "Failed to parse value" + (isFiltered ? "" : " [" + s + "]") + " for setting [" + key + "] must be >= " + minValue;
-            throw new IllegalArgumentException(err);
-        }
+    public static long parseLong(String s, long minValue, String key, boolean sensitive) {
+        long value = Longs.parseLong(s);
+        checkArgument(value >= minValue, () -> "Failed to parse value" +
+                (sensitive ? "" : " [" + s + "]") + " for setting [" + key + "] must be >= " + minValue);
         return value;
     }
 
     public static Setting<Boolean> boolSetting(String key, boolean defaultValue, Property... properties) {
-        return new Setting<>(key, (s) -> Boolean.toString(defaultValue), b -> parseBoolean(b, key, isFiltered(properties)), properties);
+        return new Setting<>(key, (s) -> Boolean.toString(defaultValue), b -> parseBoolean(b, key, isSensitive(properties)), properties);
     }
 
     public static Setting<Boolean> boolSetting(String key, Setting<Boolean> fallbackSetting, Property... properties) {
-        return new Setting<>(key, fallbackSetting, b -> parseBoolean(b, key, isFiltered(properties)), properties);
+        return new Setting<>(key, fallbackSetting, b -> parseBoolean(b, key, isSensitive(properties)), properties);
     }
 
     public static Setting<Boolean> boolSetting(String key, Setting<Boolean> fallbackSetting, Validator<Boolean> validator,
                                                Property... properties) {
-        return new Setting<>(new SimpleKey(key), fallbackSetting, fallbackSetting::getRaw, b -> parseBoolean(b, key,
-                isFiltered(properties)), validator, properties);
+        return new Setting<>(new SimpleKey(key), fallbackSetting::getRaw, fallbackSetting, b -> parseBoolean(b, key,
+                isSensitive(properties)), validator, properties);
     }
 
     public static Setting<Boolean> boolSetting(String key, boolean defaultValue, Validator<Boolean> validator, Property... properties) {
-        return new Setting<>(key, Boolean.toString(defaultValue), b -> parseBoolean(b, key, isFiltered(properties)), validator, properties);
+        return new Setting<>(key, Boolean.toString(defaultValue), b -> parseBoolean(b, key, isSensitive(properties)), validator, properties);
     }
 
     public static Setting<Boolean> boolSetting(String key, Function<Settings, String> defaultValueFn, Property... properties) {
-        return new Setting<>(key, defaultValueFn, b -> parseBoolean(b, key, isFiltered(properties)), properties);
+        return new Setting<>(key, defaultValueFn, b -> parseBoolean(b, key, isSensitive(properties)), properties);
     }
 
     static boolean parseBoolean(String b, String key, boolean isFiltered) {
@@ -175,7 +162,7 @@ public class SettingHelper {
             final List<String> defaultStringValue,
             final Function<String, T> singleValueParser,
             final Property... properties) {
-        return listSetting(key, null, singleValueParser, (s) -> defaultStringValue, properties);
+        return listSetting(key, defaultStringValue, singleValueParser, null, properties);
     }
 
     public static <T> Setting<List<T>> listSetting(
@@ -184,7 +171,7 @@ public class SettingHelper {
             final Function<String, T> singleValueParser,
             final Validator<List<T>> validator,
             final Property... properties) {
-        return listSetting(key, null, singleValueParser, (s) -> defaultStringValue, validator, properties);
+        return listSetting(key, (s) -> defaultStringValue, singleValueParser, validator, properties);
     }
 
     // TODO this one's two argument get is still broken
@@ -193,40 +180,40 @@ public class SettingHelper {
             final Setting<List<T>> fallbackSetting,
             final Function<String, T> singleValueParser,
             final Property... properties) {
-        return listSetting(key, fallbackSetting, singleValueParser, (s) -> parseableStringToList(fallbackSetting.getRaw(s)), properties);
+        return listSetting(key, (s) -> parseableStringToList(fallbackSetting.getRaw(s)), fallbackSetting, singleValueParser, properties);
     }
 
     public static <T> Setting<List<T>> listSetting(
             final String key,
-            final Function<String, T> singleValueParser,
             final Function<Settings, List<String>> defaultStringValue,
+            final Function<String, T> singleValueParser,
             final Property... properties) {
-        return listSetting(key, null, singleValueParser, defaultStringValue, properties);
+        return listSetting(key, defaultStringValue, null, singleValueParser, properties);
     }
 
     public static <T> Setting<List<T>> listSetting(
             final String key,
-            final Function<String, T> singleValueParser,
             final Function<Settings, List<String>> defaultStringValue,
+            final Function<String, T> singleValueParser,
             final Validator<List<T>> validator,
             final Property... properties) {
-        return listSetting(key, null, singleValueParser, defaultStringValue, validator, properties);
+        return listSetting(key, defaultStringValue, null, singleValueParser, validator, properties);
     }
 
     public static <T> Setting<List<T>> listSetting(
             final String key,
-            final @Nullable Setting<List<T>> fallbackSetting,
-            final Function<String, T> singleValueParser,
             final Function<Settings, List<String>> defaultStringValue,
+            final Setting<List<T>> fallbackSetting,
+            final Function<String, T> singleValueParser,
             final Property... properties) {
-        return listSetting(key, fallbackSetting, singleValueParser, defaultStringValue, v -> {}, properties);
+        return listSetting(key, defaultStringValue, fallbackSetting, singleValueParser, v -> {}, properties);
     }
 
     public static <T> Setting<List<T>> listSetting(
             final String key,
-            final @Nullable Setting<List<T>> fallbackSetting,
-            final Function<String, T> singleValueParser,
             final Function<Settings, List<String>> defaultStringValue,
+            final Setting<List<T>> fallbackSetting,
+            final Function<String, T> singleValueParser,
             final Validator<List<T>> validator,
             final Property... properties) {
         if (defaultStringValue.apply(Settings.EMPTY) == null) {
@@ -235,7 +222,7 @@ public class SettingHelper {
         Function<String, List<T>> parser = (s) ->
                 parseableStringToList(s).stream().map(singleValueParser).collect(Collectors.toList());
 
-        return new ListSetting<>(key, fallbackSetting, defaultStringValue, parser, validator, properties);
+        return new ListSetting<>(key, defaultStringValue, fallbackSetting, parser, validator, properties);
     }
 
     private static List<String> parseableStringToList(String parsableString) {

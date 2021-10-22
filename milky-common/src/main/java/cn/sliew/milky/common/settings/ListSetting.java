@@ -10,8 +10,8 @@ public class ListSetting<T> extends Setting<List<T>> {
     /**
      * todo 将 list 转变成 json
      */
-    public ListSetting(ListKey key, Function<Settings, List<String>> defaultStringValue, Setting<List<T>> fallbackSetting, Function<String, List<T>> parser, Validator<List<T>> validator) {
-        super(key, s -> defaultStringValue.apply(s).toString(), fallbackSetting, parser, validator);
+    public ListSetting(ListKey key, Function<Settings, List<String>> defaultStringValue, Setting<List<T>> fallbackSetting, Function<String, List<T>> parser, Validator<List<T>> validator, Property... properties) {
+        super(key, s -> defaultStringValue.apply(s).toString(), fallbackSetting, parser, validator, properties);
         this.defaultStringValue = defaultStringValue;
     }
 

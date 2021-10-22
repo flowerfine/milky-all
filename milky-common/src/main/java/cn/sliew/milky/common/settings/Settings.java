@@ -10,6 +10,8 @@ import java.util.stream.Stream;
 
 public final class Settings {
 
+    public static final Settings EMPTY = new SettingsBuilder().build();
+
     /**
      * The raw settings from the full key to raw string value.
      */
