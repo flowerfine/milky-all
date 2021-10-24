@@ -7,7 +7,7 @@ import static cn.sliew.milky.common.exception.Rethrower.rethrowIfUnrecoverable;
 public final class StringUtils {
 
     private StringUtils() {
-        throw new IllegalStateException("can't do this!");
+        throw new AssertionError("No instances intended");
     }
 
     /**

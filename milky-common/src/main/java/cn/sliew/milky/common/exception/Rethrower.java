@@ -7,6 +7,10 @@ import static cn.sliew.milky.common.check.Ensures.checkNotNull;
  */
 public final class Rethrower {
 
+    private Rethrower() {
+        throw new AssertionError("No instance intended");
+    }
+
     /**
      * Rethrow the supplied {@link Throwable exception} if it is
      * <em>unrecoverable</em>.
@@ -54,10 +58,6 @@ public final class Rethrower {
     @SuppressWarnings("unchecked")
     public static <T extends Throwable> void throwAs(Throwable t) throws T {
         throw (T) t;
-    }
-
-    private Rethrower() {
-        throw new IllegalStateException("no instance");
     }
 }
 

@@ -8,7 +8,7 @@ public class ArrayUtil {
     public static final int MAX_ARRAY_LENGTH = Integer.MAX_VALUE - RamUsageEstimator.NUM_BYTES_ARRAY_HEADER;
 
     private ArrayUtil() {
-        throw new IllegalStateException("no instance");
+        throw new AssertionError("No instances intended");
     }
 
     /**
@@ -26,7 +26,6 @@ public class ArrayUtil {
      * @param minTargetSize   Minimum required value to be returned.
      * @param bytesPerElement Bytes used by each element of
      *                        the array.  See constants in {@link RamUsageEstimator}.
-     * @lucene.internal
      */
 
     public static int oversize(int minTargetSize, int bytesPerElement) {
