@@ -219,6 +219,14 @@ public class Setting<T> {
         return false;
     }
 
+    /**
+     * Returns a set of settings that are required at validation time. Unless all of the dependencies are present in the settings
+     * object validation of setting must fail.
+     */
+    public Set<SettingDependency> getSettingsDependencies(final String key) {
+        return Collections.emptySet();
+    }
+
     public SettingUpdater<T> newUpdater(Consumer<T> updater, Consumer<T> validator, Logger logger) {
         return new Updater(updater, validator, logger);
     }

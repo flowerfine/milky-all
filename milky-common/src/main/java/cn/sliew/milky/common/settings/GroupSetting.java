@@ -6,12 +6,11 @@ import java.util.function.Consumer;
 
 public class GroupSetting extends Setting<Settings> {
 
-    private final GroupKey key;
+    private final String key;
     private final Consumer<Settings> validator;
 
-    public GroupSetting(GroupKey key, Consumer<Settings> validator) {
-        super(key, (s) -> "", null, (s) -> null, v -> {
-        });
+    public GroupSetting(String key, Consumer<Settings> validator, Property... properties) {
+        super(new GroupKey(key), (s) -> "", null, (s) -> null, v -> {}, properties);
         this.key = key;
         this.validator = validator;
     }
@@ -40,7 +39,7 @@ public class GroupSetting extends Setting<Settings> {
     @Override
     public boolean exists(Settings settings) {
         for (String settingsKey : settings.keySet()) {
-            if (settingsKey.startsWith(key.name())) {
+            if (settingsKey.startsWith(key)) {
                 return true;
             }
         }

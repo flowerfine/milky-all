@@ -1,9 +1,8 @@
 package cn.sliew.milky.common.settings;
 
 import cn.sliew.milky.common.primitives.*;
+import cn.sliew.milky.common.util.JacksonUtil;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -222,42 +221,15 @@ public class SettingHelper {
         Function<String, List<T>> parser = (s) ->
                 parseableStringToList(s).stream().map(singleValueParser).collect(Collectors.toList());
 
-        return new ListSetting<>(key, defaultStringValue, fallbackSetting, parser, validator, properties);
+        return new ListSetting<>(new ListKey(key), defaultStringValue, fallbackSetting, parser, validator, properties);
     }
 
     private static List<String> parseableStringToList(String parsableString) {
-        // fromXContent doesn't use named xcontent or deprecation.
-        try (XContentParser xContentParser = XContentType.JSON.xContent()
-                .createParser(NamedXContentRegistry.EMPTY, DeprecationHandler.THROW_UNSUPPORTED_OPERATION, parsableString)) {
-            XContentParser.Token token = xContentParser.nextToken();
-            if (token != XContentParser.Token.START_ARRAY) {
-                throw new IllegalArgumentException("expected START_ARRAY but got " + token);
-            }
-            ArrayList<String> list = new ArrayList<>();
-            while ((token = xContentParser.nextToken()) != XContentParser.Token.END_ARRAY) {
-                if (token != XContentParser.Token.VALUE_STRING) {
-                    throw new IllegalArgumentException("expected VALUE_STRING but got " + token);
-                }
-                list.add(xContentParser.text());
-            }
-            return list;
-        } catch (IOException e) {
-            throw new IllegalArgumentException("failed to parse array", e);
-        }
+        return JacksonUtil.parseJsonArray(parsableString, String.class);
     }
 
     private static String arrayToParsableString(List<String> array) {
-        try {
-            XContentBuilder builder = XContentBuilder.builder(XContentType.JSON.xContent());
-            builder.startArray();
-            for (String element : array) {
-                builder.value(element);
-            }
-            builder.endArray();
-            return Strings.toString(builder);
-        } catch (IOException ex) {
-            throw new ElasticsearchException(ex);
-        }
+        return JacksonUtil.toJsonString(array);
     }
 
     public static Setting<Settings> groupSetting(String key, Property... properties) {
@@ -271,7 +243,7 @@ public class SettingHelper {
     /**
      * This setting type allows to validate settings that have the same type and a common prefix. For instance feature.${type}=[true|false]
      * can easily be added with this setting. Yet, prefix key settings don't support updaters out of the box unless
-     * {@link #getConcreteSetting(String)} is used to pull the updater.
+     * {@link AffixSetting#getConcreteSetting(String)} is used to pull the updater.
      */
     public static <T> AffixSetting<T> prefixKeySetting(String prefix, Function<String, Setting<T>> delegateFactory) {
         BiFunction<String, String, Setting<T>> delegateFactoryWithNamespace = (ns, k) -> delegateFactory.apply(k);
@@ -281,26 +253,24 @@ public class SettingHelper {
     /**
      * This setting type allows to validate settings that have the same type and a common prefix and suffix. For instance
      * storage.${backend}.enable=[true|false] can easily be added with this setting. Yet, affix key settings don't support updaters
-     * out of the box unless {@link #getConcreteSetting(String)} is used to pull the updater.
+     * out of the box unless {@link AffixSetting#getConcreteSetting(String)} is used to pull the updater.
      */
     public static <T> AffixSetting<T> affixKeySetting(String prefix, String suffix, Function<String, Setting<T>> delegateFactory,
-                                                      AffixSettingDependency... dependencies) {
+                                                      AffixSetting.AffixSettingDependency... dependencies) {
         BiFunction<String, String, Setting<T>> delegateFactoryWithNamespace = (ns, k) -> delegateFactory.apply(k);
         return affixKeySetting(new AffixKey(prefix, suffix), delegateFactoryWithNamespace, dependencies);
     }
 
     public static <T> AffixSetting<T> affixKeySetting(String prefix, String suffix, BiFunction<String, String, Setting<T>> delegateFactory,
-                                                      AffixSettingDependency... dependencies) {
+                                                      AffixSetting.AffixSettingDependency... dependencies) {
         Setting<T> delegate = delegateFactory.apply("_na_", "_na_");
         return new AffixSetting<>(new AffixKey(prefix, suffix), delegate, delegateFactory, dependencies);
     }
 
     private static <T> AffixSetting<T> affixKeySetting(AffixKey key, BiFunction<String, String, Setting<T>> delegateFactory,
-                                                       AffixSettingDependency... dependencies) {
+                                                       AffixSetting.AffixSettingDependency... dependencies) {
         Setting<T> delegate = delegateFactory.apply("_na_", "_na_");
         return new AffixSetting<>(key, delegate, delegateFactory, dependencies);
     }
-
-
 
 }

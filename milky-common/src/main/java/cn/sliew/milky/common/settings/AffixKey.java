@@ -1,5 +1,7 @@
 package cn.sliew.milky.common.settings;
 
+import cn.sliew.milky.common.primitives.Strings;
+
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,6 +19,10 @@ public final class AffixKey implements Key {
     private final String suffix;
 
     private final String description;
+
+    AffixKey(String key) {
+        this(key, Strings.empty());
+    }
 
     AffixKey(String prefix, String description) {
         this(prefix, null, description);

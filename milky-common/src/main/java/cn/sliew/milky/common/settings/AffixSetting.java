@@ -1,9 +1,6 @@
 package cn.sliew.milky.common.settings;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -12,11 +9,14 @@ public class AffixSetting<T> extends Setting<T> {
 
     private final AffixKey key;
     private final BiFunction<String, String, Setting<T>> delegateFactory;
+    private final Set<AffixSettingDependency> dependencies;
 
-    public AffixSetting(AffixKey key, Setting<T> delegate, BiFunction<String, String, Setting<T>> delegateFactory) {
+    public AffixSetting(AffixKey key, Setting<T> delegate, BiFunction<String, String, Setting<T>> delegateFactory,
+                        AffixSettingDependency... dependencies) {
         super(key, delegate.defaultValue, delegate.fallbackSetting.orElse(null), delegate.parser, v -> {});
         this.key = key;
         this.delegateFactory = delegateFactory;
+        this.dependencies = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(dependencies)));
     }
 
     @Override
@@ -100,5 +100,47 @@ public class AffixSetting<T> extends Setting<T> {
 
     private Stream<String> matchStream(Settings settings) {
         return settings.keySet().stream().filter(this::match).map(key::getConcreteString);
+    }
+
+    /**
+     * Get the raw list of dependencies. This method is exposed for testing purposes and {@link #getSettingsDependencies(String)}
+     * should be preferred for most all cases.
+     * @return the raw list of dependencies for this setting
+     */
+    public Set<AffixSettingDependency> getDependencies() {
+        return Collections.unmodifiableSet(dependencies);
+    }
+
+    @Override
+    public Set<SettingDependency> getSettingsDependencies(String settingsKey) {
+        if (dependencies.isEmpty()) {
+            return Collections.emptySet();
+        } else {
+            String namespace = key.getNamespace(settingsKey);
+            return dependencies.stream()
+                    .map(s ->
+                            new SettingDependency() {
+                                @Override
+                                public Setting<Object> getSetting() {
+                                    return s.getSetting().getConcreteSettingForNamespace(namespace);
+                                }
+
+                                @Override
+                                public void validate(final String key, final Object value, final Object dependency) {
+                                    s.validate(key, value, dependency);
+                                }
+                            })
+                    .collect(Collectors.toSet());
+        }
+    }
+
+    /**
+     * Allows an affix setting to declare a dependency on another affix setting.
+     */
+    public interface AffixSettingDependency extends SettingDependency {
+
+        @Override
+        AffixSetting getSetting();
+
     }
 }
