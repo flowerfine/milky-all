@@ -4,10 +4,8 @@ import cn.sliew.milky.common.primitives.Integers;
 import cn.sliew.milky.test.MilkyTestCase;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -133,13 +131,21 @@ public class SettingsTestCase extends MilkyTestCase {
                 .putList("foo.bar", "1", "2", "3")
                 .build();
         Setting<List<Integer>> listSetting = SettingHelper.listSetting("foo.bar", Collections.emptyList(), Integers::parseInteger);
+        assertTrue(listSetting.isListSetting());
+
         List<Integer> integers = listSetting.get(settings);
         assertThat(integers, contains(1, 2, 3));
     }
 
     @Test
     public void testGroupSetting() {
-
+        Settings settings = Settings.builder()
+                .put("foo.bar.1.value", "1")
+                .put("foo.bar.2.value", "2")
+                .put("foo.bar.3.value", "3")
+                .build();
+        Setting<Settings> setting = SettingHelper.groupSetting("foo.bar.");
+        assertTrue(setting.isGroupSetting());
     }
 
     @Test
