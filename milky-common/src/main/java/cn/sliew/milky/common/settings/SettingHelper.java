@@ -15,7 +15,7 @@ import static cn.sliew.milky.common.settings.PropertyHelper.isSensitive;
 public class SettingHelper {
 
     private SettingHelper() {
-        throw new IllegalStateException("no instance");
+        throw new AssertionError("No instances intended");
     }
 
     public static Setting<String> simpleString(String key, String defaultValue, Property... properties) {
@@ -161,7 +161,7 @@ public class SettingHelper {
             final List<String> defaultStringValue,
             final Function<String, T> singleValueParser,
             final Property... properties) {
-        return listSetting(key, defaultStringValue, singleValueParser, null, properties);
+        return listSetting(key, defaultStringValue, singleValueParser, v -> {}, properties);
     }
 
     public static <T> Setting<List<T>> listSetting(

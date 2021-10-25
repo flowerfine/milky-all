@@ -142,7 +142,7 @@ public class Setting<T> {
             return parsed;
         } catch (Exception t) {
             throw new IllegalArgumentException(
-                    "Failed to parse value [" + value + "] for setting [" + getKey() + "]", t);
+                    "Failed to parse value '" + value + "' for setting '" + getKey() + "'", t);
         }
     }
 

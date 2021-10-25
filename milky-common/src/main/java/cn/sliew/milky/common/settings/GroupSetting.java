@@ -1,5 +1,6 @@
 package cn.sliew.milky.common.settings;
 
+import cn.sliew.milky.common.util.JacksonUtil;
 import cn.sliew.milky.log.Logger;
 
 import java.util.function.Consumer;
@@ -20,13 +21,10 @@ public class GroupSetting extends Setting<Settings> {
         return true;
     }
 
-    /**
-     * todo 将 map 转变成 json
-     */
     @Override
     public String innerGetRaw(final Settings settings) {
         Settings subSettings = get(settings);
-        return subSettings.toDelimitedString('=');
+        return JacksonUtil.toJsonString(subSettings.settings);
     }
 
     @Override

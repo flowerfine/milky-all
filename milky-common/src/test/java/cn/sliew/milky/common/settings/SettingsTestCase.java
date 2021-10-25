@@ -1,9 +1,11 @@
 package cn.sliew.milky.common.settings;
 
+import cn.sliew.milky.common.primitives.Integers;
 import cn.sliew.milky.test.MilkyTestCase;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -127,7 +129,12 @@ public class SettingsTestCase extends MilkyTestCase {
 
     @Test
     public void testListSetting() {
-
+        Settings settings = Settings.builder()
+                .putList("foo.bar", "1", "2", "3")
+                .build();
+        Setting<List<Integer>> listSetting = SettingHelper.listSetting("foo.bar", Collections.emptyList(), Integers::parseInteger);
+        List<Integer> integers = listSetting.get(settings);
+        assertThat(integers, contains(1, 2, 3));
     }
 
     @Test
