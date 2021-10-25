@@ -13,7 +13,7 @@ public final class GroupKey extends SimpleKey {
 
     public GroupKey(String key, String description) {
         super(key, description);
-        checkArgument(key.endsWith(".") == false, () -> "key must end with a '.'");
+        checkArgument(key.endsWith("."), () -> "key must end with a '.'");
     }
 
     @Override

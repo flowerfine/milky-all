@@ -18,8 +18,33 @@ public class SettingHelper {
         throw new AssertionError("No instances intended");
     }
 
+    public static Setting<String> simpleString(String key, Property... properties) {
+        return new Setting<>(key, s -> "", Function.identity(), properties);
+    }
+
     public static Setting<String> simpleString(String key, String defaultValue, Property... properties) {
         return new Setting<>(key, s -> defaultValue, Function.identity(), properties);
+    }
+
+    public static Setting<String> simpleString(String key, String defaultValue, Validator<String> validator, Property... properties) {
+        validator.validate(defaultValue);
+        return new Setting<>(new SimpleKey(key), s -> defaultValue, null, Function.identity(), validator, properties);
+    }
+
+    public static Setting<String> simpleString(String key, Validator<String> validator, Property... properties) {
+        return new Setting<>(new SimpleKey(key),  s -> "", null, Function.identity(), validator, properties);
+    }
+
+    public static Setting<String> simpleString(String key, Setting<String> fallback, Validator<String> validator, Property... properties) {
+        return new Setting<>(new SimpleKey(key),  fallback::getRaw, fallback, Function.identity(), validator, properties);
+    }
+
+    public static Setting<String> simpleString(String key, Setting<String> fallback, Property... properties) {
+        return simpleString(key, fallback, Function.identity(), properties);
+    }
+
+    public static Setting<String> simpleString(String key, Setting<String> fallback, Function<String, String> parser, Property... properties) {
+        return new Setting<>(key, fallback, parser, properties);
     }
 
     public static Setting<Float> floatSetting(String key, float defaultValue, Property... properties) {

@@ -20,4 +20,8 @@ public class ListSetting<T> extends Setting<List<T>> {
         List<String> array = settings.getAsList(getKey(), null);
         return array == null ? defaultValue.apply(settings) : array.toString();
     }
+
+    boolean isListSetting() {
+        return true;
+    }
 }
