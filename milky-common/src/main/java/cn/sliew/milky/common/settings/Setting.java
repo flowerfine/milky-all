@@ -229,6 +229,10 @@ public class Setting<T> {
         return new Updater(updater, validator, logger);
     }
 
+    public static <T> SettingBuilder<T> newSetting() {
+        return new SettingBuilder<>();
+    }
+
     private final class Updater implements SettingUpdater<T> {
 
         private final Consumer<T> updater;
