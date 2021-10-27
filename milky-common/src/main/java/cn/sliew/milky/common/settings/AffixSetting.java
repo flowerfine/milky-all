@@ -1,10 +1,16 @@
 package cn.sliew.milky.common.settings;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * {@link JsonUnwrapped} 可以摊平一个 json 对象，并且可以自定义前后缀。借助这玩意可以替代 AffixSetting。
+ * @param <T>
+ */
 public class AffixSetting<T> extends Setting<T> {
 
     private final AffixKey key;
