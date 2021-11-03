@@ -19,7 +19,7 @@ public class SimpleKey implements Key {
     }
 
     @Override
-    public String name() {
+    public String getDisplayName() {
         return key;
     }
 

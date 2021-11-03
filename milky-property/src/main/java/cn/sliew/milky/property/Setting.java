@@ -26,5 +26,5 @@ public interface Setting<T> {
         return false;
     }
 
-    Set<String> getDependencies();
+    Set<SettingDependency> getDependencies();
 }

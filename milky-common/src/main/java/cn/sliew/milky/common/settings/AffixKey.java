@@ -46,7 +46,7 @@ public final class AffixKey implements Key {
     }
 
     @Override
-    public String name() {
+    public String getDisplayName() {
         return toString();
     }
 
@@ -92,7 +92,7 @@ public final class AffixKey implements Key {
             key.append(".");
             key.append(suffix);
         }
-        return new SimpleKey(key.toString(), name());
+        return new SimpleKey(key.toString(), getDisplayName());
     }
 
     @Override

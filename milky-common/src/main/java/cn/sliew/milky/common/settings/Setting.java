@@ -16,6 +16,7 @@ public class Setting<T> {
     private static final EnumSet<Property> EMPTY_PROPERTIES = EnumSet.noneOf(Property.class);
 
     private final Key key;
+    private String description;
     protected final Function<Settings, String> defaultValue;
     protected final Optional<Setting<T>> fallbackSetting;
     protected final Function<String, T> parser;

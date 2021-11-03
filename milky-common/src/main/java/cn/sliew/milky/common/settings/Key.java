@@ -6,10 +6,10 @@ package cn.sliew.milky.common.settings;
 public interface Key {
 
     /**
-     * The proper name for the setting. This is the primary mechanism of
+     * The proper display name for the setting. This is the primary mechanism of
      * comparing equality.
      */
-    String name();
+    String getDisplayName();
 
     /**
      * And explanation of the meaning of the given setting.
