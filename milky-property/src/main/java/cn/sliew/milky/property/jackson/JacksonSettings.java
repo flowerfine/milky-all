@@ -7,10 +7,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 import static cn.sliew.milky.common.check.Ensures.*;
@@ -63,13 +60,13 @@ public class JacksonSettings implements Settings<JsonNode> {
     }
 
     @Override
-    public JsonNode get(String setting, JsonNode defaultValue) {
-        return null;
+    public  JsonNode get(String setting, Object defaultValue) {
+        return Optional.ofNullable(source.get(setting)).orElse((JsonNode) defaultValue);
     }
 
     @Override
     public Settings<JsonNode> getByPrefix(String prefix) {
-        return null;
+        return new JacksonSettings(name, get(prefix));
     }
 
     @Override
