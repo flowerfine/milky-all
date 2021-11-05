@@ -2,7 +2,6 @@ package cn.sliew.milky.property.jackson;
 
 import cn.sliew.milky.property.Mergeable;
 import cn.sliew.milky.property.Settings;
-import com.fasterxml.jackson.core.filter.TokenFilter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
