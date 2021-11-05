@@ -1,16 +1,19 @@
 package cn.sliew.milky.property.jackson;
 
 import cn.sliew.milky.property.Mergeable;
-import cn.sliew.milky.property.Setting;
 import cn.sliew.milky.property.Settings;
+import com.fasterxml.jackson.core.filter.TokenFilter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-import static cn.sliew.milky.common.check.Ensures.*;
+import static cn.sliew.milky.common.check.Ensures.checkNotNull;
+import static cn.sliew.milky.common.check.Ensures.notBlank;
 
 public class JacksonSettings implements Settings<JsonNode> {
 
@@ -18,12 +21,19 @@ public class JacksonSettings implements Settings<JsonNode> {
 
     private final String name;
     private final JsonNode source;
+    private final ObjectMapper objectMapper;
 
     public JacksonSettings(String name, JsonNode source) {
+        this(name, source, OBJECT_MAPPER);
+    }
+
+    public JacksonSettings(String name, JsonNode source, ObjectMapper objectMapper) {
         notBlank(name, () -> "Settings name must not be blank");
         checkNotNull(source, () -> "Settings source must not be null");
+        checkNotNull(objectMapper, () -> "Settings objectMapper must not be null");
         this.name = name;
         this.source = source;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -49,7 +59,8 @@ public class JacksonSettings implements Settings<JsonNode> {
     @Override
     public Set<String> getKeySet() {
         if (source.isObject()) {
-            return OBJECT_MAPPER.convertValue(source, new TypeReference<Map<String, Object>>() {}).keySet();
+            return objectMapper.convertValue(source, new TypeReference<Map<String, Object>>() {
+            }).keySet();
         }
         return new HashSet<>();
     }
@@ -60,7 +71,7 @@ public class JacksonSettings implements Settings<JsonNode> {
     }
 
     @Override
-    public  JsonNode get(String setting, Object defaultValue) {
+    public JsonNode get(String setting, Object defaultValue) {
         return Optional.ofNullable(source.get(setting)).orElse((JsonNode) defaultValue);
     }
 
@@ -71,7 +82,13 @@ public class JacksonSettings implements Settings<JsonNode> {
 
     @Override
     public Settings filter(Predicate<String> predicate) {
-        return null;
+        if (source.isObject()) {
+            ObjectNode objectNode = (ObjectNode) source;
+            Set<String> fields = getKeySet().stream().filter(predicate).collect(Collectors.toSet());
+            ObjectNode retain = objectNode.retain(fields);
+            return new JacksonSettings(name, retain);
+        }
+        return this;
     }
 
     @Override
