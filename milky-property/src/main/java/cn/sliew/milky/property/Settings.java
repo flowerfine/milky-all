@@ -22,6 +22,8 @@ public interface Settings<T> extends Mergeable {
 
     Set<String> getKeySet();
 
+    Set<String> getFlattenKeySet();
+
     default boolean contains(String setting) {
         return (get(setting) != null);
     }
@@ -35,6 +37,7 @@ public interface Settings<T> extends Mergeable {
         return getByPrefix(setting + ".");
     }
 
-    List getAsList(String setting);
-    Map<String, Settings> getGroups(String settingsPrefix);
+    <E> List<E> getAsList(String setting);
+    <E> Map<String, E> getGroups(String settingsPrefix);
+
 }

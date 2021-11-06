@@ -9,7 +9,13 @@
     "address": "aliea aliej"
   },
   "products": [
-    {},
-    {}
+    {
+      "id": 1,
+      "name": "倩女幽魂"
+    },
+    {
+      "id": 2,
+      "name": "大话西游"
+    }
   ]
 }

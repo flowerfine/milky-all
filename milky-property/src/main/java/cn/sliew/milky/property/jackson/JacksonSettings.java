@@ -2,14 +2,16 @@ package cn.sliew.milky.property.jackson;
 
 import cn.sliew.milky.property.Mergeable;
 import cn.sliew.milky.property.Settings;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.wnameless.json.flattener.JsonFlattener;
+import com.github.wnameless.json.unflattener.JsonUnflattener;
 
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
 import static cn.sliew.milky.common.check.Ensures.notBlank;
@@ -18,9 +20,14 @@ public class JacksonSettings implements Settings<JsonNode> {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
+    private JacksonSettings fallback;
+
     private final String name;
     private final JsonNode source;
     private final ObjectMapper objectMapper;
+
+    private JsonFlattener flattener;
+    private JsonUnflattener unflattener;
 
     public JacksonSettings(String name, JsonNode source) {
         this(name, source, OBJECT_MAPPER);
@@ -58,8 +65,16 @@ public class JacksonSettings implements Settings<JsonNode> {
     @Override
     public Set<String> getKeySet() {
         if (source.isObject()) {
-            return objectMapper.convertValue(source, new TypeReference<Map<String, Object>>() {
-            }).keySet();
+            return StreamSupport.stream(Spliterators.spliteratorUnknownSize(source.fieldNames(), Spliterator.ORDERED), false)
+                    .collect(Collectors.toSet());
+        }
+        return new HashSet<>();
+    }
+
+    @Override
+    public Set<String> getFlattenKeySet() {
+        if (source.isObject()) {
+            return JsonFlattener.flattenAsMap(source.toString()).keySet();
         }
         return new HashSet<>();
     }
@@ -91,17 +106,30 @@ public class JacksonSettings implements Settings<JsonNode> {
     }
 
     @Override
-    public List getAsList(String setting) {
-        return null;
+    public List<JsonNode> getAsList(String setting) {
+        JsonNode jsonNode = get(setting);
+        if (jsonNode.isArray()) {
+            return StreamSupport.stream(Spliterators.spliteratorUnknownSize(jsonNode.iterator(), Spliterator.ORDERED), false)
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
     }
 
     @Override
-    public Map<String, Settings> getGroups(String settingsPrefix) {
-        return null;
+    public Map<String, JsonNode> getGroups(String settingsPrefix) {
+        JsonNode jsonNode = get(settingsPrefix);
+        if (jsonNode.isObject()) {
+            return StreamSupport.stream(Spliterators.spliteratorUnknownSize(jsonNode.fields(), Spliterator.ORDERED), false)
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        }
+        return Collections.emptyMap();
     }
 
     @Override
     public Mergeable withFallback(Mergeable fallback) {
-        return null;
+        if (fallback instanceof JacksonSettings) {
+            this.fallback = (JacksonSettings) fallback;
+        }
+        return this;
     }
 }
