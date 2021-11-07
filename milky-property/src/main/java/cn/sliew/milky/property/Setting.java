@@ -1,5 +1,8 @@
 package cn.sliew.milky.property;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
+import java.util.EnumSet;
 import java.util.Set;
 
 public interface Setting<T> {
@@ -25,6 +28,8 @@ public interface Setting<T> {
     default boolean isListSetting() {
         return false;
     }
+
+    EnumSet<Property> getProperties();
 
     Set<SettingDependency> getDependencies();
 }
