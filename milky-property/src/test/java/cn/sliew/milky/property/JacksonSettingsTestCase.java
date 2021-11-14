@@ -1,10 +1,10 @@
 package cn.sliew.milky.property;
 
-import cn.sliew.milky.property.bean.User;
 import cn.sliew.milky.property.jackson.JacksonSettings;
 import cn.sliew.milky.test.MilkyTestCase;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,8 +28,8 @@ class JacksonSettingsTestCase extends MilkyTestCase {
     private void beforeEach() throws URISyntaxException, IOException {
         URL url = Thread.currentThread().getContextClassLoader().getResource("");
         Path resource = Paths.get(url.toURI());
-        Path json = resource.resolve("users.json");
-        ObjectMapper mapper = new ObjectMapper();
+        Path json = resource.resolve("users.yml");
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         this.source = mapper.readTree(json.toFile());
         this.settings = new JacksonSettings("jackson", source);
     }
@@ -38,8 +38,11 @@ class JacksonSettingsTestCase extends MilkyTestCase {
     void testGet() {
         assertTrue(settings.contains("userName"));
 
-        JsonNode jsonNode = (JsonNode) settings.get("userName");
-        assertEquals("7gNaQ%d01800Mz", jsonNode.asText());
+        JsonNode userNameNode = (JsonNode) settings.get("userName");
+        assertEquals("7gNaQ%d01800Mz", userNameNode.asText());
+
+        JsonNode addressNode = (JsonNode) settings.get("address");
+        assertEquals(4, addressNode.size());
     }
 
     @Test
@@ -69,5 +72,11 @@ class JacksonSettingsTestCase extends MilkyTestCase {
     void testGetAsMap() {
         Map<String, JsonNode> address = settings.getGroups("address");
         assertEquals(4, address.size());
+    }
+
+    @Test
+    void testGetByPrefix() {
+        Settings settingsByPrefix = settings.getByPrefix("address.");
+        System.out.println(settingsByPrefix.getKeySet());
     }
 }

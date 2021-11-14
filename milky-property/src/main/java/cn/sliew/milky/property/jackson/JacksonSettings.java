@@ -2,11 +2,11 @@ package cn.sliew.milky.property.jackson;
 
 import cn.sliew.milky.property.Mergeable;
 import cn.sliew.milky.property.Settings;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.wnameless.json.flattener.JsonFlattener;
-import com.github.wnameless.json.unflattener.JsonUnflattener;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -25,9 +25,6 @@ public class JacksonSettings implements Settings<JsonNode> {
     private final String name;
     private final JsonNode source;
     private final ObjectMapper objectMapper;
-
-    private JsonFlattener flattener;
-    private JsonUnflattener unflattener;
 
     public JacksonSettings(String name, JsonNode source) {
         this(name, source, OBJECT_MAPPER);
@@ -91,7 +88,12 @@ public class JacksonSettings implements Settings<JsonNode> {
 
     @Override
     public Settings<JsonNode> getByPrefix(String prefix) {
-        return new JacksonSettings(name, get(prefix));
+        if (source.isObject()) {
+            Map<String, Object> sourceMap = objectMapper.convertValue(source, new TypeReference<>() {});
+            FilteredMap filteredMap = new FilteredMap(sourceMap, (k) -> k.startsWith(prefix), prefix);
+            return new JacksonSettings(name, objectMapper.valueToTree(filteredMap));
+        }
+        return this;
     }
 
     @Override
