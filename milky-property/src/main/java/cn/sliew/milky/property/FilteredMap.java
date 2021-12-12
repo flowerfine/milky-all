@@ -1,4 +1,4 @@
-package cn.sliew.milky.common.settings;
+package cn.sliew.milky.property;
 
 import java.util.*;
 import java.util.function.Predicate;

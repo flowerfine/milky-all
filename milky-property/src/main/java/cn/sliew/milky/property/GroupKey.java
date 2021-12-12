@@ -1,4 +1,4 @@
-package cn.sliew.milky.common.settings;
+package cn.sliew.milky.property;
 
 import cn.sliew.milky.common.primitives.Strings;
 import cn.sliew.milky.common.regex.Regex;
@@ -8,7 +8,6 @@ import static cn.sliew.milky.common.check.Ensures.checkArgument;
 
 /**
  * {@link Setting}s with prefix.
- * jackson 的 {@link ObjectNode} 可以替代 GroupKey
  */
 public final class GroupKey extends SimpleKey {
 

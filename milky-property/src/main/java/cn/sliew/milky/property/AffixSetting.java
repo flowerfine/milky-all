@@ -1,4 +1,4 @@
-package cn.sliew.milky.common.settings;
+package cn.sliew.milky.property;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 

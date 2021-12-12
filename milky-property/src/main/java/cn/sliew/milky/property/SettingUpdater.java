@@ -2,14 +2,18 @@ package cn.sliew.milky.property;
 
 /**
  * Transactional interface to update settings.
- * @see Setting
+ *
+ * 如何进行两段式提交？？？
+ *
  * @param <T> the type of the value of the setting
+ * @see Setting
  */
 public interface SettingUpdater<T> {
 
     /**
-     * Returns true if this updaters setting has changed with the current update
-     * @param current the current settings
+     * Returns true if this updaters setting has changed with the current update.
+     *
+     * @param current  the current settings
      * @param previous the previous setting
      * @return true if this updaters setting has changed with the current update
      */
@@ -28,6 +32,7 @@ public interface SettingUpdater<T> {
 
     /**
      * Updates this updaters value if it has changed.
+     *
      * @return <code>true</code> iff the value has been updated.
      */
     default boolean apply(Settings current, Settings previous) {
@@ -47,8 +52,9 @@ public interface SettingUpdater<T> {
     default Runnable updater(Settings current, Settings previous) {
         if (hasChanged(current, previous)) {
             T value = getValue(current, previous);
-            return () -> { apply(value, current, previous);};
+            return () -> apply(value, current, previous);
         }
         return () -> {};
     }
+
 }

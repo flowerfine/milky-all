@@ -1,4 +1,4 @@
-package cn.sliew.milky.common.settings;
+package cn.sliew.milky.property;
 
 import cn.sliew.milky.common.util.JacksonUtil;
 import com.fasterxml.jackson.databind.node.ArrayNode;

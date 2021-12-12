@@ -1,10 +1,11 @@
-package cn.sliew.milky.common.settings;
+package cn.sliew.milky.property;
 
 import cn.sliew.milky.common.primitives.Strings;
 
 import java.util.regex.Pattern;
 
 public final class ListKey extends SimpleKey {
+
     private final Pattern pattern;
 
     public ListKey(String key) {

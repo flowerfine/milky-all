@@ -1,4 +1,4 @@
-package cn.sliew.milky.common.settings;
+package cn.sliew.milky.property;
 
 import cn.sliew.milky.common.primitives.*;
 import cn.sliew.milky.common.util.JacksonUtil;
@@ -10,7 +10,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static cn.sliew.milky.common.check.Ensures.checkArgument;
-import static cn.sliew.milky.common.settings.PropertyHelper.isSensitive;
 
 public class SettingHelper {
 

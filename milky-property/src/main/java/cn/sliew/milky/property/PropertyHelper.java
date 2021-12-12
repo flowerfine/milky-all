@@ -1,13 +1,7 @@
 package cn.sliew.milky.property;
 
-import cn.sliew.milky.common.settings.Property;
-import cn.sliew.milky.common.settings.Setting;
-
 import java.util.Arrays;
 
-/**
- * {@link Property} utilty.
- */
 public class PropertyHelper {
 
     private PropertyHelper() {

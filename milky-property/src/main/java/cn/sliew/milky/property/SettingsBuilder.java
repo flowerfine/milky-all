@@ -1,4 +1,4 @@
-package cn.sliew.milky.common.settings;
+package cn.sliew.milky.property;
 
 import cn.sliew.milky.common.parse.placeholder.PropertyPlaceholder;
 import cn.sliew.milky.common.primitives.Strings;

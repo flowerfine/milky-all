@@ -1,4 +1,4 @@
-package cn.sliew.milky.common.settings;
+package cn.sliew.milky.property;
 
 import cn.sliew.milky.common.primitives.Strings;
 
@@ -24,7 +24,7 @@ public class SimpleKey implements Key {
     }
 
     @Override
-    public String description() {
+    public String getDescription() {
         return description;
     }
 
