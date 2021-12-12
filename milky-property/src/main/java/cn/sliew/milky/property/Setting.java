@@ -54,7 +54,6 @@ public class Setting<T> {
     /**
      * Creates a new Setting instance.
      * <p>
-     * todo LineLength or Settings Source.
      *
      * @param key             key
      * @param defaultValue    default value
@@ -90,7 +89,7 @@ public class Setting<T> {
      * @see #isGroupSetting()
      */
     public final String getKey() {
-        return key.toString();
+        return key.getDisplayName();
     }
 
     /**

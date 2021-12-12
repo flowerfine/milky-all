@@ -15,7 +15,7 @@ public final class Settings {
     /**
      * The raw settings from the full key to raw string value.
      */
-    final Map<String, Object> settings;
+    private final Map<String, Object> settings;
 
     /**
      * Setting names found in this Settings.
@@ -202,7 +202,8 @@ public final class Settings {
      * @param commaDelimited Whether to try to parse a string as a comma-delimited value
      * @return The setting list values
      */
-    public List<String> getAsList(String key, List<String> defaultValue,
+    public List<String> getAsList(String key,
+                                  List<String> defaultValue,
                                   Boolean commaDelimited) throws SettingsException {
         List<String> result = new ArrayList<>();
         final Object valueFromPrefix = settings.get(key);
