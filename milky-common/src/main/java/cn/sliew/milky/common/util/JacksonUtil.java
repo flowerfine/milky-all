@@ -6,6 +6,7 @@ import cn.sliew.milky.log.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -73,6 +74,20 @@ public class JacksonUtil {
             return OBJECT_MAPPER.readValue(json, reference);
         } catch (JsonProcessingException e) {
             log.error("json 反序列化失败 clazz: {}, json: {}", reference.getType().getTypeName(), json, e);
+            Rethrower.throwAs(e);
+            return null;
+        }
+    }
+
+    /**
+     * deserialize json string to target specified by generic type.
+     */
+    public static <T> T parseJsonString(String json, Class<T> outerType, Class parameterClasses) {
+        try {
+            JavaType type = OBJECT_MAPPER.getTypeFactory().constructParametricType(outerType, parameterClasses);
+            return OBJECT_MAPPER.readValue(json, type);
+        } catch (JsonProcessingException e) {
+            log.error("json 反序列化失败 clazz: {}, json: {}", outerType.getTypeName(), json, e);
             Rethrower.throwAs(e);
             return null;
         }
