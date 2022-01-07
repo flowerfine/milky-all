@@ -1,5 +1,5 @@
 HELP.md
-/target/
+*/target/
 .mvn
 mvnw
 mvnw.cmd
@@ -32,5 +32,3 @@ mvnw.cmd
 
 ### MAC ###
 *.DS_Store
-
-*.dependency-reduced-pom.xml
