@@ -71,6 +71,7 @@
         <module>milky-registry</module>
         <module>milky-plugin</module>
         <module>milky-property</module>
+        <module>milky-component</module>
     </modules>
 
     <properties>
