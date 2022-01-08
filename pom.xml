@@ -112,7 +112,7 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>milky-remote</artifactId>
+                <artifactId>milky-registry</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -120,6 +120,7 @@
                 <artifactId>milky-serialize-protostuff</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
 
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
