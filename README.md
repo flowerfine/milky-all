@@ -6,8 +6,7 @@
 * 使用 `Optional` 取代可能返回结果为 `null` 的接口。使用 `@Nullable` 效果不如使用 `Optional` 。
 * 线程池组件。支持多种形式的线程池，添加新的线程池拒绝策略，支持动态调整线程池参数。
 
-## 发布命令
-mvn clean deploy -Poss-release -N versions:update-child-modules
+## 组件列表
 
 * 单位组件。如时间、byte、内存等。
 * 遍历组件。树形遍历，图形遍历
