@@ -4,6 +4,11 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+/**
+ * component base implemention.
+ * todo tags and attrubutes lookup
+ * todo pub/sub component event
+ */
 public abstract class AbstractComponentLookupService implements ComponentLookupService {
 
     private ConcurrentMap<String, Component> componentRegistry = new ConcurrentHashMap<>();
