@@ -6,10 +6,10 @@ import cn.sliew.milky.registry.AbstractRegistry;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * component base implemention.
- * todo pub/sub component event
  */
 public abstract class AbstractComponentRegistry<E extends Component, C>
         extends AbstractRegistry<E, C> implements ComponentRegistry<E, C> {
@@ -21,17 +21,26 @@ public abstract class AbstractComponentRegistry<E extends Component, C>
 
     @Override
     public Set<String> lookup(Class<? extends Component> componentType) {
-        return null;
+        return entries.values().stream()
+                .filter(component -> component.getClass().equals(componentType))
+                .map(Component::getName)
+                .collect(Collectors.toSet());
     }
 
     @Override
     public Set<String> lookup(Tag tag) {
-        return null;
+        return entries.values().stream()
+                .filter(component -> component.hasTag(tag))
+                .map(Component::getName)
+                .collect(Collectors.toSet());
     }
 
     @Override
     public Set<String> lookup(AttributeKey key) {
-        return null;
+        return entries.values().stream()
+                .filter(component -> component.hasAttr(key))
+                .map(Component::getName)
+                .collect(Collectors.toSet());
     }
 
     @Override
