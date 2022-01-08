@@ -1,13 +1,16 @@
 package cn.sliew.milky.component;
 
+import cn.sliew.milky.common.constant.AttributeKey;
+import cn.sliew.milky.common.constant.Tag;
+
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.stream.Collectors;
 
 /**
  * component base implemention.
- * todo tags and attrubutes lookup
  * todo pub/sub component event
  */
 public abstract class AbstractComponentLookupService implements ComponentLookupService {
@@ -23,7 +26,24 @@ public abstract class AbstractComponentLookupService implements ComponentLookupS
 
     @Override
     public Set<String> lookup(Class<? extends Component> componentType) {
-        return null;
+        return components.stream()
+                .filter(component -> component.getClass().equals(componentType))
+                .map(Component::getName)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<String> lookup(Tag tag) {
+        return components.stream().filter(component -> component.hasTag(tag))
+                .map(Component::getName)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<String> lookup(AttributeKey key) {
+        return components.stream().filter(component -> component.hasAttr(key))
+                .map(Component::getName)
+                .collect(Collectors.toSet());
     }
 
     @Override

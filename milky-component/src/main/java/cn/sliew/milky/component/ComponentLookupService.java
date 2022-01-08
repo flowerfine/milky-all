@@ -1,5 +1,8 @@
 package cn.sliew.milky.component;
 
+import cn.sliew.milky.common.constant.AttributeKey;
+import cn.sliew.milky.common.constant.Tag;
+
 import java.util.Set;
 
 /**
@@ -18,6 +21,18 @@ public interface ComponentLookupService {
      * @return all component names by component type
      */
     Set<String> lookup(Class<? extends Component> componentType);
+
+    /**
+     * @param tag the tag
+     * @return all component by specified tag
+     */
+    Set<String> lookup(Tag tag);
+
+    /**
+     * @param key the attribute
+     * @return all component by specified attribute
+     */
+    Set<String> lookup(AttributeKey key);
 
     /**
      * @param name component unique name
