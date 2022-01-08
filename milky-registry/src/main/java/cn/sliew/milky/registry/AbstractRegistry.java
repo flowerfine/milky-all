@@ -66,6 +66,11 @@ public abstract class AbstractRegistry<E, C> implements Registry<E, C> {
         return Optional.ofNullable(this.configurations.get(configName));
     }
 
+    @Override
+    public void registerListener(RegistryListener<E> listener) {
+        listeners.register(listener);
+    }
+
     private class CompositeRegistryListener<E> implements RegistryListener<E> {
 
         private final List<RegistryListener<E>> delegates;

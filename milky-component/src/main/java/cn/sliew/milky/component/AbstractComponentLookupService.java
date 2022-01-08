@@ -3,6 +3,7 @@ package cn.sliew.milky.component;
 import cn.sliew.milky.common.constant.AttributeKey;
 import cn.sliew.milky.common.constant.Tag;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -20,8 +21,8 @@ public abstract class AbstractComponentLookupService implements ComponentLookupS
     private Set<Component> components = new ConcurrentSkipListSet<>();
 
     @Override
-    public Component lookup(String name) {
-        return componentRegistry.get(name);
+    public Optional<Component> lookup(String name) {
+        return Optional.ofNullable(componentRegistry.get(name));
     }
 
     @Override

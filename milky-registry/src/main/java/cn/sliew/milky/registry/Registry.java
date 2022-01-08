@@ -63,4 +63,11 @@ public interface Registry<E, C> extends Iterable<E> {
      * @return the default configuration
      */
     C getDefaultConfig();
+
+    /**
+     * Register entry event such as add, remove or replace
+     *
+     * @param listener the listener
+     */
+    void registerListener(RegistryListener<E> listener);
 }
