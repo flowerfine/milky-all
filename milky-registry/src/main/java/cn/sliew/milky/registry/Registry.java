@@ -4,7 +4,7 @@ import java.util.Optional;
 
 /**
  * registry to be used by registries for common functionality.
- *
+ * <p>
  * fixme 根据 config 生成 Entry 的功能，以便恢复 Entry.
  *
  * @param <E> Registered Entry
@@ -15,14 +15,14 @@ public interface Registry<E, C> {
     /**
      * Find a named entry in the Registry
      *
-     * @param name the  name
+     * @param name the name
      */
     Optional<E> find(String name);
 
     /**
      * Remove an entry from the Registry
      *
-     * @param name the  name
+     * @param name the name
      */
     Optional<E> remove(String name);
 
@@ -37,7 +37,7 @@ public interface Registry<E, C> {
     /**
      * Return named entry whether exists in the Registry.
      *
-     * @param name the  name
+     * @param name the name
      */
     boolean exist(String name);
 
