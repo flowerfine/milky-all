@@ -10,7 +10,7 @@ import java.util.Optional;
  * @param <E> Registered Entry
  * @param <C> Registered Entry Config
  */
-public interface Registry<E, C> {
+public interface Registry<E, C> extends Iterable<E> {
 
     /**
      * Find a named entry in the Registry

@@ -1,9 +1,6 @@
 package cn.sliew.milky.registry;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Supplier;
@@ -47,6 +44,16 @@ public abstract class AbstractRegistry<E, C> implements Registry<E, C> {
         Optional<E> replacedEntry = entries.replace(name, newEntry);
         replacedEntry.ifPresent(oldEntry -> listeners.onReplaced(new EntryReplacedEvent<>(oldEntry, newEntry)));
         return replacedEntry;
+    }
+
+    @Override
+    public boolean exist(String name) {
+        return entries.exists(name);
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return entries.values().iterator();
     }
 
     @Override

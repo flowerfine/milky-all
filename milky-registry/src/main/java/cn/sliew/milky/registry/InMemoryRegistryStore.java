@@ -43,7 +43,13 @@ public class InMemoryRegistryStore<E> implements RegistryStore<E> {
     }
 
     @Override
+    public boolean exists(String name) {
+        return entryMap.containsKey(name);
+    }
+
+    @Override
     public Collection<E> values() {
         return entryMap.values();
     }
+
 }

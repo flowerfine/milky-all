@@ -3,6 +3,7 @@ package cn.sliew.milky.component;
 import cn.sliew.milky.common.constant.AttributeKey;
 import cn.sliew.milky.common.constant.Tag;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -14,7 +15,7 @@ public interface ComponentLookupService {
      * @param name component unique name
      * @return Component indentified by unique name
      */
-    Component lookup(String name);
+    Optional<Component> lookup(String name);
 
     /**
      * @param componentType component class

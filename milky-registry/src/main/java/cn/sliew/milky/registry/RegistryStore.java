@@ -16,5 +16,7 @@ public interface RegistryStore<E> {
 
     Optional<E> replace(String name, E newEntry);
 
+    boolean exists(String name);
+
     Collection<E> values();
 }
