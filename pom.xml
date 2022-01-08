@@ -64,12 +64,10 @@
         <module>milky-log</module>
         <module>milky-event</module>
         <module>milky-thread</module>
-        <module>milky-reflection</module>
         <module>milky-config</module>
         <module>milky-io</module>
         <module>milky-dsl</module>
         <module>milky-registry</module>
-        <module>milky-plugin</module>
         <module>milky-property</module>
         <module>milky-component</module>
     </modules>
@@ -81,7 +79,6 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.test.skip>true</maven.test.skip>
-        <maven.deploy.skip>true</maven.deploy.skip>
         <surefire.version>3.0.0-M5</surefire.version>
     </properties>
 
