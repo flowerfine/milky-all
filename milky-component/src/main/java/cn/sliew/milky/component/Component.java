@@ -8,10 +8,16 @@ import java.io.Serializable;
 /**
  * component marker interface, which support custom tags and attrubutes.
  */
-public interface Component extends TagSet, AttributeMap, Serializable {
+public interface Component extends TagSet, AttributeMap,
+        Versionable, Tenantable, Probeable, Managable, Serializable {
 
     /**
-     * @return component unique name
+     * @return component display name
      */
     String getName();
+
+    /**
+     * @return component unqiue identifier
+     */
+    String getIdentifier();
 }
