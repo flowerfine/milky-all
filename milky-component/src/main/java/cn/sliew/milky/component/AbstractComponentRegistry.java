@@ -19,8 +19,9 @@ public abstract class AbstractComponentRegistry<E extends Component, C>
         return (Optional<Component>) entries.find(name);
     }
 
+
     @Override
-    public Set<String> lookup(Class<? extends Component> componentType) {
+    public <T extends Component> Set<String> lookup(Class<T> componentType) {
         return entries.values().stream()
                 .filter(component -> component.getClass().equals(componentType))
                 .map(Component::getName)

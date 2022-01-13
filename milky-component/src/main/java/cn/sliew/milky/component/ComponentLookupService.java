@@ -15,13 +15,13 @@ public interface ComponentLookupService {
      * @param name component unique name
      * @return Component indentified by unique name
      */
-    Optional<Component> lookup(String name);
+    <T extends Component> Optional<T> lookup(String name);
 
     /**
      * @param componentType component class
      * @return all component names by component type
      */
-    Set<String> lookup(Class<? extends Component> componentType);
+    <T extends Component> Set<String> lookup(Class<T> componentType);
 
     /**
      * @param tag the tag
@@ -45,5 +45,5 @@ public interface ComponentLookupService {
      * @param component
      * @return true if component exists, otherwise false
      */
-    boolean exists(Component component);
+    <T extends Component> boolean exists(T component);
 }
