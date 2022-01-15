@@ -15,13 +15,12 @@ public abstract class AbstractComponentRegistry<E extends Component, C>
         extends AbstractRegistry<E, C> implements ComponentRegistry<E, C> {
 
     @Override
-    public Optional<Component> lookup(String name) {
-        return (Optional<Component>) entries.find(name);
+    public Optional<E> lookup(String name) {
+        return entries.find(name);
     }
 
-
     @Override
-    public <T extends Component> Set<String> lookup(Class<T> componentType) {
+    public Set<String> lookup(Class componentType) {
         return entries.values().stream()
                 .filter(component -> component.getClass().equals(componentType))
                 .map(Component::getName)
