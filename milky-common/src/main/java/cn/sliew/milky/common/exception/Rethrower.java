@@ -15,7 +15,6 @@ public final class Rethrower {
 
     private static final Logger log = LoggerFactory.getLogger(Rethrower.class);
 
-
     private Rethrower() {
         throw new AssertionError("No instance intended");
     }
@@ -72,8 +71,8 @@ public final class Rethrower {
     /**
      * Catch a checked exception and rethrow as a {@link RuntimeException}
      *
-     * @param callable - function that throws a checked exception.
-     * @param <T>      - return type of the function.
+     * @param callable function that throws a checked exception.
+     * @param <T>      return type of the function.
      * @return object that the function returns.
      */
     public static <T> T toRuntime(final Callable<T> callable) {
@@ -89,7 +88,7 @@ public final class Rethrower {
     /**
      * Catch a checked exception and rethrow as a {@link RuntimeException}.
      *
-     * @param voidCallable - function that throws a checked exception.
+     * @param voidCallable function that throws a checked exception.
      */
     public static void toRuntime(final Procedure voidCallable) {
         castCheckedToRuntime(voidCallable, RuntimeException::new);
