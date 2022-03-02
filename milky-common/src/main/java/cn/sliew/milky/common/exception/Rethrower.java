@@ -1,11 +1,20 @@
 package cn.sliew.milky.common.exception;
 
+import cn.sliew.milky.log.Logger;
+import cn.sliew.milky.log.LoggerFactory;
+
+import java.util.concurrent.Callable;
+import java.util.function.Function;
+
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
 
 /**
  * Rethrowing checked exceptions as unchecked ones. Eh, it is sometimes useful...
  */
 public final class Rethrower {
+
+    private static final Logger log = LoggerFactory.getLogger(Rethrower.class);
+
 
     private Rethrower() {
         throw new AssertionError("No instance intended");
@@ -59,5 +68,61 @@ public final class Rethrower {
     public static <T extends Throwable> void throwAs(Throwable t) throws T {
         throw (T) t;
     }
-}
 
+    /**
+     * Catch a checked exception and rethrow as a {@link RuntimeException}
+     *
+     * @param callable - function that throws a checked exception.
+     * @param <T>      - return type of the function.
+     * @return object that the function returns.
+     */
+    public static <T> T toRuntime(final Callable<T> callable) {
+        try {
+            return callable.call();
+        } catch (final RuntimeException e) {
+            throw e;
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Catch a checked exception and rethrow as a {@link RuntimeException}.
+     *
+     * @param voidCallable - function that throws a checked exception.
+     */
+    public static void toRuntime(final Procedure voidCallable) {
+        castCheckedToRuntime(voidCallable, RuntimeException::new);
+    }
+
+    public static void toIllegalState(final Procedure voidCallable) {
+        castCheckedToRuntime(voidCallable, IllegalStateException::new);
+    }
+
+    public static void toIllegalArgument(final Procedure voidCallable) {
+        castCheckedToRuntime(voidCallable, IllegalArgumentException::new);
+    }
+
+    private static void castCheckedToRuntime(final Procedure voidCallable, final Function<Exception, RuntimeException> exceptionFactory) {
+        try {
+            voidCallable.call();
+        } catch (final RuntimeException e) {
+            throw e;
+        } catch (final Exception e) {
+            throw exceptionFactory.apply(e);
+        }
+    }
+
+    public static void swallow(final Procedure procedure) {
+        try {
+            procedure.call();
+        } catch (final Exception e) {
+            log.error("Swallowed error.", e);
+        }
+    }
+
+    public interface Procedure {
+
+        void call() throws Exception;
+    }
+}
