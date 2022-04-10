@@ -746,7 +746,11 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <useAgent>true</useAgent>
+                            <!-- Prevent `gpg` from using pinentry programs -->
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
                         </configuration>
                     </plugin>
                     <!-- We want to package up license resources in the JARs produced -->
