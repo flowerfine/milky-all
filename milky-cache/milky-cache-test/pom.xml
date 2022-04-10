@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.sliew</groupId>
         <artifactId>milky-cache</artifactId>
-        <version>1.0.6-SNAPSHOT</version>
+        <version>1.0.6_8</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>milky-cache-test</artifactId>
