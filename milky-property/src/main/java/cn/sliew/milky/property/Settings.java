@@ -15,7 +15,7 @@ public final class Settings {
     /**
      * The raw settings from the full key to raw string value.
      */
-    private final Map<String, Object> settings;
+    final Map<String, Object> settings;
 
     /**
      * Setting names found in this Settings.
