@@ -152,4 +152,33 @@ public class JacksonUtil {
         return false;
     }
 
+    public static <T> T merge(T target, T patch, Class<T> resourceClass) {
+        JsonNode targetNode = JacksonUtil.toJsonNode(target);
+        JsonNode patchNode = JacksonUtil.toJsonNode(patch);
+        JsonNode patched = merge(targetNode, patchNode);
+        return JacksonUtil.toObject(patched, resourceClass);
+    }
+
+    public static JsonNode merge(final JsonNode target, final JsonNode patch) {
+        if (!(patch instanceof ObjectNode)) {
+            return patch;
+        }
+
+        ObjectNode patchObject = (ObjectNode) patch;
+        ObjectNode targetObject = target instanceof ObjectNode ? (ObjectNode) target : patchObject.objectNode();
+
+        patch.fields().forEachRemaining(field -> {
+            String key = field.getKey();
+            JsonNode value = field.getValue();
+            if (value.isNull()) {
+                targetObject.remove(key);
+            } else {
+                JsonNode existingValue = targetObject.get(key);
+                JsonNode mergeResult = merge(existingValue, value);
+                targetObject.replace(key, mergeResult);
+            }
+        });
+        return targetObject;
+    }
+
 }
