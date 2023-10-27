@@ -181,4 +181,8 @@ public class JacksonUtil {
         return targetObject;
     }
 
+    public static ObjectMapper getMapper() {
+        return OBJECT_MAPPER;
+    }
+
 }
