@@ -16,9 +16,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * jackson utility class.
@@ -135,6 +133,10 @@ public class JacksonUtil {
 
     public static <T> T toObject(JsonNode jsonNode, TypeReference<T> typeReference) {
         return OBJECT_MAPPER.convertValue(jsonNode, typeReference);
+    }
+
+    public static Map<String, Object> toMap(JsonNode jsonNode) {
+        return toObject(jsonNode, new TypeReference<Map<String, Object>>() {});
     }
 
     public static boolean checkJsonValid(String json) {
