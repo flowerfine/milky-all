@@ -5,21 +5,25 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.sliew</groupId>
-        <artifactId>milky-all</artifactId>
+        <artifactId>milky-concurrent</artifactId>
         <version>1.0.14-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>milky-concurrent</artifactId>
-    <packaging>pom</packaging>
-    <name>${project.artifactId}</name>
-
-    <modules>
-        <module>milky-concurrent-thread</module>
-        <module>milky-concurrent-future</module>
-    </modules>
+    <artifactId>milky-concurrent-future</artifactId>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>cn.sliew</groupId>
+            <artifactId>milky-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.sliew</groupId>
+            <artifactId>milky-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
