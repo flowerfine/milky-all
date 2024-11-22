@@ -1,6 +1,8 @@
 package cn.sliew.milky.concurrent.thread;
 
 import cn.sliew.milky.common.collect.ConcurrentReferenceHashMap;
+import cn.sliew.milky.common.concurrent.RunnableWrapper;
+import cn.sliew.milky.common.exception.Rethrower;
 import cn.sliew.milky.concurrent.thread.policy.AbortPolicyWithReport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -104,7 +106,11 @@ public class MilkyThreadPoolExecutor extends ThreadPoolExecutor {
                 try {
                     ((RunnableWrapper) command).onRejection(ex);
                 } finally {
-                    ((RunnableWrapper) command).onAfter();
+                    try {
+                        ((RunnableWrapper) command).onAfter();
+                    } catch (Exception e) {
+                        Rethrower.throwAs(e);
+                    }
                 }
             } else {
                 throw ex;
