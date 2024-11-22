@@ -1,14 +1,11 @@
-package cn.sliew.milky.concurrent.thread;
+package cn.sliew.milky.common.concurrent;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static cn.sliew.milky.common.check.Ensures.checkNotNull;
 
-/**
- * todo thread context。当创建线程的时候初始化线程的ThreadContext？？
- */
-class DaemonThreadFactory implements ThreadFactory {
+public class DaemonThreadFactory implements ThreadFactory {
 
     private final String threadNamePrefix;
     private final int threadPriority;
@@ -22,7 +19,7 @@ class DaemonThreadFactory implements ThreadFactory {
         this(null);
     }
 
-    DaemonThreadFactory(String threadNamePrefix) {
+    public DaemonThreadFactory(String threadNamePrefix) {
         this(threadNamePrefix, true);
     }
 
@@ -30,7 +27,7 @@ class DaemonThreadFactory implements ThreadFactory {
         this(threadNamePrefix, threadPriority, true);
     }
 
-    DaemonThreadFactory(String threadNamePrefix, boolean daemon) {
+    public DaemonThreadFactory(String threadNamePrefix, boolean daemon) {
         this(threadNamePrefix, Thread.NORM_PRIORITY, daemon);
     }
 
