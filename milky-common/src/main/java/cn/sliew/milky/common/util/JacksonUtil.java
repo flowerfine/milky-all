@@ -13,14 +13,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.dataformat.javaprop.JavaPropsMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * jackson utility class.
@@ -30,6 +28,7 @@ public class JacksonUtil {
     private static final Logger log = LoggerFactory.getLogger(JacksonUtil.class);
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final JavaPropsMapper PROPS_MAPPER = new JavaPropsMapper();
 
     static {
         OBJECT_MAPPER.registerModule(new JavaTimeModule())
@@ -143,6 +142,15 @@ public class JacksonUtil {
     public static Map<String, Object> toMap(JsonNode jsonNode) {
         return toObject(jsonNode, new TypeReference<Map<String, Object>>() {
         });
+    }
+
+    public static Properties toProps(String json) {
+        try {
+            return PROPS_MAPPER.writeValueAsProperties(json);
+        } catch (IOException e) {
+            Rethrower.throwAs(e);
+            return null;
+        }
     }
 
     public static boolean checkJsonValid(String json) {
