@@ -137,11 +137,6 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>milky-concurrent</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>${project.groupId}</groupId>
                 <artifactId>milky-registry</artifactId>
                 <version>${project.version}</version>
             </dependency>
