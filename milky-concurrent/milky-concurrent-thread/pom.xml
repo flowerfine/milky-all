@@ -5,15 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.sliew</groupId>
-        <artifactId>milky-all</artifactId>
-        <version>0.0.14</version>
+        <artifactId>milky-concurrent</artifactId>
+        <version>1.0.14-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>milky</artifactId>
-    <packaging>jar</packaging>
-    <name>${project.artifactId}</name>
-    <url>https://github.com/kalencaya/milky-all</url>
-    <description>Milky is an userful java component toolset.</description>
+    <artifactId>milky-concurrent-thread</artifactId>
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
@@ -26,9 +22,23 @@
         </dependency>
         <dependency>
             <groupId>cn.sliew</groupId>
-            <artifactId>milky-test</artifactId>
+            <artifactId>milky-log</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-core</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
-
 
 </project>
