@@ -1,10 +1,10 @@
 name: Sonatype Nexus Deployment
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - master
-      - 'release/**'
+    tags:
+      - 'v*'
 
 jobs:
   release:
