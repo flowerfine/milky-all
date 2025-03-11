@@ -1,3 +1,5 @@
+[![Gihub Actions](https://github.com/flowerfine/milky-all/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/flowerfine/milky-all/actions) [![Last commit](https://img.shields.io/github/last-commit/flowerfine/milky-all.svg)](https://github.com/flowerfine/milky-all) [![GitHub Tag](https://img.shields.io/github/v/tag/flowerfine/milky-all)](https://github.com/flowerfine/milky-all/tags) [![Maven Central](https://img.shields.io/maven-central/v/cn.sliew/milky-all)](https://maven-badges.herokuapp.com/maven-central/cn.sliew/milky-all) [![License](https://img.shields.io/github/license/flowerfine/milky-all.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+
 # 组件列表
 
 ## TODO
