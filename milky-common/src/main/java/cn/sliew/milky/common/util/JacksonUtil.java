@@ -45,8 +45,15 @@ public class JacksonUtil {
      * serialize object to json string.
      */
     public static String toJsonString(Object object) {
+        return toJsonString(OBJECT_MAPPER, object);
+    }
+
+    /**
+     * serialize object to json string.
+     */
+    public static String toJsonString(ObjectMapper mapper, Object object) {
         try {
-            return OBJECT_MAPPER.writeValueAsString(object);
+            return mapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             log.error("json 序列化失败 object: {}", object, e);
             Rethrower.throwAs(e);
@@ -58,8 +65,15 @@ public class JacksonUtil {
      * deserialize json string to target specified by {@link Class}.
      */
     public static <T> T parseJsonString(String json, Class<T> clazz) {
+        return parseJsonString(OBJECT_MAPPER, json, clazz);
+    }
+
+    /**
+     * deserialize json string to target specified by {@link Class}.
+     */
+    public static <T> T parseJsonString(ObjectMapper mapper, String json, Class<T> clazz) {
         try {
-            return OBJECT_MAPPER.readValue(json, clazz);
+            return mapper.readValue(json, clazz);
         } catch (JsonProcessingException e) {
             log.error("json 反序列化失败 clazz: {}, json: {}", clazz.getName(), json, e);
             Rethrower.throwAs(e);
@@ -72,10 +86,39 @@ public class JacksonUtil {
      * {@link TypeReference} indicate type generics.
      */
     public static <T> T parseJsonString(String json, TypeReference<T> reference) {
+        return parseJsonString(OBJECT_MAPPER, json, reference);
+    }
+
+    /**
+     * deserialize json string to target specified by {@link TypeReference}.
+     * {@link TypeReference} indicate type generics.
+     */
+    public static <T> T parseJsonString(ObjectMapper mapper, String json, TypeReference<T> reference) {
         try {
-            return OBJECT_MAPPER.readValue(json, reference);
+            return mapper.readValue(json, reference);
         } catch (JsonProcessingException e) {
             log.error("json 反序列化失败 clazz: {}, json: {}", reference.getType().getTypeName(), json, e);
+            Rethrower.throwAs(e);
+            return null;
+        }
+    }
+
+    /**
+     * deserialize json string to target specified by {@link JavaType}.
+     */
+    public static <T> T parseJsonString(String json, JavaType type) {
+        return parseJsonString(OBJECT_MAPPER, json, type);
+    }
+
+    /**
+     * deserialize json string to target specified by {@link JavaType}.
+     * {@link TypeReference} indicate type generics.
+     */
+    public static <T> T parseJsonString(ObjectMapper mapper, String json, JavaType type) {
+        try {
+            return mapper.readValue(json, type);
+        } catch (JsonProcessingException e) {
+            log.error("json 反序列化失败 clazz: {}, json: {}", type.getTypeName(), json, e);
             Rethrower.throwAs(e);
             return null;
         }
@@ -85,24 +128,29 @@ public class JacksonUtil {
      * deserialize json string to target specified by generic type.
      */
     public static <T> T parseJsonString(String json, Class<T> outerType, Class parameterClasses) {
-        try {
-            JavaType type = OBJECT_MAPPER.getTypeFactory().constructParametricType(outerType, parameterClasses);
-            return OBJECT_MAPPER.readValue(json, type);
-        } catch (JsonProcessingException e) {
-            log.error("json 反序列化失败 clazz: {}, json: {}", outerType.getTypeName(), json, e);
-            Rethrower.throwAs(e);
-            return null;
-        }
+        return parseJsonString(OBJECT_MAPPER, json, outerType, parameterClasses);
+    }
+
+    /**
+     * deserialize json string to target specified by generic type.
+     */
+    public static <T> T parseJsonString(ObjectMapper mapper, String json, Class<T> outerType, Class parameterClasses) {
+        JavaType type = mapper.getTypeFactory().constructParametricType(outerType, parameterClasses);
+        return parseJsonString(mapper, json, type);
     }
 
     public static <T> List<T> parseJsonArray(String json, Class<T> clazz) {
+        return parseJsonArray(OBJECT_MAPPER, json, clazz);
+    }
+
+    public static <T> List<T> parseJsonArray(ObjectMapper mapper, String json, Class<T> clazz) {
         if (StringUtils.isBlank(json)) {
             return Collections.emptyList();
         }
 
         try {
-            CollectionType listType = OBJECT_MAPPER.getTypeFactory().constructCollectionType(ArrayList.class, clazz);
-            return OBJECT_MAPPER.readValue(json, listType);
+            CollectionType listType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, clazz);
+            return mapper.readValue(json, listType);
         } catch (Exception e) {
             log.error("json 反序列化为 list 失败 clazz: {}, json: {}", clazz.getName(), json, e);
         }
@@ -137,6 +185,10 @@ public class JacksonUtil {
 
     public static <T> T toObject(JsonNode jsonNode, TypeReference<T> typeReference) {
         return OBJECT_MAPPER.convertValue(jsonNode, typeReference);
+    }
+
+    public static <T> T toObject(Object object, Class<T> clazz) {
+        return OBJECT_MAPPER.convertValue(object, clazz);
     }
 
     public static Map<String, Object> toMap(JsonNode jsonNode) {
