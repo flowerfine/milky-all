@@ -191,6 +191,11 @@ public class JacksonUtil {
         return OBJECT_MAPPER.convertValue(object, clazz);
     }
 
+    public static Map<String, Object> toMap(String json) {
+        return parseJsonString(json, new TypeReference<Map<String, Object>>() {
+        });
+    }
+
     public static Map<String, Object> toMap(JsonNode jsonNode) {
         return toObject(jsonNode, new TypeReference<Map<String, Object>>() {
         });
